@@ -1,0 +1,186 @@
+
+
+using System;
+using System.Diagnostics;
+using GameStateManagement;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace wizard_game
+{
+    class Enemy : Acteur
+    {
+
+        public Texture2D enemy_texture;
+        public float speed;
+        private EnemyType e_type;
+
+        private bool drawHitBox = true;
+        private int lineWidth = 2;
+        private Color hitboxColor = Color.Purple;
+        public int health { set; get; }
+        public Room room;
+
+        // private Rectangle rect { get; set; }
+        Map map;
+        public Enemy(int x, int y, Map _map, EnemyType type, string spriteName, Room room) : base(new Vector2(x, y), 27, 45, spriteName, true)
+        {
+            direction = new Vector2(0, -1);
+            health = 100;
+            map = _map;
+            e_type = type;
+            setSpeed();
+            this.room = room;
+
+            //hab das in konstruktor verschoben weil es loadContent nicht mehr gibt. wir haben ja DrawableGameComponent rausgenommen
+            //Load Content: Texture für Enemy
+            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
+            InitAnimations();
+            enemy_texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
+            enemy_texture.SetData(new Color[] { Color.Black });
+            hitBox = getNextRect(position);
+        }
+
+
+
+        // Animation setzen
+        private void InitAnimations()
+        {
+            int[] animDown = { 0, 1, 2, 3 };
+            int[] animLeft = { 4, 5, 6, 7 };
+            int[] animRight = { 8, 9, 10, 11 };
+            int[] animUp = { 12, 13, 14, 15 };
+            int[] animIdleDown = { 0 };
+            int[] animIdleLeft = { 4 };
+            int[] animIdleRight = { 8 };
+            int[] animIdleUp = { 12 };
+            sprite.addAnimtaion(animDown, "down");
+            sprite.addAnimtaion(animLeft, "left");
+            sprite.addAnimtaion(animRight, "right");
+            sprite.addAnimtaion(animUp, "up");
+            sprite.addAnimtaion(animIdleDown, "idle_down");
+            sprite.addAnimtaion(animIdleLeft, "idle_left");
+            sprite.addAnimtaion(animIdleRight, "idle_right");
+            sprite.addAnimtaion(animIdleUp, "idle_up");
+            sprite.setAnimation("idle_right");
+        }
+
+        private bool IsObjectInFields(Vector2 test)
+        {
+            // Berechne die Positionen in den Feldern (Index in room.fields)
+            int cordX = (int) test.X / 10;
+            int cordY = (int) test.Y / 10;
+
+            // Prüfe, ob die Koordinaten innerhalb des gültigen Bereichs liegen
+            if (cordX >= 0 && cordX < room.fields.GetLength(0) &&
+                cordY >= 0 && cordY < room.fields.GetLength(1))
+            {
+                // Gibt zurück, ob das Feld auf true gesetzt ist
+                return room.fields[cordX, cordY];
+            }
+
+            // Falls die Koordinaten außerhalb des Bereichs sind, gib false zurück
+            return false;
+        }
+
+        //Kollision mit Wall erkennen
+        public bool DetacteCollison(Vector2 newPos)
+        {
+           return IsObjectInFields(newPos);
+            // Rectangle newREct = getNextRect(newPos);
+            // Color[] data = sprite.GetCurrentColorData();
+            // return map.DetacteCollison(newREct, data, false);
+        }
+
+        //wenn Kollision kommt, dann bleibe
+        public void DetacteCollisonX(Vector2 posOld)
+        {
+
+            hitBox.X = (int)position.X;
+            if (DetacteCollison(posOld))
+            {
+                position.X = posOld.X;
+            }
+            hitBox.X = (int)position.X;
+
+        }
+        public void DetacteCollisonY(Vector2 posOld)
+        {
+            hitBox.Y = (int)position.Y;
+            if (DetacteCollison(posOld))
+            {
+                position.Y = posOld.Y;
+            }
+            hitBox.Y = (int)position.Y;
+        }
+
+        //TODO: move()
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            Move();
+
+            sprite.Update(gameTime);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+
+            if (drawHitBox)
+            {
+                GameStateManagementGame._spriteBatch.Draw(enemy_texture, new Rectangle(hitBox.X, hitBox.Y, lineWidth, hitBox.Height + lineWidth), hitboxColor);
+                GameStateManagementGame._spriteBatch.Draw(enemy_texture, new Rectangle(hitBox.X, hitBox.Y, hitBox.Width + lineWidth, lineWidth), hitboxColor);
+                GameStateManagementGame._spriteBatch.Draw(enemy_texture, new Rectangle(hitBox.X + hitBox.Width, hitBox.Y, lineWidth, hitBox.Height + lineWidth), hitboxColor);
+                GameStateManagementGame._spriteBatch.Draw(enemy_texture, new Rectangle(hitBox.X, hitBox.Y + hitBox.Height, hitBox.Width + lineWidth, lineWidth), hitboxColor);
+            }
+
+
+        }
+
+        // Je nach EnemyType wird doe Geschwindigkeit gesetzt
+        public void setSpeed()
+        {
+            switch (e_type)
+            {
+                case EnemyType.WIZARD:
+                    speed = 2.3f;
+                    break;
+                case EnemyType.GUARD:
+                    speed = 1.3f;
+                    break;
+                case EnemyType.SKELETON:
+                    speed = 0.3f;
+                    break;
+                case EnemyType.PRISONER:
+                    speed = 1.5f;
+                    break;
+                default:
+                    speed = 0.7f;
+                    break;
+            }
+        }
+
+        public void Move()
+        {
+
+        }
+
+        // Die neue Hitbox bei der Bewegung
+        public Rectangle getNextRect(Vector2 position)
+        {
+            return new Rectangle((int)position.X, (int)position.Y, enemy_texture.Width,
+                                                 enemy_texture.Height);
+        }
+
+        public bool isWall(int x, int y)
+        {
+            return false;
+        }
+
+        public override void Attack()
+        {
+
+        }
+    }
+}
