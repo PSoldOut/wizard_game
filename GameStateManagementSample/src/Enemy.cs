@@ -38,7 +38,7 @@ namespace wizard_game
             InitAnimations();
             enemy_texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             enemy_texture.SetData(new Color[] { Color.Black });
-            hitBox = getNextRect(position);
+            //hitBox = getNextRect(position);
         }
 
 
@@ -67,29 +67,32 @@ namespace wizard_game
 
         private bool IsObjectInFields(Vector2 test)
         {
+            //  Debug.WriteLine(test);
             // Berechne die Positionen in den Feldern (Index in room.fields)
-            int cordX = (int) test.X / 10;
-            int cordY = (int) test.Y / 10;
-
-            // Prüfe, ob die Koordinaten innerhalb des gültigen Bereichs liegen
-            if (cordX >= 0 && cordX < room.fields.GetLength(0) &&
-                cordY >= 0 && cordY < room.fields.GetLength(1))
+            if (!isValidPos(test))
             {
-                // Gibt zurück, ob das Feld auf true gesetzt ist
-                return room.fields[cordX, cordY];
+                return true;
             }
+            int cordX = (int)test.X / 10;
+            int cordY = (int)test.Y / 10;
 
-            // Falls die Koordinaten außerhalb des Bereichs sind, gib false zurück
-            return false;
+            // Gibt zurück, ob das Feld auf true gesetzt ist
+            //Debug.WriteLine(cordX + ", " + cordY + "  " + room.fields[cordX, cordY] + this.GetType());
+            return room.fields[cordX, cordY];
+
         }
 
         //Kollision mit Wall erkennen
         public bool DetacteCollison(Vector2 newPos)
         {
-           return IsObjectInFields(newPos);
-            // Rectangle newREct = getNextRect(newPos);
-            // Color[] data = sprite.GetCurrentColorData();
-            // return map.DetacteCollison(newREct, data, false);
+
+            return IsObjectInFields(newPos);
+        }
+
+        public bool DetacteCollison()
+        {
+            Color[] data = sprite.GetCurrentColorData();
+            return map.DetacteCollison(hitBox, data, false);
         }
 
         //wenn Kollision kommt, dann bleibe
@@ -126,16 +129,6 @@ namespace wizard_game
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-
-            if (drawHitBox)
-            {
-                GameStateManagementGame._spriteBatch.Draw(enemy_texture, new Rectangle(hitBox.X, hitBox.Y, lineWidth, hitBox.Height + lineWidth), hitboxColor);
-                GameStateManagementGame._spriteBatch.Draw(enemy_texture, new Rectangle(hitBox.X, hitBox.Y, hitBox.Width + lineWidth, lineWidth), hitboxColor);
-                GameStateManagementGame._spriteBatch.Draw(enemy_texture, new Rectangle(hitBox.X + hitBox.Width, hitBox.Y, lineWidth, hitBox.Height + lineWidth), hitboxColor);
-                GameStateManagementGame._spriteBatch.Draw(enemy_texture, new Rectangle(hitBox.X, hitBox.Y + hitBox.Height, hitBox.Width + lineWidth, lineWidth), hitboxColor);
-            }
-
-
         }
 
         // Je nach EnemyType wird doe Geschwindigkeit gesetzt
@@ -176,6 +169,11 @@ namespace wizard_game
         public bool isWall(int x, int y)
         {
             return false;
+        }
+
+        public bool isValidPos(Vector2 pos)
+        {
+            return pos.X >= 0 && pos.Y >= 0 && pos.X < 1280 - enemy_texture.Width && pos.Y < 780 - enemy_texture.Height;
         }
 
         public override void Attack()

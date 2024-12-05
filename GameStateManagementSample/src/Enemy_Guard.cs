@@ -14,6 +14,7 @@ namespace wizard_game
         {
             setSpeed();
             direction = new Vector2(1, 0);
+            sprite.setAnimation("idle_right");
             idEnemy++;
         }
 
@@ -35,12 +36,7 @@ namespace wizard_game
         public new void Move()
         {
             //  if(hitBox.X < 1240 && hitBox.X >= 0 && hitBox.Y >= 0 && hitBox.Y < 1000){
-            Vector2 test = position + direction * speed;
-
-            if (DetacteCollison(test))
-            {
-                direction = chooseADirection();
-            }
+            chooseADirection();
             direction.Normalize();
             position += direction * speed;
         }
@@ -54,47 +50,53 @@ namespace wizard_game
         }
 
         //wählen eine andere Richtung wenn Kollision auftritt
-        public Vector2 chooseADirection()
+        public void chooseADirection()
         {
-            Vector2 direction = new Vector2(0, 0);
             Random random = new Random();
-            int randomNumber = random.Next(1, 101);
-            string anim = "idle_down";
 
-            while (DetacteCollison(position + direction * speed))
+            string anim = "idle_down";
+            Vector2 tmp = position + direction * speed;
+            int i = 0;
+            while (DetacteCollison(tmp) && i < 10)
             {
-                if (randomNumber % 4 == 0)
-                {
-                    // TODO: rechts
-                    direction.X = 1;
-                    direction.Y = 0;
-                    anim = "idle_right";
-                }
-                else if (randomNumber % 4 == 1)
-                {
-                    //TODO: unten
-                    direction.X = 0;
-                    direction.Y = 1;
-                    anim = "idle_down";
-                }
-                else if (randomNumber % 4 == 2)
-                {
-                    //TODO: oben
-                    direction.X = 0;
-                    direction.Y = -1;
-                    anim = "idle_up";
-                }
-                else
-                {
-                    //TODO: links
-                    direction.X = -1;
-                    direction.Y = 0;
-                    anim = "idle_left";
-                }
+                Console.WriteLine("auifhseoighseogihseogih");
+                // tmp = position - direction * speed;
+                // int randomNumber = random.Next(1, 101);
+                // if (randomNumber % 4 == 0)
+                // {
+                //     // TODO: rechts
+                //     direction.X = 1;
+                //     direction.Y = 0;
+                //     anim = "idle_right";
+                // }
+                // else if (randomNumber % 4 == 1)
+                // {
+                //     //TODO: unten
+                //     direction.X = 0;
+                //     direction.Y = 1;
+                //     anim = "idle_down";
+                // }
+                // else if (randomNumber % 4 == 2)
+                // {
+                //     //TODO: oben
+                //     direction.X = 0;
+                //     direction.Y = -1;
+                //     anim = "idle_up";
+                // }
+                // else
+                // {
+                //     //TODO: links
+                //     direction.X = -1;
+                //     direction.Y = 0;
+                //     anim = "idle_left";
+                // }
+                speed = 0;
+                tmp = position + direction * speed;
+                //Debug.WriteLine(randomNumber + "  - "+ direction);
+                //Debug.WriteLine(tmp + "  ------tmp in choose()");
+                i++;
             }
             sprite.setAnimation(anim);
-
-            return direction;
         }
 
         //Wwenn der Abstand klein ist, wird gegen Spieler kämpfen

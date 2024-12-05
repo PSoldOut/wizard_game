@@ -36,7 +36,7 @@ namespace GameStateManagement
         public static Texture2D goldTexture;
         public static Random rand;
         public static Map map;
-        
+
 
         bool mousePressed = false;
         private int fps;
@@ -51,7 +51,7 @@ namespace GameStateManagement
         private float pauseAlpha;
 
         static int goldCount = 10;
-        
+
         public static List<Acteur> acteurs;
         public static List<Item> items;
         public static List<Projectile> projectiles;
@@ -67,7 +67,7 @@ namespace GameStateManagement
 
 
             items = new List<Item>();
-            acteurs = new List<Acteur>(); 
+            acteurs = new List<Acteur>();
             projectiles = new List<Projectile>();
 
             for (int i = 0; i < goldCount; i++)
@@ -81,7 +81,7 @@ namespace GameStateManagement
             //---------------------------------------
 
             map = new Map();
-            
+
 
             //map.Initialize();
 
@@ -92,7 +92,7 @@ namespace GameStateManagement
 
 
 
-       
+
         }
 
 
@@ -104,7 +104,7 @@ namespace GameStateManagement
             {
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
             }
-                
+
             gameFont = content.Load<SpriteFont>("gamefont");
             goldTexture = content.Load<Texture2D>("gold");
             spriteFont = content.Load<SpriteFont>("Arial");
@@ -135,7 +135,7 @@ namespace GameStateManagement
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            
+
             if (!otherScreenHasFocus)
             {
 
@@ -150,15 +150,12 @@ namespace GameStateManagement
 
                 }
                 //map.Update(gameTime);
-                for (int i = 0; i < items.Count; i++) items[i].Update(gameTime);
-                for (int i = 0; i < projectiles.Count; i++) projectiles[i].Update(gameTime);
-                //foreach (Projectile projectile in projectiles) projectile.Update(gameTime);
+                foreach (Item item in items) item.Update(gameTime);
+                foreach (Projectile projectile in projectiles) projectile.Update(gameTime);
                 foreach (Acteur acteur in acteurs) acteur.Update(gameTime);
 
-            
-                
             }
-           
+
             else{
 
             }
@@ -191,7 +188,7 @@ namespace GameStateManagement
 
             if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
             {
-                
+
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
 
             }
@@ -212,14 +209,14 @@ namespace GameStateManagement
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,Color.CornflowerBlue, 0, 0);
             Rectangle screenRectangle = new Rectangle(0, 0, 1280, 720);
             GameStateManagementGame._spriteBatch.Draw(background,screenRectangle,Color.White);
-            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + fps.ToString(), new Vector2(0, 0), Color.Red);
-            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Room: " + map.roomIndex.ToString(), new Vector2(100, 30), Color.Red);
+            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + fps.ToString(), new Vector2(0, 0), Color.Black);
+            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Room: " + map.roomIndex.ToString(), new Vector2(100, 30), Color.Black);
 
             foreach (Item item in items) item.Draw(gameTime);
             foreach (Projectile projectile in projectiles) projectile.Draw(gameTime);
             foreach (Acteur acteur in acteurs) acteur.Draw(gameTime);
             map.Draw(gameTime);
-            
+
             base.Draw(gameTime);
         }
 

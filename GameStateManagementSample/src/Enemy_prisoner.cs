@@ -29,12 +29,7 @@ namespace wizard_game
         {
             if (!IsObjBetweenEnemyAndPlayer())
             {
-                //Debug.WriteLine("wall between");
                 follow();
-            }
-            else
-            {
-
             }
         }
 
@@ -44,12 +39,12 @@ namespace wizard_game
             if (hitBox.X < 1240 && hitBox.X >= 0 && hitBox.Y >= 0 && hitBox.Y < 1000)
             {
                 MoveToPlayer();
+                direction.Normalize();
                 Vector2 test = position + direction * speed;
 
                 if (!DetacteCollison(test))
                 {
-                    //  Debug.WriteLine("kollision");
-                    direction.Normalize();
+                    // Debug.WriteLine("no kollision");
                     position = test;
                 }
             }
@@ -57,93 +52,137 @@ namespace wizard_game
 
         //bewegen sich  nach der Richtung des Players
         public void MoveToPlayer()
+
         {
-            //Debug.WriteLine("Attacking!!!!!!!!!!!!!!!!!!!!!!!!!");
-            if (position.X < Player.Get().position.X)
+
+            float deltaX = Player.Get().position.X - position.X;
+            float deltaY = Player.Get().position.Y - position.Y;
+
+            // Bestimme, ob Bewegung entlang X oder Y priorisiert wird
+            if (Math.Abs(deltaX) > Math.Abs(deltaY)) // Bewegung entlang der X-Achse
             {
-                direction.X = 1;
-                direction.Y = 0;
-                sprite.setAnimation("idle_right");
+                if (deltaX > 0)
+                {
+                    direction.X = 1; // nach rechts
+                    sprite.setAnimation("idle_right");
+                }
+                else
+                {
+                    direction.X = -1; // nach links
+                    sprite.setAnimation("idle_left");
+                }
+                direction.Y = 0; // Nur entlang der X-Achse bewegen
             }
-            else if (position.Y > Player.Get().position.Y)
+            else // Bewegung entlang der Y-Achse
             {
-                direction.Y = -1;
-                direction.X = 0;
-                sprite.setAnimation("idle_up");
+                if (deltaY > 0)
+                {
+                    direction.Y = 1; // nach unten
+                    sprite.setAnimation("idle_down");
+                }
+                else
+                {
+                    direction.Y = -1; // nach oben
+                    sprite.setAnimation("idle_up");
+                }
+                direction.X = 0; // Nur entlang der Y-Achse bewegen
             }
-            else if (position.Y < Player.Get().position.Y)
-            {
-                direction.Y = 1;
-                direction.X = 0;
-                sprite.setAnimation("idle_down");
-            }
-            else
-            {
-                direction.X = -1;
-                direction.Y = 0;
-                sprite.setAnimation("idle_left");
-            }
+
+            //Debug.WriteLine(direction + " direction");
         }
+
+
 
         //überprüfen, ob Hindernisse (Wand) zw Player und Enemy vorliegen
         private bool IsObjBetweenEnemyAndPlayer()
-{
-    // Spieler- und Gegnerposition abrufen
-    Vector2 playerPos = Player.Get().position;
-    Vector2 enemyPos = position;
-    bool[,] fields = room.fields; // Wände oder Hindernisse
+        {
+            // Spieler- und Gegnerposition abrufen
+            Vector2 playerPos = Player.Get().position;
+            Vector2 enemyPos = position;
+            bool[,] fields = room.fields; // Wände oder Hindernisse
 
-    // Positionen in Raster-Koordinaten umrechnen (z. B. bei 10 Pixel pro Feld)
-    int x1 = (int)enemyPos.X / 10;
-    int y1 = (int)enemyPos.Y / 10;
-    int x2 = (int)playerPos.X / 10;
-    int y2 = (int)playerPos.Y / 10;
+            // Positionen in Raster-Koordinaten umrechnen (z. B. bei 10 Pixel pro Feld)
+            int x1 = (int)enemyPos.X / 10;
+            int y1 = (int)enemyPos.Y / 10;
+            int x2 = (int)playerPos.X / 10;
+            int y2 = (int)playerPos.Y / 10;
 
-    if(x1 == x2){
-        //Debug.WriteLine("x==");
-       return DetectObjInDirectionY(x1, y1, y2, fields);
-    }
+            if (x1 == x2)
+            {
+                return DetectObjInDirectionY(x1, y1, y2, fields);
+            }
 
-     if(y1 == y2){
-        //Debug.WriteLine("y==");
-       return DetectObjInDirectionX(y1, x1, x2, fields);
-    }
+            else if (y1 == y2)
+            {
 
-    // Bresenham-Algorithmus, um die Linie abzutasten
-    int dx = Math.Abs(x2 - x1);
-    int dy = Math.Abs(y2 - y1);
-    int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
-    int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
-    int err = dx - dy;
+                return DetectObjInDirectionX(y1, x1, x2, fields);
+            }
 
+            else
+            {
+                int dx = Math.Abs(x2 - x1);
+                int dy = Math.Abs(y2 - y1);
+                int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
+                int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
 
-
-    // Keine Wand auf der Linie gefunden
-    return false;
-}
-
-public bool DetectObjInDirectionY (int x1, int y1, int y2, bool[,] fields){
-
-    if(y1 <y2){
-        for(int i = y1; i < y2; i++){
-            if(fields[x1,i]){
-                return true;
+                for (int i = 0; i < dx; i++)
+                {
+                    if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
+                    {
+                        return true;
+                    }
+                }
+                // Keine Wand auf der Linie gefunden
+                return false;
             }
         }
-    }
-    return false;
-}
 
-public bool DetectObjInDirectionX (int y1, int x1, int x2, bool[,] fields){
+        public bool DetectObjInDirectionY(int x1, int y1, int y2, bool[,] fields)
+        {
 
-    if(x1 < x2){
-        for(int i = x1; i < x2; i++){
-            if(fields[i,y1]){
-                return true;
+            if (y1 < y2)
+            {
+                for (int i = y1; i < y2; i++)
+                {
+                    if (fields[x1, i])
+                    {
+                        return true;
+                    }
+                }
+            }else{
+                for (int i = y2; i < y1; i++)
+                {
+                    if (fields[x1, i])
+                    {
+                        return true;
+                    }
+                }
             }
+            return false;
         }
-    }
-    return false;
-}
+
+        public bool DetectObjInDirectionX(int y1, int x1, int x2, bool[,] fields)
+        {
+
+            if (x1 < x2)
+            {
+                for (int i = x1; i < x2; i++)
+                {
+                    if (fields[i, y1])
+                    {
+                        return true;
+                    }
+                }
+            }else{
+                for (int i = x2; i < x1; i++)
+                {
+                    if (fields[i, y1])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

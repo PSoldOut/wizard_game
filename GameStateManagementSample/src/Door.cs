@@ -14,9 +14,6 @@ namespace wizard_game
 
 
 
-// Main -
-
-
         public Room room;// Raum wo die tür hinführt
         public Door linkedDoor;
         public SpriteBatch _spriteBatch;

@@ -13,12 +13,10 @@ namespace wizard_game
 {
     public class Arrow : Projectile
     {
-        bool isFreed = false;
         public Arrow(int x, int y) : base(new Vector2(x, y), 10, 10, "arrow", true)
         {
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.12f);
             speed = 300f;
-            GameplayScreen.projectiles.Add(this);
         }
 
 
@@ -32,9 +30,6 @@ namespace wizard_game
             float alpha = (float)Math.Asin(opposite/hipotenose);
             if (direction.X >= 0) rotation = alpha;
             else rotation = -alpha;
-
-            if (Math.Abs(position.X - startPosition.X) > 400 || Math.Abs(position.Y - startPosition.Y) > 400) GameplayScreen.projectiles.Remove(this);
-            
         }
     }
 

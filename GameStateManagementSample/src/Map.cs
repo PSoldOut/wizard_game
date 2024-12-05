@@ -25,7 +25,7 @@ namespace wizard_game
         public Map() {
             Debug.WriteLine("INIT NEW MAP############");
 
-            int roomsCount = 3;
+            int roomsCount = 2;
             generateRooms(roomsCount);
          }
       

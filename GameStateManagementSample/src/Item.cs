@@ -34,7 +34,7 @@ namespace wizard_game
             base.Update(gameTime);
             area.X = (int)position.X;
             area.Y = (int)position.Y;
-        }
+        } 
 
 
         public virtual void Effect(){}

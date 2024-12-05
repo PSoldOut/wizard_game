@@ -15,11 +15,9 @@ namespace wizard_game
     {
         protected float speed;
         protected int damage;
-        public Vector2 startPosition;
 
         public Projectile(Vector2 pos, int width, int height, string spritename, bool hasCollision) : base(pos, width, height, spritename, hasCollision)
         {
-            this.startPosition = pos;
         }
     }
 
