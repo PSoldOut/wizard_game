@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace wizard_game
 {
-    
+
     public class Player : Acteur
     {
         private static Player instance;
@@ -90,13 +90,13 @@ namespace wizard_game
         {
             foreach (Weapon w in weapons)
             {
-                if(w.name == weapon.name) return;
+                if (w.name == weapon.name) return;
             }
             weapons.Add(weapon);
         }
 
 
-        
+
         private bool DetacteCollison()
         {
             Door spawnDoor = map.DetacteCollisonDoor(hitBox);
@@ -142,17 +142,22 @@ namespace wizard_game
         {
             base.Update(gameTime);
             CheckForItems();
-            
+
             direction.Normalize();
+            Room  room = map.GetActiveRoom();
             Vector2 oldPos = position;
+            //Zustand als Empty
+            room.setGamestateElement(position, Gamestate.EMPTY);
             position = position + direction * currentSpeed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            //Zustand als Player
+            room.setGamestateElement(position, Gamestate.PLAYER);
             DetacteCollisonX(oldPos);
             DetacteCollisonY(oldPos);
             sprite.setAnimation(currentAnimation);
             sprite.Update(gameTime);
             if (equippedWeapon != null) equippedWeapon.Update(gameTime);
             //keeping the position of the weapons by the player
-            foreach(Weapon w in weapons)
+            foreach (Weapon w in weapons)
             {
                 w.position = position;
                 w.hitBox.X = (int)position.X;
@@ -162,11 +167,10 @@ namespace wizard_game
             }
             //setting the position of the equipped weapon
             if (equippedWeapon != null)
-                {
-                    equippedWeapon.position = position + equippedWeapon.equipedOffset;
-                }
+            {
+                equippedWeapon.position = position + equippedWeapon.equipedOffset;
+            }
         }
-
 
 
 
@@ -174,7 +178,7 @@ namespace wizard_game
         {
             currentAnimation = "idle_down";
             currentSpeed = 0;
-            Vector2 nextDir = new Vector2(0,0);
+            Vector2 nextDir = new Vector2(0, 0);
 
             KeyboardState keyboardState = inputState.CurrentKeyboardStates[0];
             if (keyboardState.IsKeyDown(Keys.W)) nextDir += WalkUp();
@@ -197,16 +201,16 @@ namespace wizard_game
                     currentAnimation = "idle_down";
                     if (direction.X > 0) currentAnimation = "idle_right";
                 }
-                else 
+                else
                 {
                     if (direction.X < 0) currentAnimation = "idle_left";
                     else currentAnimation = "idle_right";
                 }
             }
-            
+
             //inputState.IsNewKeyPress(Keys.Space);
             if (inputState.IsNewKeyPress(Keys.Space)) Attack();
-            
+
             //switching weapons
             if (inputState.IsNewKeyPress(Keys.D1)) EquipWeapon(Weapon.WeaponName.SWORD);
             if (inputState.IsNewKeyPress(Keys.D2)) EquipWeapon(Weapon.WeaponName.BOW);
@@ -222,7 +226,7 @@ namespace wizard_game
             DetacteCollisonY(position);
             currentAnimation = "up";
             //let the weapon know in which direciton the player is looking
-            if(equippedWeapon != null) equippedWeapon.SetEquippedUp();
+            if (equippedWeapon != null) equippedWeapon.SetEquippedUp();
             return new Vector2(0, -1);
         }
 
@@ -232,7 +236,7 @@ namespace wizard_game
             currentSpeed = speed;
             DetacteCollisonY(position);
             currentAnimation = "down";
-            if(equippedWeapon != null) equippedWeapon.SetEquippedDown();
+            if (equippedWeapon != null) equippedWeapon.SetEquippedDown();
             return new Vector2(0, 1);
         }
 
@@ -242,25 +246,25 @@ namespace wizard_game
             currentSpeed = speed;
             DetacteCollisonX(position);
             currentAnimation = "left";
-            if(equippedWeapon != null) equippedWeapon.SetEquippedLeft();
+            if (equippedWeapon != null) equippedWeapon.SetEquippedLeft();
             return new Vector2(-1, 0);
         }
 
 
         private Vector2 WalkRight()
         {
-                currentSpeed = speed;
-                DetacteCollisonX(position);
-                currentAnimation = "right";
-                if(equippedWeapon != null) equippedWeapon.SetEquippedRight();
-                return new Vector2(1, 0);
+            currentSpeed = speed;
+            DetacteCollisonX(position);
+            currentAnimation = "right";
+            if (equippedWeapon != null) equippedWeapon.SetEquippedRight();
+            return new Vector2(1, 0);
         }
 
 
 
         private void EquipWeapon(Weapon.WeaponName weaponName)
         {
-            foreach(Weapon w in weapons)
+            foreach (Weapon w in weapons)
             {
                 if (w.name == weaponName)
                 {
@@ -321,7 +325,7 @@ namespace wizard_game
                     item.Effect();
                     break;
                 }
-                
+
             }
         }
 

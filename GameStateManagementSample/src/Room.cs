@@ -31,6 +31,7 @@ namespace wizard_game
         public bool[,] fields = new bool[128, 72];
         GameStateManagementGame gameInstance = GameStateManagementGame.Get();
         bool enabled = true;
+        public Gamestate[,] gamestate = new Gamestate[128, 72];
         public Room(int i)
         {
             index = i;

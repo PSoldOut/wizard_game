@@ -57,6 +57,7 @@ namespace wizard_game
                     int cordX = (int)position.X / 10 + x;
                     int cordY = (int)position.Y / 10 + y;
                     room.fields[cordX, cordY] = true;
+                    room.gamestate[cordX, cordY] = Gamestate.WALL;
                     //Debug.WriteLine("set x "+cordX +" Y" +cordY);
                 }
 
