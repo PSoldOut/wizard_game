@@ -15,11 +15,12 @@ namespace  wizard_game
 
     class Gold : Item
     {
-        SoundEffect effectSound;
+        SoundEffectInstance effectSound;
 
         public Gold(int x, int y) : base(new Vector2(x, y), 27, 27, "gold", false)
         {
-            effectSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/ring_inventory");
+            effectSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/ring_inventory").CreateInstance();
+            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.4f);
             width = sprite.frameWidth;
             height = sprite.frameHeight;

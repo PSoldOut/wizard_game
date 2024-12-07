@@ -12,7 +12,8 @@ namespace wizard_game
         Map map;
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
         {
-            dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6");
+            dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6").CreateInstance();
+            dieSound.Volume = GameStateManagementGame.GetSoundVolume();
             setSpeed();
             this.map = map;
             direction = new Vector2(1, 0);

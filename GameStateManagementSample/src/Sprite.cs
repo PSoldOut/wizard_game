@@ -41,7 +41,7 @@ public class Sprite
     Dictionary<String, int> nameToIndexDic;                    //dictionary for mapping name of the anomation to the index in the 2d array
     Color[] currentFrameData;
 
-
+    public float layerDepth = 0.5f;
 
     public Sprite(Texture2D texture, int hFrames, int vFrames, float scale, bool isAnimated)
     {
@@ -95,10 +95,10 @@ public class Sprite
     {
         if (flipped) 
             GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)x, (int)y, (int)(frameWidth * scale), (int)(frameHeight * scale)),
-                new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.FlipHorizontally, 1);
+                new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.FlipHorizontally, layerDepth);
         else
             GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)x, (int)y, (int)(frameWidth * scale), (int)(frameHeight * scale)),
-            new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.None, 1);
+            new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.None, layerDepth);
     }
 
 

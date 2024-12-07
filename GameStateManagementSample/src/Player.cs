@@ -27,17 +27,19 @@ namespace wizard_game
         private Weapon equippedWeapon;
         public int health;
         public int coins;
+        float stepsSpeed = 0.25f;
 
-        int stepSoundFreq = 16;
-        int currentStepFreq = 0;
+        Timer stepsTimer;
 
-        SoundEffect inventorySound;
-        SoundEffect stepsSound;
+        SoundEffectInstance inventorySound;
+        SoundEffectInstance stepsSound;
 
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
-            stepsSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("footsteps/step_lth1");
-            inventorySound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/cloth-inventory");
+            stepsSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("footsteps/step_lth1").CreateInstance();
+            stepsSound.Volume = GameStateManagementGame.GetSoundVolume();
+            inventorySound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/cloth-inventory").CreateInstance();
+            inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
             InitAnimations();
             direction = new Vector2(0, -1);
@@ -46,6 +48,7 @@ namespace wizard_game
             health = 10;
             map = _map;
             currentSpeed = 0;
+            stepsTimer = new Timer(stepsSpeed, this);
         }
 
 
@@ -144,12 +147,10 @@ namespace wizard_game
                 equippedWeapon.position = position + equippedWeapon.equipedOffset;
             }
 
-            if (currentSpeed > 0 && currentStepFreq >= stepSoundFreq)
-            {
-                stepsSound.Play();
-                currentStepFreq = 0;
-            }
-            currentStepFreq++;
+            if (currentSpeed > 0) stepsTimer.start();
+            else stepsTimer.pause();
+            
+            stepsTimer.Update(gameTime);
         }
 
 
@@ -210,6 +211,7 @@ namespace wizard_game
         // returns the direction vector
         private Vector2 WalkUp()
         {
+            if (equippedWeapon!=null) equippedWeapon.sprite.layerDepth = 0.6f;
             damageOffset.X = 0;
             damageOffset.Y = -damageDistance;
             currentSpeed = speed;
@@ -223,6 +225,7 @@ namespace wizard_game
 
         private Vector2 WalkDown()
         {
+            if (equippedWeapon!=null) equippedWeapon.sprite.layerDepth = 0.4f;
             damageOffset.X = 0;
             damageOffset.Y = damageDistance;
             currentSpeed = speed;
@@ -235,6 +238,7 @@ namespace wizard_game
 
         private Vector2 WalkLeft()
         {
+            if (equippedWeapon!=null) equippedWeapon.sprite.layerDepth = 0.6f;
             damageOffset.X = -damageDistance;
             damageOffset.Y = 0;
             currentSpeed = speed;
@@ -247,6 +251,7 @@ namespace wizard_game
 
         private Vector2 WalkRight()
         {
+            if (equippedWeapon!=null) equippedWeapon.sprite.layerDepth = 0.4f;
             damageOffset.X = damageDistance;
             damageOffset.Y = 0;
             currentSpeed = speed;
@@ -333,5 +338,12 @@ namespace wizard_game
 
             }
         }
+
+
+        public override void TimerCallback(Timer timer)
+        {
+            if (timer == stepsTimer) stepsSound.Play();
+        }
+
     }
 }

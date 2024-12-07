@@ -15,10 +15,11 @@ namespace wizard_game
 {
     public abstract class Acteur : GameEntity
     {
-        protected SoundEffect dieSound;
+        protected SoundEffectInstance dieSound;
         public Acteur(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
         {
-            dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6");
+            dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6").CreateInstance();
+            dieSound.Volume = GameStateManagementGame.GetSoundVolume();
         }
 
 

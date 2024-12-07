@@ -16,7 +16,7 @@ namespace wizard_game
     public abstract class GameEntity
     {
 
-        protected Sprite sprite;
+        public Sprite sprite;
         protected Vector2 direction;
         public Vector2 position;
         protected float rotation;
@@ -26,7 +26,7 @@ namespace wizard_game
         protected string spritename;
         bool hasCollision;
 
-        private bool drawHitBox = true;
+        private bool drawHitBox = false;
         public int lineWidth = 2;
         public Color hitboxColor = Color.Purple;
         public Texture2D image_hitbox;
@@ -35,12 +35,14 @@ namespace wizard_game
         public Vector2 damageOffset;
         public int damageDistance = 30;
 
-        SoundEffect openGateSound;
+        SoundEffectInstance openGateSound;
 
 
         public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
         {
-            openGateSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("Horror_sound_Library/Gate_Open_00");
+            openGateSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("Horror_sound_Library/Gate_Open_00").CreateInstance();
+            openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
+
             //Debug.WriteLine("init new game entity" + position.ToString() + " w" +width + " h "+height+" name"+spritename);
             this.position = position;
             this.width = width;
@@ -151,7 +153,7 @@ namespace wizard_game
 
 
         
-
+        public virtual void TimerCallback(Timer timer){}
     }
 
 }
