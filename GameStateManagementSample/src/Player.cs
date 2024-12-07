@@ -147,10 +147,10 @@ namespace wizard_game
             Room  room = map.GetActiveRoom();
             Vector2 oldPos = position;
             //Zustand als Empty
-            room.setGamestateElement(position, Gamestate.EMPTY);
+            //room.setGamestateElement(position, Gamestate.EMPTY);
             position = position + direction * currentSpeed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             //Zustand als Player
-            room.setGamestateElement(position, Gamestate.PLAYER);
+            //room.setGamestateElement(position, Gamestate.PLAYER);
             DetacteCollisonX(oldPos);
             DetacteCollisonY(oldPos);
             sprite.setAnimation(currentAnimation);
