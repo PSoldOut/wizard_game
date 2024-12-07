@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using GameStateManagement;
+
 namespace wizard_game
 {
     public abstract class Acteur : GameEntity
@@ -21,6 +23,12 @@ namespace wizard_game
 
 
         public abstract void Attack();
+
+
+        public void Die()
+        {
+            GameplayScreen.acteurs.Remove(this);
+        }
 
     }
 }

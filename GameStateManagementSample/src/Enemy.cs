@@ -159,6 +159,8 @@ namespace wizard_game
 
         }
 
+
+
         // Die neue Hitbox bei der Bewegung
         public Rectangle getNextRect(Vector2 position)
         {

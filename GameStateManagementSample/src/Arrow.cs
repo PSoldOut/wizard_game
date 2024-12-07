@@ -13,14 +13,11 @@ namespace wizard_game
 {
     public class Arrow : Projectile
     {
-        Vector2 startPos;
 
-        public Arrow(int x, int y) : base(new Vector2(x, y), 10, 10, "arrow", true)
+        public Arrow(int x, int y, Acteur attacker) : base(new Vector2(x, y), 10, 10, "arrow", true, attacker)
         {
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.12f);
             speed = 300f;
-            GameplayScreen.projectiles.Add(this);
-            startPos = position;
         }
 
 
@@ -28,14 +25,35 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (Math.Abs(position.X-startPos.X) > 400 || Math.Abs(position.Y - startPos.Y) > 400)
+            {   
+                GameplayScreen.projectiles.Remove(this);
+                return;
+            }
+
+            for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
+            {
+                if (hitBox.Intersects(GameplayScreen.acteurs[i].hitBox) && GameplayScreen.acteurs[i] != attacker)
+                {
+                    GameplayScreen.acteurs[i].Die();
+                    GameplayScreen.projectiles.Remove(this);
+                    return;
+                }
+            }
+            if (DetacteCollison()) 
+            {
+                GameplayScreen.projectiles.Remove(this);
+                return;
+            }
+
             position += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
             float opposite = Math.Abs(direction.X);
-            float hipotenose = direction.Length();
-            float alpha = (float)Math.Asin(opposite/hipotenose);
+            float adjecent = Math.Abs(direction.Y);
+            float alpha = (float)Math.Atan2(opposite,adjecent);
+            
             if (direction.X >= 0) rotation = alpha;
             else rotation = -alpha;
-            
-            if (Math.Abs(position.X-startPos.X) > 400 || Math.Abs(position.Y - startPos.Y) > 400) GameplayScreen.projectiles.Remove(this);
         }
     }
 

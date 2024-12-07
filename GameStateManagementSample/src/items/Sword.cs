@@ -68,7 +68,7 @@ namespace wizard_game
             }
         }
 
-        public override void Attack()
+        public override void Attack(Acteur attacker)
         {
             
             isAttacking = true;
@@ -77,6 +77,14 @@ namespace wizard_game
             //Console.WriteLine("playerPos Y" + Player.Get().position.Y);
             //Console.WriteLine("damageArea X: " + damageArea.X);
             //Console.WriteLine("damageArea Y: " + damageArea.Y);
+
+            for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
+            {
+               if (attacker.damageArea.Intersects(GameplayScreen.acteurs[i].hitBox) && attacker != GameplayScreen.acteurs[i])
+               {
+                    GameplayScreen.acteurs[i].Die();
+               }
+            }
 
             
         }

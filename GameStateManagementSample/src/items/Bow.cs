@@ -38,10 +38,10 @@ namespace wizard_game
 
 
 
-        public override void Attack()
+        public override void Attack(Acteur attacker)
         {
             sprite.setAnimation("shoot");
-            Arrow arrow = new Arrow((int)position.X+width/2, (int)position.Y+height/2);
+            Arrow arrow = new Arrow((int)(attacker.position.X+attacker.width/2), (int)(attacker.position.Y+attacker.height/2), attacker);
             arrow.SetDirection(Player.Get().GetDirection());
         }
 

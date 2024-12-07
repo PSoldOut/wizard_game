@@ -19,16 +19,20 @@ namespace wizard_game
         protected Vector2 direction;
         public Vector2 position;
         protected float rotation;
-        protected int width;
-        protected int height;
+        public int width;
+        public int height;
         public Rectangle hitBox;
         protected string spritename;
         bool hasCollision;
 
         private bool drawHitBox = true;
-        private int lineWidth = 2;
-        private Color hitboxColor = Color.Purple;
+        public int lineWidth = 2;
+        public Color hitboxColor = Color.Purple;
         public Texture2D image_hitbox;
+
+        public Rectangle damageArea;
+        public Vector2 damageOffset;
+        public int damageDistance = 30;
 
         public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
         {
@@ -41,6 +45,9 @@ namespace wizard_game
             hitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             image_hitbox = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             image_hitbox.SetData(new Color[] { Color.Red });
+
+            damageOffset = new Vector2(damageDistance, 0);
+            damageArea = new Rectangle((int)(position.X+damageOffset.X), (int)(position.Y+damageOffset.Y), 27, 45);
         }
 
         public virtual void OnInput(GameStateManagementGame.InputState input)
@@ -97,6 +104,47 @@ namespace wizard_game
 
 
 
+
+        protected bool DetacteCollison()
+        {
+            Door spawnDoor = GameplayScreen.map.DetacteCollisonDoor(hitBox);
+            if (spawnDoor != null)
+            {
+                position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);
+                hitBox.X = (int)position.X;
+                hitBox.Y = (int)position.Y;
+                return false;
+            }
+            Color[] data = sprite.GetCurrentColorData();
+            return GameplayScreen.map.DetacteCollison(hitBox, data, false);
+        }
+
+
+
+        public void DetacteCollisonX(Vector2 posOld)
+        {
+            hitBox.X = (int)position.X;
+            if (DetacteCollison())
+            {
+                position.X = posOld.X;
+            }
+            hitBox.X = (int)position.X;
+        }
+
+
+
+        public void DetacteCollisonY(Vector2 posOld)
+        {
+            hitBox.Y = (int)position.Y;
+            if (DetacteCollison())
+            {
+                position.Y = posOld.Y;
+            }
+            hitBox.Y = (int)position.Y;
+        }
+
+
+        
 
     }
 

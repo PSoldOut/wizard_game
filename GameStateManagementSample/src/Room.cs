@@ -165,7 +165,7 @@ namespace wizard_game
         {
             foreach (Wall wall in walls)
             {
-                if (wall.DetacteCollison(hitbox, playerImage))
+                if (wall.DetacteCollison(hitbox))
                 {
                     return true;
                 }
@@ -175,7 +175,7 @@ namespace wizard_game
             {
                 foreach (Wall wall in tile.walls)
                 {
-                    if (wall.DetacteCollison(hitbox, playerImage))
+                    if (wall.DetacteCollison(hitbox))
                     {
                         return true;
                     }
@@ -186,7 +186,7 @@ namespace wizard_game
             {
                 foreach (Wall wall in obstacle.walls)
                 {
-                    if (wall.DetacteCollison(hitbox, playerImage))
+                    if (wall.DetacteCollison(hitbox))
                     {
                         return true;
                     }
