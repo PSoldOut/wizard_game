@@ -41,7 +41,7 @@ namespace wizard_game
 
 
 
-        public abstract void Attack();
+        public abstract void Attack(Acteur attacker);
 
 
         public abstract void SetEquippedLeft();   

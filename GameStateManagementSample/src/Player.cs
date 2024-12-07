@@ -29,7 +29,6 @@ namespace wizard_game
 
 
 
-
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
@@ -97,43 +96,6 @@ namespace wizard_game
 
 
 
-        private bool DetacteCollison()
-        {
-            Door spawnDoor = map.DetacteCollisonDoor(hitBox);
-            if (spawnDoor != null)
-            {
-                position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);
-                hitBox.X = (int)position.X;
-                hitBox.Y = (int)position.Y;
-                return false;
-            }
-            Color[] data = sprite.GetCurrentColorData();
-            return map.DetacteCollison(hitBox, data, false);
-        }
-
-
-
-        public void DetacteCollisonX(Vector2 posOld)
-        {
-            hitBox.X = (int)position.X;
-            if (DetacteCollison())
-            {
-                position.X = posOld.X;
-            }
-            hitBox.X = (int)position.X;
-        }
-
-
-
-        public void DetacteCollisonY(Vector2 posOld)
-        {
-            hitBox.Y = (int)position.Y;
-            if (DetacteCollison())
-            {
-                position.Y = posOld.Y;
-            }
-            hitBox.Y = (int)position.Y;
-        }
 
 
 
@@ -141,6 +103,10 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            damageArea.X = (int)(position.X+damageOffset.X);
+            damageArea.Y = (int)(position.Y+damageOffset.Y);
+
             CheckForItems();
 
             direction.Normalize();
@@ -222,6 +188,8 @@ namespace wizard_game
         // returns the direction vector
         private Vector2 WalkUp()
         {
+            damageOffset.X = 0;
+            damageOffset.Y = -damageDistance;
             currentSpeed = speed;
             DetacteCollisonY(position);
             currentAnimation = "up";
@@ -233,6 +201,8 @@ namespace wizard_game
 
         private Vector2 WalkDown()
         {
+            damageOffset.X = 0;
+            damageOffset.Y = damageDistance;
             currentSpeed = speed;
             DetacteCollisonY(position);
             currentAnimation = "down";
@@ -243,6 +213,8 @@ namespace wizard_game
 
         private Vector2 WalkLeft()
         {
+            damageOffset.X = -damageDistance;
+            damageOffset.Y = 0;
             currentSpeed = speed;
             DetacteCollisonX(position);
             currentAnimation = "left";
@@ -253,6 +225,8 @@ namespace wizard_game
 
         private Vector2 WalkRight()
         {
+            damageOffset.X = damageDistance;
+            damageOffset.Y = 0;
             currentSpeed = speed;
             DetacteCollisonX(position);
             currentAnimation = "right";
@@ -286,7 +260,7 @@ namespace wizard_game
 
         public override void Attack()
         {
-            if (equippedWeapon != null) equippedWeapon.Attack();
+            if (equippedWeapon != null) equippedWeapon.Attack(this);
         }
 
 
@@ -299,20 +273,16 @@ namespace wizard_game
         {
             base.Draw(gameTime);
             if (equippedWeapon != null) equippedWeapon.Draw(gameTime);
+
+
+            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
+            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, damageArea.Width + lineWidth, lineWidth), hitboxColor);
+            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X + damageArea.Width, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
+            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y + damageArea.Height, damageArea.Width + lineWidth, lineWidth), hitboxColor);
+
         }
 
 
-
-        public void Fire(int x, int y)
-        {
-            Vector2 firePos = new Vector2(x, y);
-
-            double radians = Math.Atan2(firePos.Y - hitBox.Center.Y, firePos.X - hitBox.Center.X);
-
-            Vector2 direction = new Vector2((float)Math.Cos(radians),
-                                               (float)Math.Sin(radians));
-            direction.Normalize();
-        }
 
 
 

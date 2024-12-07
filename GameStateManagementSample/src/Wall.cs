@@ -95,7 +95,11 @@ namespace wizard_game
             base.Update(gameTime);
 
         }
-        public bool DetacteCollison(Rectangle otherHitbox, Color[] playerImage)
+
+
+
+
+        public bool DetacteCollisonPixelPrecise(Rectangle otherHitbox, Color[] playerImage)
         {
 
             if (!hitBox.Intersects(otherHitbox))
@@ -124,6 +128,19 @@ namespace wizard_game
             }
             return false;
         }
+        
+
+
+        public bool DetacteCollison(Rectangle otherHitbox)
+        {
+
+            if (hitBox.Intersects(otherHitbox))
+            {
+                return true;
+            }
+            return false;
+        }
+        
         public override void Draw(GameTime gameTime)
         {
             //Debug.WriteLine("Call Override");
