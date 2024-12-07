@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameStateManagement;
+using Microsoft.Xna.Framework.Audio;
 
 namespace wizard_game
 {
@@ -34,8 +35,12 @@ namespace wizard_game
         public Vector2 damageOffset;
         public int damageDistance = 30;
 
+        SoundEffect openGateSound;
+
+
         public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
         {
+            openGateSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("Horror_sound_Library/Gate_Open_00");
             //Debug.WriteLine("init new game entity" + position.ToString() + " w" +width + " h "+height+" name"+spritename);
             this.position = position;
             this.width = width;
@@ -113,6 +118,7 @@ namespace wizard_game
                 position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);
                 hitBox.X = (int)position.X;
                 hitBox.Y = (int)position.Y;
+                openGateSound.Play();
                 return false;
             }
             Color[] data = sprite.GetCurrentColorData();

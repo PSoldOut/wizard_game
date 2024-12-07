@@ -21,6 +21,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Threading;
 using wizard_game;
+using Microsoft.Xna.Framework.Media;
 
 #endregion Using Statements
 
@@ -33,6 +34,7 @@ namespace GameStateManagement
     /// </summary>
     internal class GameplayScreen : GameScreen
     {
+        Song level1Song;
         public static Texture2D goldTexture;
         public static Random rand;
         public static Map map;
@@ -46,7 +48,7 @@ namespace GameStateManagement
         private ContentManager content;
         private SpriteFont gameFont;
 
-        private Random random = new Random();
+        public static Random random = new Random();
 
         private float pauseAlpha;
 
@@ -90,9 +92,6 @@ namespace GameStateManagement
             acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
             acteurs.Add(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
 
-
-
-
         }
 
 
@@ -104,7 +103,7 @@ namespace GameStateManagement
             {
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
             }
-
+            level1Song = content.Load<Song>("level1Music");
             gameFont = content.Load<SpriteFont>("gamefont");
             goldTexture = content.Load<Texture2D>("gold");
             spriteFont = content.Load<SpriteFont>("Arial");
@@ -114,6 +113,8 @@ namespace GameStateManagement
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
+            MediaPlayer.Volume = 0.17f;
+            MediaPlayer.Play(level1Song);
             ScreenManager.Game.ResetElapsedTime();
         }
 

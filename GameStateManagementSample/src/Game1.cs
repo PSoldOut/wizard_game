@@ -16,6 +16,7 @@ using System;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using wizard_game;
+using Microsoft.Xna.Framework.Media;
 
 #endregion Using Statements
 
@@ -29,7 +30,7 @@ namespace GameStateManagement
     /// </summary>
     public class GameStateManagementGame : Game
     {
-        
+        Song mainMenuSong;
         public struct InputState
         {
             public KeyboardState keyboadrState;
@@ -85,7 +86,7 @@ namespace GameStateManagement
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
             base.Initialize();
-
+            MediaPlayer.Play(mainMenuSong);
         }
 
 
@@ -93,6 +94,7 @@ namespace GameStateManagement
         
         protected override void LoadContent()
         {
+            mainMenuSong = Content.Load<Song>("mainMenuMusic");
             foreach (string asset in preloadAssets)
             {
                 Content.Load<object>(asset);
