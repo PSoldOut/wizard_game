@@ -50,7 +50,7 @@ namespace GameStateManagement
         public static SpriteBatch _spriteBatch;
         private Texture2D image;
         private Rectangle screenRectangle;
-         
+
         // By preloading any assets used by UI rendering, we avoid framerate glitches
         // when they suddenly need to be loaded in the middle of a menu transition.
         private static readonly string[] preloadAssets =
@@ -58,7 +58,7 @@ namespace GameStateManagement
             "gradient",
         };
 
-        
+
 
         /// <summary>
         /// The main game constructor.
@@ -99,7 +99,7 @@ namespace GameStateManagement
 
 
 
-        
+
         protected override void LoadContent()
         {
             mainMenuSong = Content.Load<Song>("mainMenuMusic");
@@ -121,7 +121,7 @@ namespace GameStateManagement
             _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             base.Draw(gameTime);
             _spriteBatch.End();
-            
+
 
 
 
@@ -140,16 +140,30 @@ namespace GameStateManagement
             if (musicVolume == 0 || masterVolume == 0) return 0.0f;
             else return musicVolume/8.0f + masterVolume/8.0f;
         }
-       
 
-        
-        
+
+
+        public static float GetSoundVolume()
+        {
+            if (soundVolume == 0 || masterVolume == 0) return 0.0f;
+            else return soundVolume/8.0f + masterVolume/8.0f;
+        }
+
+        public static float GetMusicVolume()
+        {
+            if (musicVolume == 0 || masterVolume == 0) return 0.0f;
+            else return musicVolume/8.0f + masterVolume/8.0f;
+        }
+
+
+
+
     }
 
 
-    
 
-    
+
+
 
     /// <summary>
     /// The main entry point for the application.
@@ -165,5 +179,5 @@ namespace GameStateManagement
         }
     }
 
-    
+
 }

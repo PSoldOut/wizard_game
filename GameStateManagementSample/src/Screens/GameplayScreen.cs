@@ -96,9 +96,6 @@ namespace GameStateManagement
             acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
             acteurs.Add(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
 
-
-
-
         }
 
 

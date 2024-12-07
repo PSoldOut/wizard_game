@@ -14,14 +14,14 @@ namespace wizard_game
 {
     class HealthPotion : Item
     {
-        int health = 1; 
-        
+        int health = 1;
+
         public HealthPotion(int x, int y) : base(new Vector2(x, y), 5, 5, "healthPotion", false)
         {
             effectSound = AssetManager.GetSoundInstance("liveSound");
             effectSound.Volume = GameStateManagementGame.GetSoundVolume();
             LoadSprite(1,1,0.1f);
-        
+
         }
 
         public override void Effect()
@@ -29,7 +29,7 @@ namespace wizard_game
             effectSound.Play();
             if (Player.Get().health <= Player.PLAYER_MAX_HEALTH - health)
                 Player.Get().health+=health;
-            
+
             GameplayScreen.items.Remove(this);
         }
     }

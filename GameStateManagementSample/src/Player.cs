@@ -35,6 +35,8 @@ namespace wizard_game
         SoundEffectInstance stepsSound;
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
+            stepsSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("footsteps/step_lth1");
+            inventorySound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/cloth-inventory");
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
             InitAnimations();
             direction = new Vector2(0, -1);
@@ -140,6 +142,13 @@ namespace wizard_game
             {
                 equippedWeapon.position = position + equippedWeapon.equipedOffset;
             }
+
+            if (currentSpeed > 0 && currentStepFreq >= stepSoundFreq)
+            {
+                stepsSound.Play();
+                currentStepFreq = 0;
+            }
+            currentStepFreq++;
         }
 
 
