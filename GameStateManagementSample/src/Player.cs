@@ -289,20 +289,16 @@ namespace wizard_game
         {
             base.Draw(gameTime);
             if (equippedWeapon != null) equippedWeapon.Draw(gameTime);
+
+
+            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
+            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, damageArea.Width + lineWidth, lineWidth), hitboxColor);
+            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X + damageArea.Width, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
+            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y + damageArea.Height, damageArea.Width + lineWidth, lineWidth), hitboxColor);
+
         }
 
 
-
-        public void Fire(int x, int y)
-        {
-            Vector2 firePos = new Vector2(x, y);
-
-            double radians = Math.Atan2(firePos.Y - hitBox.Center.Y, firePos.X - hitBox.Center.X);
-
-            Vector2 direction = new Vector2((float)Math.Cos(radians),
-                                               (float)Math.Sin(radians));
-            direction.Normalize();
-        }
 
 
 

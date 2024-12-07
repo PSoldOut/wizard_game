@@ -82,7 +82,7 @@ namespace wizard_game
                     else rotation = 0;
                 }
             }
-            
+
         }
 
 

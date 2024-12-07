@@ -81,23 +81,15 @@ namespace wizard_game
 
         public override void Attack(Acteur attacker)
         {
-            if (!isAttacking)
-            {
-                isAttacking = true;
-                swishSound.Stop();
-                swishSound.Play();
 
-                for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
-                {
-                    if (attacker.damageArea.Intersects(GameplayScreen.acteurs[i].hitBox) && attacker != GameplayScreen.acteurs[i])
-                    {
-                            hitSound.Stop();
-                            hitSound.Play();
-                            GameplayScreen.acteurs[i].takeDamage(damage);
-                    }
-                }
-            }
-            
+            isAttacking = true;
+            Rectangle damageArea = new Rectangle((int)(position.X + (Player.Get().GetWidth()/2) + Player.Get().GetDirection().X * distance), (int)(position.Y + (Player.Get().GetHeight()/2) + Player.Get().GetDirection().Y * distance), (int)damageRadius, (int)damageRadius);
+            //Console.WriteLine("playerPos X" + Player.Get().position.X);
+            //Console.WriteLine("playerPos Y" + Player.Get().position.Y);
+            //Console.WriteLine("damageArea X: " + damageArea.X);
+            //Console.WriteLine("damageArea Y: " + damageArea.Y);
+
+
         }
 
 

@@ -13,14 +13,11 @@ namespace wizard_game
 {
     public class Arrow : Projectile
     {
-        Vector2 startPos;
 
-        public Arrow(int x, int y) : base(new Vector2(x, y), 10, 10, "arrow", true)
+        public Arrow(int x, int y, Acteur attacker) : base(new Vector2(x, y), 10, 10, "arrow", true, attacker)
         {
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.12f);
             speed = 300f;
-            GameplayScreen.projectiles.Add(this);
-            startPos = position;
         }
 
 

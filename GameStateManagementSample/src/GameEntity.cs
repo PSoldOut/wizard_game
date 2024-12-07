@@ -41,7 +41,7 @@ namespace wizard_game
 
         public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
         {
-            
+
             openGateSound = AssetManager.GetSoundInstance("Horror_Sound_Library/Gate_Open_00");
             openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
 
@@ -50,7 +50,7 @@ namespace wizard_game
             this.width = width;
             this.height = height;
             this.spritename = spritename;
-            
+
             this.hasCollision = hasCollision;
             hitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             image_hitbox = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
@@ -162,7 +162,7 @@ namespace wizard_game
         }
 
 
-        
+
         public virtual void TimerCallback(Timer timer){}
     }
 
