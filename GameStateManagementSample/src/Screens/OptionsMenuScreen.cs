@@ -24,6 +24,7 @@ namespace GameStateManagement
         private MenuEntry languageMenuEntry;
         private MenuEntry frobnicateMenuEntry;
         private MenuEntry elfMenuEntry;
+        private MenuEntry soundOptionsEntry;
 
         private enum Ungulate
         {
@@ -56,6 +57,7 @@ namespace GameStateManagement
             languageMenuEntry = new MenuEntry(string.Empty);
             frobnicateMenuEntry = new MenuEntry(string.Empty);
             elfMenuEntry = new MenuEntry(string.Empty);
+            soundOptionsEntry = new MenuEntry("Sound  Options");
 
             SetMenuEntryText();
 
@@ -67,12 +69,14 @@ namespace GameStateManagement
             frobnicateMenuEntry.Selected += FrobnicateMenuEntrySelected;
             elfMenuEntry.Selected += ElfMenuEntrySelected;
             back.Selected += OnCancel;
+            soundOptionsEntry.Selected += soundOptionsMenuEntrySelected;
 
             // Add entries to the menu.
             MenuEntries.Add(ungulateMenuEntry);
             MenuEntries.Add(languageMenuEntry);
             MenuEntries.Add(frobnicateMenuEntry);
             MenuEntries.Add(elfMenuEntry);
+            MenuEntries.Add(soundOptionsEntry);
             MenuEntries.Add(back);
         }
 
@@ -100,8 +104,12 @@ namespace GameStateManagement
 
             if (currentUngulate > Ungulate.Llama)
                 currentUngulate = 0;
-
             SetMenuEntryText();
+        }
+
+        private void soundOptionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            ScreenManager.AddScreen(new SoundOptionsMenuScreen(), e.PlayerIndex);
         }
 
         /// <summary>
@@ -110,7 +118,6 @@ namespace GameStateManagement
         private void LanguageMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             currentLanguage = (currentLanguage + 1) % languages.Length;
-
             SetMenuEntryText();
         }
 
@@ -120,7 +127,6 @@ namespace GameStateManagement
         private void FrobnicateMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             frobnicate = !frobnicate;
-
             SetMenuEntryText();
         }
 
@@ -130,7 +136,6 @@ namespace GameStateManagement
         private void ElfMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             elf++;
-
             SetMenuEntryText();
         }
 

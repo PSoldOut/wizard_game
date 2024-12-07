@@ -115,7 +115,6 @@ namespace GameStateManagement
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
-            MediaPlayer.Volume = 0.17f;
             MediaPlayer.Play(level1Song);
             ScreenManager.Game.ResetElapsedTime();
         }
@@ -213,7 +212,7 @@ namespace GameStateManagement
             }
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.CornflowerBlue, 0, 0);
             Rectangle screenRectangle = new Rectangle(0, 0, 1280, 720);
-            GameStateManagementGame._spriteBatch.Draw(background, screenRectangle, Color.White);
+            GameStateManagementGame._spriteBatch.Draw(background, screenRectangle, null, Color.White, 0, new Vector2(0,0), SpriteEffects.None, 1.0f);
             GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + fps.ToString(), new Vector2(0, 0), Color.Black);
             GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Room: " + map.roomIndex.ToString(), new Vector2(100, 30), Color.Black);
 

@@ -14,11 +14,12 @@ namespace wizard_game
     class HealthPotion : Item
     {
         int health = 15; 
-        SoundEffect effectSound;
+        SoundEffectInstance effectSound;
         
         public HealthPotion(int x, int y) : base(new Vector2(x, y), 5, 5, "healthPotion", false)
         {
-            effectSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("liveSound");
+            effectSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("liveSound").CreateInstance();
+            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
             this.sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.1f);
         }
 

@@ -30,6 +30,12 @@ namespace GameStateManagement
     /// </summary>
     public class GameStateManagementGame : Game
     {
+
+
+        public static int musicVolume = 1;
+        public static int soundVolume = 1;
+        public static int masterVolume = 1;
+
         Song mainMenuSong;
         public struct InputState
         {
@@ -86,6 +92,8 @@ namespace GameStateManagement
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
             base.Initialize();
+            if (musicVolume == 0 || masterVolume == 0) MediaPlayer.Volume = 0;
+            else MediaPlayer.Volume = musicVolume/8.0f + masterVolume/8.0f;
             MediaPlayer.Play(mainMenuSong);
         }
 
@@ -110,13 +118,27 @@ namespace GameStateManagement
         protected override void Draw(GameTime gameTime)
         {
             graphics.GraphicsDevice.Clear(Color.Black);
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             base.Draw(gameTime);
             _spriteBatch.End();
             
 
 
 
+        }
+
+
+
+        public static float GetSoundVolume()
+        {
+            if (soundVolume == 0 || masterVolume == 0) return 0.0f;
+            else return musicVolume/8.0f + masterVolume/8.0f;
+        }
+
+        public static float GetMusicVolume()
+        {
+            if (musicVolume == 0 || masterVolume == 0) return 0.0f;
+            else return musicVolume/8.0f + masterVolume/8.0f;
         }
        
 

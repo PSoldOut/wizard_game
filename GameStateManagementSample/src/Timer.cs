@@ -11,17 +11,26 @@ using Microsoft.Xna.Framework.Input;
 
 namespace wizard_game
 {
-    public class Timer : GameComponent
+    public class Timer
     {
         double secondsRemaining;
         double seconds;
-        bool isRunning;
+        public bool isRunning;
+        GameEntity master;
 
-        public Timer(double seconds) : base(GameStateManagementGame.Get())
+        public Timer(double seconds)
         {   
             this.seconds = seconds;
             this.secondsRemaining = seconds;
             isRunning = false;
+        }
+
+        public Timer(double seconds, GameEntity master)
+        {   
+            this.seconds = seconds;
+            this.secondsRemaining = seconds;
+            isRunning = false;
+            this.master = master;
         }
 
         public void start()
@@ -38,6 +47,7 @@ namespace wizard_game
         {
             isRunning = false;
             secondsRemaining = seconds;
+            if (master != null) master.TimerCallback(this);
         }
 
         public double getSecondsRemaining()
@@ -45,10 +55,9 @@ namespace wizard_game
             return secondsRemaining;
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-            secondsRemaining-=gameTime.ElapsedGameTime.TotalSeconds;
+            if (isRunning) secondsRemaining-=gameTime.ElapsedGameTime.TotalSeconds;
             if (secondsRemaining <= 0) stop();
         }
 

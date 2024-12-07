@@ -19,6 +19,8 @@ namespace wizard_game
 
         bool isAttacking;
         SoundEffect shootSound;
+        Timer attackTimer;
+        float attackSpeed = 1.0f;
         public Bow(int x, int y) : base(new Vector2(x, y), 20, 45, "bow", false, WeaponName.BOW)
         {
             shootSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("battle_sound_effects/Bow");
@@ -37,12 +39,15 @@ namespace wizard_game
             equipedOffset = new Vector2(0,0);
 
             isAttacking = false;
+            attackTimer = new Timer(attackSpeed);
         }
 
 
 
         public override void Attack(Acteur attacker)
         {
+            if (attackTimer.isRunning) return;
+            attackTimer.start();
             shootSound.Play();
             sprite.setAnimation("shoot");
             Arrow arrow = new Arrow((int)(attacker.position.X+attacker.width/2), (int)(attacker.position.Y+attacker.height/2), attacker);
@@ -54,6 +59,7 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            attackTimer.Update(gameTime);
             if (isAttacking)
             {
                 Console.WriteLine("attacking");
