@@ -29,7 +29,6 @@ namespace GameStateManagement
     /// </summary>
     public class GameStateManagementGame : Game
     {
-        
         public struct InputState
         {
             public KeyboardState keyboadrState;
