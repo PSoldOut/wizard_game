@@ -73,8 +73,8 @@ namespace wizard_game
             {
                 return true;
             }
-            int cordX = (int)test.X / 10;
-            int cordY = (int)test.Y / 10;
+            int cordX = (int)test.X / Map.RESOLUTION;
+            int cordY = (int)test.Y / Map.RESOLUTION;
 
             // Gibt zurück, ob das Feld auf true gesetzt ist
             //Debug.WriteLine(cordX + ", " + cordY + "  " + room.fields[cordX, cordY] + this.GetType());
@@ -85,7 +85,6 @@ namespace wizard_game
         //Kollision mit Wall erkennen
         public bool DetacteCollison(Vector2 newPos)
         {
-
             return IsObjectInFields(newPos);
         }
 

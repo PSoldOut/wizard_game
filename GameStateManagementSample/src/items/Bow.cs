@@ -43,6 +43,7 @@ namespace wizard_game
             sprite.setAnimation("shoot");
             Arrow arrow = new Arrow((int)position.X+width/2, (int)position.Y+height/2);
             arrow.SetDirection(Player.Get().GetDirection());
+            GameplayScreen.projectiles.Add(arrow);
         }
 
 

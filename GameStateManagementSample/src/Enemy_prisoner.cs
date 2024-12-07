@@ -7,6 +7,7 @@ namespace wizard_game
 {
     class Enemy_prisoner : Enemy
     {
+        bool written = false;
         Map map;
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
         {
@@ -40,12 +41,14 @@ namespace wizard_game
             {
                 MoveToPlayer();
                 direction.Normalize();
-                Vector2 test = position + direction * speed;
-
-                if (!DetacteCollison(test))
+                position = position + direction  * speed;
+                if (!DetacteCollison(position) && !DetacteCollison())
                 {
                     // Debug.WriteLine("no kollision");
-                    position = test;
+                }
+                else
+                {
+                    position = position - direction * 3 * speed;
                 }
             }
         }
@@ -101,11 +104,24 @@ namespace wizard_game
             Vector2 enemyPos = position;
             bool[,] fields = room.fields; // Wände oder Hindernisse
 
+            if (!written)
+            {
+                for (int i = 0; i < fields.GetLength(0); i++)
+                {
+                    for (int j = 0; j < fields.GetLength(1); j++)
+                    {
+                        //Console.Write(fields[i,j]);
+                    }
+                    //Console.WriteLine();
+                }
+                written = true;
+            }
+
             // Positionen in Raster-Koordinaten umrechnen (z. B. bei 10 Pixel pro Feld)
-            int x1 = (int)enemyPos.X / 10;
-            int y1 = (int)enemyPos.Y / 10;
-            int x2 = (int)playerPos.X / 10;
-            int y2 = (int)playerPos.Y / 10;
+            int x1 = (int)(enemyPos.X + width/2) / Map.RESOLUTION;
+            int y1 = (int)(enemyPos.Y + height/2) / Map.RESOLUTION;
+            int x2 = (int)(playerPos.X + Player.Get().GetWidth()/2) / Map.RESOLUTION;
+            int y2 = (int)(playerPos.Y + Player.Get().GetHeight()/2) / Map.RESOLUTION;
 
             if (x1 == x2)
             {
@@ -125,12 +141,27 @@ namespace wizard_game
                 int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
                 int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
 
+                //int a = y2 -y1;
+                //int b = x1 -x2;
+                //int c = -(a*x1 + b*y1);
+                //int x = x1, y=y1;
+//
+                //if (fields[x,y]) return true;
+                //while(x < x2)
+                //{
+                //    x++;
+                //    double d = a*x + b* (y+0.5) + c;
+                //    if (d > 0) y++;
+                //    if (fields[x,y]) return true;
+                //}
+
                 for (int i = 0; i < dx; i++)
                 {
                     if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
                     {
                         return true;
                     }
+                    
                 }
                 // Keine Wand auf der Linie gefunden
                 return false;

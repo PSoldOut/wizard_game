@@ -60,38 +60,38 @@ namespace wizard_game
             while (DetacteCollison(tmp) && i < 10)
             {
                 Console.WriteLine("auifhseoighseogihseogih");
-                // tmp = position - direction * speed;
-                // int randomNumber = random.Next(1, 101);
-                // if (randomNumber % 4 == 0)
-                // {
-                //     // TODO: rechts
-                //     direction.X = 1;
-                //     direction.Y = 0;
-                //     anim = "idle_right";
-                // }
-                // else if (randomNumber % 4 == 1)
-                // {
-                //     //TODO: unten
-                //     direction.X = 0;
-                //     direction.Y = 1;
-                //     anim = "idle_down";
-                // }
-                // else if (randomNumber % 4 == 2)
-                // {
-                //     //TODO: oben
-                //     direction.X = 0;
-                //     direction.Y = -1;
-                //     anim = "idle_up";
-                // }
-                // else
-                // {
-                //     //TODO: links
-                //     direction.X = -1;
-                //     direction.Y = 0;
-                //     anim = "idle_left";
-                // }
-                speed = 0;
-                tmp = position + direction * speed;
+                tmp = position - direction * speed;
+                int randomNumber = random.Next(1, 101);
+                if (randomNumber % 4 == 0)
+                {
+                    // TODO: rechts
+                    direction.X = 1;
+                    direction.Y = 0;
+                    anim = "idle_right";
+                }
+                else if (randomNumber % 4 == 1)
+                {
+                    //TODO: unten
+                    direction.X = 0;
+                    direction.Y = 1;
+                    anim = "idle_down";
+                }
+                else if (randomNumber % 4 == 2)
+                {
+                    //TODO: oben
+                    direction.X = 0;
+                    direction.Y = -1;
+                    anim = "idle_up";
+                }
+                else
+                {
+                    //TODO: links
+                    direction.X = -1;
+                    direction.Y = 0;
+                    anim = "idle_left";
+                }
+                
+                
                 //Debug.WriteLine(randomNumber + "  - "+ direction);
                 //Debug.WriteLine(tmp + "  ------tmp in choose()");
                 i++;

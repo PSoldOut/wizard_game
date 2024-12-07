@@ -1,4 +1,6 @@
 namespace wizard_game{
+
+
     public enum Gamestate{
         WALL,
         ENEMY,

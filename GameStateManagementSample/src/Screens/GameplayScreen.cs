@@ -88,7 +88,7 @@ namespace GameStateManagement
             acteurs.Add(Player.Get());
             acteurs.Add(new Enemy_Guard(10,10,map, EnemyType.GUARD, map.GetActiveRoom()));
             acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
-            acteurs.Add(new Enemy_Knight(500,700, map, EnemyType.KNIGHT, map.GetActiveRoom()));
+            acteurs.Add(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
 
 
 
@@ -150,9 +150,9 @@ namespace GameStateManagement
 
                 }
                 //map.Update(gameTime);
-                foreach (Item item in items) item.Update(gameTime);
-                foreach (Projectile projectile in projectiles) projectile.Update(gameTime);
-                foreach (Acteur acteur in acteurs) acteur.Update(gameTime);
+                for (int i = 0; i < items.Count; i++) items[i].Update(gameTime);
+                for (int i = 0; i < projectiles.Count; i++) projectiles[i].Update(gameTime);
+                for (int i = 0; i < acteurs.Count; i++) acteurs[i].Update(gameTime);
 
             }
 
@@ -212,9 +212,9 @@ namespace GameStateManagement
             GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + fps.ToString(), new Vector2(0, 0), Color.Black);
             GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Room: " + map.roomIndex.ToString(), new Vector2(100, 30), Color.Black);
 
-            foreach (Item item in items) item.Draw(gameTime);
-            foreach (Projectile projectile in projectiles) projectile.Draw(gameTime);
-            foreach (Acteur acteur in acteurs) acteur.Draw(gameTime);
+            for (int i = 0; i < items.Count; i++) items[i].Draw(gameTime);
+                for (int i = 0; i < projectiles.Count; i++) projectiles[i].Draw(gameTime);
+                for (int i = 0; i < acteurs.Count; i++) acteurs[i].Draw(gameTime);
             map.Draw(gameTime);
 
             base.Draw(gameTime);

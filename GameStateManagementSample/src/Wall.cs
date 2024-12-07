@@ -48,14 +48,15 @@ namespace wizard_game
         }
         private void setFields()
         {
+            
             //todo kann viel schneller laufen man kennt ja alle kordinaten
             //Debug.WriteLine("set fields" + width +" h" + height);
-            for (int x = 0; x < width / 10; x++)
+            for (int x = 0; x < width / Map.RESOLUTION; x++)
             {
-                for (int y = 0; y < height / 10; y++)
+                for (int y = 0; y < height / Map.RESOLUTION; y++)
                 {
-                    int cordX = (int)position.X / 10 + x;
-                    int cordY = (int)position.Y / 10 + y;
+                    int cordX = (int)position.X / Map.RESOLUTION + x;
+                    int cordY = (int)position.Y / Map.RESOLUTION + y;
                     room.fields[cordX, cordY] = true;
                     //Debug.WriteLine("set x "+cordX +" Y" +cordY);
                 }

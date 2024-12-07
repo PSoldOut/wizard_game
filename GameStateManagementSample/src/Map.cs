@@ -13,6 +13,7 @@ namespace wizard_game
 {
     public class Map
     {
+        public static int RESOLUTION = 50;
         public Texture2D image;
 
         private List<Room> rooms = new List<Room>();
