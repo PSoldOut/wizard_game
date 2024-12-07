@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,7 +17,7 @@ namespace wizard_game
     {
         private static Player instance;
         public const int MAX_HEALTH = 100;
-        public float speed = 0.27f;
+        public float speed = 0.24f;
         public float currentSpeed;
         public string currentAnimation;
         public int id;
@@ -27,10 +28,16 @@ namespace wizard_game
         public int health;
         public int coins;
 
+        int stepSoundFreq = 16;
+        int currentStepFreq = 0;
 
+        SoundEffect inventorySound;
+        SoundEffect stepsSound;
 
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
+            stepsSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("footsteps/step_lth1");
+            inventorySound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/cloth-inventory");
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
             InitAnimations();
             direction = new Vector2(0, -1);
@@ -136,6 +143,13 @@ namespace wizard_game
             {
                 equippedWeapon.position = position + equippedWeapon.equipedOffset;
             }
+
+            if (currentSpeed > 0 && currentStepFreq >= stepSoundFreq)
+            {
+                stepsSound.Play();
+                currentStepFreq = 0;
+            }
+            currentStepFreq++;
         }
 
 
@@ -178,8 +192,16 @@ namespace wizard_game
             if (inputState.IsNewKeyPress(Keys.Space)) Attack();
 
             //switching weapons
-            if (inputState.IsNewKeyPress(Keys.D1)) EquipWeapon(Weapon.WeaponName.SWORD);
-            if (inputState.IsNewKeyPress(Keys.D2)) EquipWeapon(Weapon.WeaponName.BOW);
+            if (inputState.IsNewKeyPress(Keys.D1))
+            {
+                inventorySound.Play();
+                EquipWeapon(Weapon.WeaponName.SWORD);
+            }
+            if (inputState.IsNewKeyPress(Keys.D2))
+            {
+                inventorySound.Play();
+                EquipWeapon(Weapon.WeaponName.BOW);
+            }
         }
 
 

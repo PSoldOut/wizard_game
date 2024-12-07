@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,11 +21,14 @@ namespace wizard_game
         float damageRadius;
         bool isAttacking;
 
-
+        SoundEffect swishSound;
+        SoundEffect hitSound;
         float animationRotation;
 
         public Sword(int x, int y) : base(new Vector2(x, y), 20, 5, "sword", false, WeaponName.SWORD)
         {
+            hitSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("hits/hit02.mp3");
+            swishSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("battle_sound_effects/swish_2");
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.16f);
             equipedOffsetRight = new Vector2(26,23);
             equipedOffsetLeft = new Vector2(-2, 23);
@@ -68,25 +72,22 @@ namespace wizard_game
             }
         }
 
+
         public override void Attack(Acteur attacker)
         {
-            
-            isAttacking = true;
-            Rectangle damageArea = new Rectangle((int)(position.X + (Player.Get().GetWidth()/2) + Player.Get().GetDirection().X * distance), (int)(position.Y + (Player.Get().GetHeight()/2) + Player.Get().GetDirection().Y * distance), (int)damageRadius, (int)damageRadius);
-            //Console.WriteLine("playerPos X" + Player.Get().position.X);
-            //Console.WriteLine("playerPos Y" + Player.Get().position.Y);
-            //Console.WriteLine("damageArea X: " + damageArea.X);
-            //Console.WriteLine("damageArea Y: " + damageArea.Y);
-
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                swishSound.Play();
+            }
             for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
             {
                if (attacker.damageArea.Intersects(GameplayScreen.acteurs[i].hitBox) && attacker != GameplayScreen.acteurs[i])
                {
+                    hitSound.Play();
                     GameplayScreen.acteurs[i].Die();
                }
             }
-
-            
         }
 
 
