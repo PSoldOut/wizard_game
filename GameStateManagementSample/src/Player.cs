@@ -298,12 +298,11 @@ namespace wizard_game
         {
             base.Draw(gameTime);
             if (equippedWeapon != null) equippedWeapon.Draw(gameTime);
-
-
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, damageArea.Width + lineWidth, lineWidth), hitboxColor);
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X + damageArea.Width, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y + damageArea.Height, damageArea.Width + lineWidth, lineWidth), hitboxColor);
+
 
         }
 
