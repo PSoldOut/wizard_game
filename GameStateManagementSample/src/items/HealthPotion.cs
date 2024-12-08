@@ -14,7 +14,6 @@ namespace wizard_game
     class HealthPotion : Item
     {
         int health = 15; 
-        SoundEffectInstance effectSound;
         
         public HealthPotion(int x, int y) : base(new Vector2(x, y), 5, 5, "healthPotion", false)
         {

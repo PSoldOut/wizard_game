@@ -15,7 +15,6 @@ namespace  wizard_game
 
     class Gold : Item
     {
-        SoundEffectInstance effectSound;
 
         public Gold(int x, int y) : base(new Vector2(x, y), 27, 27, "gold", false)
         {

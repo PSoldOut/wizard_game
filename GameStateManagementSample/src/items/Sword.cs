@@ -49,6 +49,7 @@ namespace wizard_game
 
         public override void Effect()
         {
+            effectSound.Play();
             Player.Get().AddWeapon(this);
             this.state = State.IN_INVENTORY;
             GameplayScreen.items.Remove(this);
@@ -96,24 +97,28 @@ namespace wizard_game
         public override void SetEquippedDown()
         {
             equipedOffset = equipedOffsetDown;
+            rotation = equipedRotation;
         }
 
 
         public override void SetEquippedLeft()
         {
             equipedOffset = equipedOffsetLeft;
+            rotation = equipedRotation;
         }
 
 
         public override void SetEquippedRight()
         {
             equipedOffset = equipedOffsetRight;
+            rotation = equipedRotation;
         }
 
 
         public override void SetEquippedUp()
         {
             equipedOffset = equipedOffsetUp;
+            rotation = equipedRotation;
         }
 
 

@@ -75,6 +75,7 @@ namespace wizard_game
 
         public override void Effect()
         {
+            effectSound.Play();
             Player.Get().AddWeapon(this);
             this.state = State.IN_INVENTORY;
             GameplayScreen.items.Remove(this);

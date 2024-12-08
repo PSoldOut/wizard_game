@@ -82,7 +82,7 @@ namespace GameStateManagement
         /// <summary>
         /// Gets the current screen transition state.
         /// </summary>
-        public ScreenState ScreenState { get; protected set; } = ScreenState.TransitionOn;
+        public ScreenState ScreenState = ScreenState.TransitionOn;
 
         /// <summary>
         /// There are two possible reasons why a screen might be transitioning
