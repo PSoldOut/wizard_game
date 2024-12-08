@@ -100,7 +100,6 @@ namespace GameStateManagement
         public override void Initialize()
         {
             base.Initialize();
-
             isInitialized = true;
         }
 
@@ -212,7 +211,7 @@ namespace GameStateManagement
         {
             foreach (GameScreen screen in screens)
             {
-                if (screen.ScreenState == ScreenState.Hidden)
+                if (screen.ScreenState == ScreenState.Hidden && screen.IsPopup == false)
                     continue;
 
                 screen.Draw(gameTime);

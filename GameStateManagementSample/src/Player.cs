@@ -16,7 +16,7 @@ namespace wizard_game
     public class Player : Acteur
     {
         private static Player instance;
-        public const int MAX_HEALTH = 100;
+        public const int MAX_HEALTH = 8;
         public float speed = 0.24f;
         public float currentSpeed;
         public string currentAnimation;
@@ -27,13 +27,12 @@ namespace wizard_game
         private Weapon equippedWeapon;
         public int health;
         public int coins;
-        float stepsSpeed = 0.25f;
+        float stepsSpeed = 0.01f;
 
         Timer stepsTimer;
 
         SoundEffectInstance inventorySound;
         SoundEffectInstance stepsSound;
-
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
             stepsSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("footsteps/step_lth1").CreateInstance();
@@ -45,7 +44,6 @@ namespace wizard_game
             direction = new Vector2(0, -1);
             this.weapons = new List<Weapon>();
             health = MAX_HEALTH;
-            health = 10;
             map = _map;
             currentSpeed = 0;
             stepsTimer = new Timer(stepsSpeed, this);
@@ -278,7 +276,29 @@ namespace wizard_game
                     if (equippedWeapon != null) equippedWeapon.state = Item.State.IN_INVENTORY;
                     equippedWeapon = w;
                     equippedWeapon.state = Item.State.EQUIPPED;
-                    return;
+                    if (equippedWeapon != null)
+                    {
+                        if (direction.Y < 0)
+                        {
+                            equippedWeapon.SetEquippedUp();
+                            equippedWeapon.sprite.layerDepth = 0.6f;
+                            if (direction.X < 0){equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f;}
+                            else if (direction.X > 0){equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                        }
+                        else if (direction.Y > 0)
+                        {
+                            equippedWeapon.SetEquippedDown(); equippedWeapon.sprite.layerDepth = 0.4f;
+                            if (direction.X > 0){equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                        }
+                        else
+                        {
+                            if (direction.X < 0) {equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f;}
+                            else {equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                        }
+                        equippedWeapon.position = position + equippedWeapon.equipedOffset;
+                        return;
+                    }
+                            
                 }
             }
         }
@@ -300,12 +320,11 @@ namespace wizard_game
         {
             base.Draw(gameTime);
             if (equippedWeapon != null) equippedWeapon.Draw(gameTime);
-
-
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, damageArea.Width + lineWidth, lineWidth), hitboxColor);
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X + damageArea.Width, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y + damageArea.Height, damageArea.Width + lineWidth, lineWidth), hitboxColor);
+            
 
         }
 

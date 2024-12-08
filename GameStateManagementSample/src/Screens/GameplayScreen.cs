@@ -59,6 +59,8 @@ namespace GameStateManagement
         public static List<Projectile> projectiles;
         public Texture2D background;
 
+        UI ui;
+
 
         public GameplayScreen()
         {
@@ -66,7 +68,7 @@ namespace GameStateManagement
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             rand = new Random();
 
-
+            ui = new UI();
 
             items = new List<Item>();
             acteurs = new List<Acteur>();
@@ -114,6 +116,7 @@ namespace GameStateManagement
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
             MediaPlayer.Play(level1Song);
+            MediaPlayer.Volume = GameStateManagementGame.GetMusicVolume();
             ScreenManager.Game.ResetElapsedTime();
         }
 
@@ -135,10 +138,10 @@ namespace GameStateManagement
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-
+            
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
             if (!otherScreenHasFocus)
             {
-
                 if (gameTime.ElapsedGameTime.Milliseconds > 0)
                 {
                     fps = 1000 / gameTime.ElapsedGameTime.Milliseconds;
@@ -149,6 +152,7 @@ namespace GameStateManagement
                     mousePressed = false;
 
                 }
+                ui.Update(gameTime);
                 //map.Update(gameTime);
                 for (int i = 0; i < items.Count; i++) items[i].Update(gameTime);
                 for (int i = 0; i < projectiles.Count; i++) projectiles[i].Update(gameTime);
@@ -156,12 +160,6 @@ namespace GameStateManagement
                 
 
             }
-
-            else{
-
-            }
-             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-
 
         }
 
@@ -189,7 +187,6 @@ namespace GameStateManagement
 
             if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
             {
-
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
 
             }
@@ -210,14 +207,14 @@ namespace GameStateManagement
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,Color.CornflowerBlue, 0, 0);
             Rectangle screenRectangle = new Rectangle(0, 0, 1280, 720);
             GameStateManagementGame._spriteBatch.Draw(background, screenRectangle, null, Color.White, 0, new Vector2(0,0), SpriteEffects.None, 1.0f);
-            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + fps.ToString(), new Vector2(0, 0), Color.Black);
-            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Room: " + map.roomIndex.ToString(), new Vector2(100, 30), Color.Black);
+            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + fps.ToString(), new Vector2(20, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight-40), Color.Wheat);
+            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Room: " + map.roomIndex.ToString(), new Vector2(120, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight-40), Color.Wheat);
 
             for (int i = 0; i < items.Count; i++) items[i].Draw(gameTime);
             for (int i = 0; i < projectiles.Count; i++) projectiles[i].Draw(gameTime);
             for (int i = 0; i < acteurs.Count; i++) acteurs[i].Draw(gameTime);
             map.Draw(gameTime);
-
+            ui.Draw(gameTime);
             base.Draw(gameTime);
         }
 

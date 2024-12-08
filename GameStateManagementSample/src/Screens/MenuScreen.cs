@@ -31,7 +31,7 @@ namespace GameStateManagement
         private readonly List<MenuEntry> menuEntries = new List<MenuEntry>();
         private int selectedEntry;
         private string menuTitle;
-
+        public bool isPopup = false;
         #endregion Fields
 
         #region Properties
