@@ -24,7 +24,6 @@ namespace wizard_game
             openList.Add(startNode);
             while (openList.Count > 0)
             {
-                Console.WriteLine(openList.Count);
                 openList.Sort((n1,n2) => (n1.GetCost() + n1.getGoldCount()).CompareTo(n2.GetCost()
                 +n2.getGoldCount()));
                 NodeA currentNode = openList[0];
@@ -55,12 +54,5 @@ namespace wizard_game
             Console.WriteLine("No solution found.");
             return null;
         }
-
-
-
-
-        
-
-
     }
 }

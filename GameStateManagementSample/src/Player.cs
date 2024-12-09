@@ -143,6 +143,10 @@ namespace wizard_game
                 equippedWeapon.position = position + equippedWeapon.equipedOffset;
             }
 
+            if (currentSpeed > 0) stepsTimer.start();
+            else stepsTimer.pause();
+
+            stepsTimer.Update(gameTime);
             if (currentSpeed > 0 && currentStepFreq >= stepSoundFreq)
             {
                 stepsSound.Play();
@@ -276,7 +280,29 @@ namespace wizard_game
                     if (equippedWeapon != null) equippedWeapon.state = Item.State.IN_INVENTORY;
                     equippedWeapon = w;
                     equippedWeapon.state = Item.State.EQUIPPED;
-                    return;
+                    if (equippedWeapon != null)
+                    {
+                        if (direction.Y < 0)
+                        {
+                            equippedWeapon.SetEquippedUp();
+                            equippedWeapon.sprite.layerDepth = 0.6f;
+                            if (direction.X < 0){equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f;}
+                            else if (direction.X > 0){equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                        }
+                        else if (direction.Y > 0)
+                        {
+                            equippedWeapon.SetEquippedDown(); equippedWeapon.sprite.layerDepth = 0.4f;
+                            if (direction.X > 0){equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                        }
+                        else
+                        {
+                            if (direction.X < 0) {equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f;}
+                            else {equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                        }
+                        equippedWeapon.position = position + equippedWeapon.equipedOffset;
+                        return;
+                    }
+
                 }
             }
         }
