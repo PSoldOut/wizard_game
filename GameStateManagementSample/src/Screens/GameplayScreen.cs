@@ -52,7 +52,7 @@ namespace GameStateManagement
 
         private float pauseAlpha;
 
-        static int goldCount = 10;
+        static int goldCount = 1;
 
         public static List<Acteur> acteurs;
         public static List<Item> items;
@@ -92,8 +92,8 @@ namespace GameStateManagement
             //map.Initialize();
 
             acteurs.Add(Player.Get());
-            acteurs.Add(new Enemy_Guard(10, 10, map, EnemyType.GUARD, map.GetActiveRoom()));
-            acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
+            //acteurs.Add(new Enemy_Guard(10, 10, map, EnemyType.GUARD, map.GetActiveRoom()));
+            //acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
             acteurs.Add(new Enemy_Knight(500, 500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
          //   acteurs.Add(new Enemy_Wizard(700, 500, map, EnemyType.WIZARD, map.GetActiveRoom()));
 

@@ -43,8 +43,10 @@ namespace wizard_game
                 Console.WriteLine("solution ist null");
                 startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
                 AStern search = new AStern();
-                solutionNode = search.Start(startNode);
+                //solutionNode = search.Start(startNode);
+                solutionNode = AStar(startNode);
                 Console.Write("solution was found");
+                throw new Exception("jej  X:" + solutionNode.GetX() + "  Y:" + solutionNode.GetY());
                 NodeA tmp = solutionNode;
                 while (tmp != null)
                 {
@@ -93,5 +95,51 @@ namespace wizard_game
 
             }
         }
+
+
+
+
+        public NodeA AStar(NodeA startNode)
+        {
+            List<NodeA> closedList = new List<NodeA>();
+            List<NodeA> openList = [startNode];
+            while (openList.Count > 0)
+            {
+                Console.WriteLine(openList.Count);
+                openList.Sort((n1,n2) => (n1.GetCost() + Math.Abs((int)(Player.Get().position.X/10) - n1.GetX()) + Math.Abs((int)(Player.Get().position.Y/10) - n1.GetY())).CompareTo(
+                                          n2.GetCost() + Math.Abs((int)(Player.Get().position.X/10) - n2.GetX()) + Math.Abs((int)(Player.Get().position.Y/10) - n2.GetY())));
+                NodeA currentNode = openList[0];
+                openList.RemoveAt(0);
+
+                if (Math.Abs(currentNode.GetX() - (int)(Player.Get().position.X/10)) < 2 && Math.Abs(currentNode.GetY() - (int)(Player.Get().position.Y/10)) < 2)
+                {
+                    Console.WriteLine("found solution!");
+                    return currentNode;
+                }
+
+
+
+                // Wenn der aktuelle Knoten noch nicht verarbeitet wurde, füge ihn der Closed-List hinzu
+                if (!closedList.Contains(currentNode))
+                {
+                    closedList.Add(currentNode);
+
+                    // Expandieren der Nachfolgerknoten
+                    var successors = currentNode.Expand();
+                    foreach (var successor in successors){
+                        if(!openList.Contains(successor)){
+                            openList.Add(successor);
+                        }
+                    }
+
+                }
+            }
+
+            Console.WriteLine("No solution found.");
+            return null;
+        }
+
+
+
     }
 }
