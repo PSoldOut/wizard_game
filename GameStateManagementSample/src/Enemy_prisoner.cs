@@ -56,7 +56,7 @@ namespace wizard_game
         }
 
         //bewegen sich  nach der Richtung des Players
-        public void MoveToPlayer()
+        public new void MoveToPlayer()
 
         {
 
@@ -129,13 +129,14 @@ namespace wizard_game
                 int dy = Math.Abs(y2 - y1);
                 int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
                 int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
-
+                if(dx < dy){
                 for (int i = 0; i < dx; i++)
                 {
                     if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
                     {
                         return true;
                     }
+                }
                 }
                 // Keine Wand auf der Linie gefunden
                 return false;

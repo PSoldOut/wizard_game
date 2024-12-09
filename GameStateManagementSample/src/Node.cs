@@ -7,9 +7,11 @@ class Node
 {
     private int x ;
     private int y ;
+
     private Vector2 direction;
     float initValue;
     float currentValue;
+
     public Node(int x, int y)
     {
         this.x = x;
@@ -85,58 +87,6 @@ class Node
         return x.GetHashCode() ^ y.GetHashCode();
     }
 
-    // public LinkedList<Node> expand()
-    // {
-
-    //     //TO DO: alle Nachfolger des Nodes
-    //     LinkedList<Node> nachfolger = new LinkedList<Node>();
-    //     if (View[x + 1, y] == Gamestate.PLAYER || View[x + 1, y] == Gamestate.EMPTY)
-    //     {
-    //         Gamestate[,] copiedView = copyView(View);
-    //         copiedView[x, y] = Gamestate.EMPTY;
-    //         copiedView[x + 1, y] = Gamestate.EMPTY;
-    //         Node tmp = new Node(copiedView, x + 1, y, this, EnemyAction.GO_EAST, Kosten + 1);
-
-    //         nachfolger.AddLast(tmp);
-    //     }
-
-    //     if (View[x - 1, y] == Gamestate.PLAYER || View[x - 1, y] == Gamestate.EMPTY)
-    //     {
-    //         Gamestate[,] copiedView = copyView(View);
-    //         copiedView[x, y] = Gamestate.EMPTY;
-    //         copiedView[x - 1, y] = Gamestate.EMPTY;
-    //         Node tmp = new Node(copiedView, x - 1, y, this, EnemyAction.GO_WEST, Kosten + 1);
-
-    //         nachfolger.AddLast(tmp);
-    //     }
-
-    //     if (View[x, y + 1] == Gamestate.PLAYER || View[x, y + 1] == Gamestate.EMPTY)
-    //     {
-
-    //         Gamestate[,] copiedView = copyView(View);
-    //         copiedView[x, y] = Gamestate.EMPTY;
-    //         copiedView[x, y + 1] = Gamestate.EMPTY;
-    //         Node tmp = new Node(copiedView, x, y + 1, this, EnemyAction.GO_SOUTH, Kosten + 1);
-
-    //         nachfolger.AddLast(tmp);
-    //     }
-
-    //     if (View[x, y - 1] == Gamestate.PLAYER || View[x, y - 1] == Gamestate.EMPTY)
-    //     {
-    //         Gamestate[,] copiedView = copyView(View);
-    //         copiedView[x, y] = Gamestate.EMPTY;
-    //         copiedView[x, y - 1] = Gamestate.EMPTY;
-    //         Node tmp = new Node(copiedView, x, y - 1, this, EnemyAction.GO_NORTH, Kosten + 1);
-
-    //         nachfolger.AddLast(tmp);
-    //     }
-    //     return nachfolger;
-    // }
-
-    // private Gamestate[,] copyView(Gamestate[,] view)
-    // {
-    //     //TO DO: implementieren copyView
-    //     throw new NotImplementedException();
-    // }
+    
 }
 

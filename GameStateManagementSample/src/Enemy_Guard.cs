@@ -56,45 +56,38 @@ namespace wizard_game
 
             string anim = "idle_down";
             Vector2 tmp = position + direction * speed;
-            int i = 0;
-            while (DetacteCollison(tmp) && i < 10)
+            while (DetacteCollison(tmp))
             {
-                Console.WriteLine("auifhseoighseogihseogih");
-                // tmp = position - direction * speed;
-                // int randomNumber = random.Next(1, 101);
-                // if (randomNumber % 4 == 0)
-                // {
-                //     // TODO: rechts
-                //     direction.X = 1;
-                //     direction.Y = 0;
-                //     anim = "idle_right";
-                // }
-                // else if (randomNumber % 4 == 1)
-                // {
-                //     //TODO: unten
-                //     direction.X = 0;
-                //     direction.Y = 1;
-                //     anim = "idle_down";
-                // }
-                // else if (randomNumber % 4 == 2)
-                // {
-                //     //TODO: oben
-                //     direction.X = 0;
-                //     direction.Y = -1;
-                //     anim = "idle_up";
-                // }
-                // else
-                // {
-                //     //TODO: links
-                //     direction.X = -1;
-                //     direction.Y = 0;
-                //     anim = "idle_left";
-                // }
-                speed = 0;
+                int randomNumber = random.Next(1, 101);
+                if (randomNumber % 4 == 0)
+                {
+                    // TODO: rechts
+                    direction.X = 1;
+                    direction.Y = 0;
+                    anim = "idle_right";
+                }
+                else if (randomNumber % 4 == 1)
+                {
+                    //TODO: unten
+                    direction.X = 0;
+                    direction.Y = 1;
+                    anim = "idle_down";
+                }
+                else if (randomNumber % 4 == 2)
+                {
+                    //TODO: oben
+                    direction.X = 0;
+                    direction.Y = -1;
+                    anim = "idle_up";
+                }
+                else
+                {
+                    //TODO: links
+                    direction.X = -1;
+                    direction.Y = 0;
+                    anim = "idle_left";
+                }
                 tmp = position + direction * speed;
-                //Debug.WriteLine(randomNumber + "  - "+ direction);
-                //Debug.WriteLine(tmp + "  ------tmp in choose()");
-                i++;
             }
             sprite.setAnimation(anim);
         }
@@ -103,32 +96,7 @@ namespace wizard_game
         public new void Attack()
 
         {
-            //Debug.WriteLine("Attacking!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //TODO: attack
-            if (position.X < Player.Get().position.X)
-            {
-                direction.X = 1;
-                direction.Y = 0;
-                sprite.setAnimation("idle_right");
-            }
-            else if (position.Y > Player.Get().position.Y)
-            {
-                direction.Y = -1;
-                direction.X = 0;
-                sprite.setAnimation("idle_up");
-            }
-            else if (position.Y < Player.Get().position.Y)
-            {
-                direction.Y = 1;
-                direction.X = 0;
-                sprite.setAnimation("idle_down");
-            }
-            else
-            {
-                direction.X = -1;
-                direction.Y = 0;
-                sprite.setAnimation("idle_left");
-            }
+            MoveToPlayer();
         }
     }
 }

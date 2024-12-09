@@ -73,27 +73,31 @@ namespace GameStateManagement
             items = new List<Item>();
             acteurs = new List<Acteur>();
             projectiles = new List<Projectile>();
-
+            map = new Map();
+            Room room = map.GetActiveRoom();
             for (int i = 0; i < goldCount; i++)
             {
                 Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
+                room.setGamestateElement(g.position, Gamestate.GOLD);
                 items.Add(g);
             }
             items.Add(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
             items.Add(new Sword(300, 100));
-            items.Add(new Bow(200,100));
+            items.Add(new Bow(200, 100));
             //---------------------------------------
 
-            map = new Map();
+
 
 
             //map.Initialize();
 
             acteurs.Add(Player.Get());
-            acteurs.Add(new Enemy_Guard(10,10,map, EnemyType.GUARD, map.GetActiveRoom()));
+            acteurs.Add(new Enemy_Guard(10, 10, map, EnemyType.GUARD, map.GetActiveRoom()));
             acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
-            acteurs.Add(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
-            acteurs.Add(new Enemy_Doubler(300,500, map, EnemyType.DOUBLER, map.GetActiveRoom(), Enemy_Doubler.MAX_DOUBLING));
+            acteurs.Add(new Enemy_Knight(500, 500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
+         //   acteurs.Add(new Enemy_Wizard(700, 500, map, EnemyType.WIZARD, map.GetActiveRoom()));
+
+
 
         }
 
@@ -139,7 +143,7 @@ namespace GameStateManagement
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
             if (!otherScreenHasFocus)
             {
@@ -158,7 +162,7 @@ namespace GameStateManagement
                 for (int i = 0; i < items.Count; i++) items[i].Update(gameTime);
                 for (int i = 0; i < projectiles.Count; i++) projectiles[i].Update(gameTime);
                 for (int i = 0; i < acteurs.Count; i++) acteurs[i].Update(gameTime);
-                
+
 
             }
 
@@ -201,11 +205,11 @@ namespace GameStateManagement
 
         public override void Draw(GameTime gameTime)
         {
-            if(!this.IsActive) // todo spiel vielleich im hintergrunt anzeigen.
+            if (!this.IsActive) // todo spiel vielleich im hintergrunt anzeigen.
             {
                 return;
             }
-            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,Color.CornflowerBlue, 0, 0);
+            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.CornflowerBlue, 0, 0);
             Rectangle screenRectangle = new Rectangle(0, 0, 1280, 720);
             GameStateManagementGame._spriteBatch.Draw(background, screenRectangle, null, Color.White, 0, new Vector2(0,0), SpriteEffects.None, 1.0f);
             GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + fps.ToString(), new Vector2(20, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight-40), Color.Wheat);

@@ -23,16 +23,16 @@ namespace wizard_game
         // private List<Bot> botsToDelete = new List<Bot>();
         GameStateManagementGame gameInstance = GameStateManagementGame.Get();
         public Map() {
-            Debug.WriteLine("INIT NEW MAP############");
+        //    Debug.WriteLine("INIT NEW MAP############");
 
             int roomsCount = 2;
             generateRooms(roomsCount);
          }
-      
+
 
         public void generateRooms(int roomsCount)
         {
-            Debug.WriteLine("Generate Room");
+          //  Debug.WriteLine("Generate Room");
             Room backRoom;
             Room actualRoom = null;
             Point doorSize=new Point(80,95);
@@ -64,8 +64,8 @@ namespace wizard_game
 
 
                     startRoom.SetDoor(doorToNext);
-                    Debug.WriteLine("set room to " + doorToNext.room.index);
-                    Debug.WriteLine("get dor s " +doorToNext.GetOppositeSite());
+               //     Debug.WriteLine("set room to " + doorToNext.room.index);
+              //      Debug.WriteLine("get dor s " +doorToNext.GetOppositeSite());
 
                     nextRoom.SetDoor(doorBackFromNext, doorToNext.GetOppositeSite());
 
@@ -100,7 +100,7 @@ namespace wizard_game
 
 
                 }
-                
+
 
             }
         }
@@ -157,7 +157,7 @@ namespace wizard_game
                 Console.WriteLine("");
             }
         }
-        
+
         public void Draw(GameTime gameTime)
          {
             activeRoom.Draw(gameTime);

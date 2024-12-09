@@ -33,6 +33,6 @@ namespace  wizard_game
            GameplayScreen.items.Remove(this);
         }
 
-        
+
     }
 }

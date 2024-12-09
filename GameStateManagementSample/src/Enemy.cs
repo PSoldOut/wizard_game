@@ -182,5 +182,46 @@ namespace wizard_game
         {
 
         }
+
+        public void MoveToPlayer()
+
+        {
+
+            float deltaX = Player.Get().position.X - position.X;
+            float deltaY = Player.Get().position.Y - position.Y;
+
+            // Bestimme, ob Bewegung entlang X oder Y priorisiert wird
+            if (Math.Abs(deltaX) > Math.Abs(deltaY)) // Bewegung entlang der X-Achse
+            {
+                if (deltaX > 0)
+                {
+                    direction.X = 1; // nach rechts
+                    sprite.setAnimation("idle_right");
+                }
+                else
+                {
+                    direction.X = -1; // nach links
+                    sprite.setAnimation("idle_left");
+                }
+                direction.Y = 0; // Nur entlang der X-Achse bewegen
+            }
+            else // Bewegung entlang der Y-Achse
+            {
+                if (deltaY > 0)
+                {
+                    direction.Y = 1; // nach unten
+                    sprite.setAnimation("idle_down");
+                }
+                else
+                {
+                    direction.Y = -1; // nach oben
+                    sprite.setAnimation("idle_up");
+                }
+                direction.X = 0; // Nur entlang der Y-Achse bewegen
+            }
+
+            //Debug.WriteLine(direction + " direction");
+        }
+
     }
 }

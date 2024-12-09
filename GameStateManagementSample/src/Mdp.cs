@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
@@ -27,21 +28,26 @@ namespace wizard_game
             Vector2 direction = new Vector2(0, 0);
             init();
             startValue = copyMapValue();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 50; i++)
             {
                 direction = mapIterate();
             }
             return direction;
         }
 
-        public Vector2 mapIterate() {
-		Vector2 direction = new Vector2(0,0);
-		copy = copyMapValue();
-		for(int i = 1; i < value.GetLength(0)-1; i++) {
-			for (int j = 1; j < value.GetLength(1)-1; j++) {
-				if(view[i,j] != Gamestate.WALL) {
 
-					Dictionary<Vector2, float> cost_action = new Dictionary<Vector2, float>
+        public Vector2 mapIterate()
+        {
+            Vector2 direction = new Vector2(0, 0);
+            copy = copyMapValue();
+            for (int i = 1; i < value.GetLength(0) - 1; i++)
+            {
+                for (int j = 1; j < value.GetLength(1) - 1; j++)
+                {
+
+                    if (view[i, j] != Gamestate.WALL)
+                    {
+                        Dictionary<Vector2, float> cost_action = new Dictionary<Vector2, float>
                     {
                         { new Vector2(1, 0), caculateNewValue(copy[i + 1, j]) },
                         { new Vector2(-1, 0), caculateNewValue(copy[i - 1, j]) },
@@ -49,52 +55,62 @@ namespace wizard_game
                         { new Vector2(0, -1), caculateNewValue(copy[i, j - 1]) }
                     };
 
-					 float maxValue = float.NegativeInfinity;
+                        float maxValue = float.NegativeInfinity;
 
 
-					foreach (KeyValuePair<Vector2, float> entry in cost_action){
-						if (entry.Value > maxValue) {
-							maxValue = entry.Value;
-							if(i == Start.GetX() && j == Start.GetY()) {
-								direction = entry.Key;
-							}
-						}
-					}
+                        foreach (KeyValuePair<Vector2, float> entry in cost_action)
+                        {
+                            if (entry.Value > maxValue)
+                            {
+                                maxValue = entry.Value;
+                                if (i == Start.GetX() && j == Start.GetY())
+                                {
+                                    direction = entry.Key;
+                                }
+                            }
+                        }
 
-					if(startValue[i,j].GetValue() < 0 ) {
-						continue;
-					}
+                        if (startValue[i, j].GetValue() < 0)
+                        {
+                            continue;
+                        }
 
-					if(value[i,j].GetValue() < maxValue)
-						value[i,j].SetValue(maxValue);
-				}
-			}
-		}
-		return direction;
-	}
-
-
-        public void init() {
-		for(int i = 0; i < view.GetLength(0); i++) {
-			for(int j = 0; j < view.GetLength(1); j++) {
-				value[i,j] = new Node (i, j);
-				value[i, j].SetValue(evaluateValue(i, j));
-			}
-		}
+                        if (value[i, j].GetValue() < maxValue)
+                            value[i, j].SetValue(maxValue);
+                    }
+                }
+            }
+            return direction;
         }
 
-//copy the value of the current view
-public Node[,] copyMapValue() {
-		Node[,] copy = new Node[value.GetLength(0),value.GetLength(1)];
-		for (int i = 0; i < value.GetLength(0); i++) {
-			for (int j = 0; j < value.GetLength(1); j++) {
-				Node k = new Node(i, j);
-				k.SetValue(value[i,j].GetValue());
-				copy[i,j] = k;
-			}
-		}
-		return copy;
-	}
+
+        public void init()
+        {
+            for (int i = 0; i < view.GetLength(0); i++)
+            {
+                for (int j = 0; j < view.GetLength(1); j++)
+                {
+                    value[i, j] = new Node(i, j);
+                    value[i, j].SetValue(evaluateValue(i, j));
+                }
+            }
+        }
+
+        //copy the value of the current view
+        public Node[,] copyMapValue()
+        {
+            Node[,] copy = new Node[value.GetLength(0), value.GetLength(1)];
+            for (int i = 0; i < value.GetLength(0); i++)
+            {
+                for (int j = 0; j < value.GetLength(1); j++)
+                {
+                    Node k = new Node(i, j);
+                    k.SetValue(value[i, j].GetValue());
+                    copy[i, j] = k;
+                }
+            }
+            return copy;
+        }
 
         //Caculate value for the next field
         public float evaluateValue(int i, int j)
@@ -110,15 +126,19 @@ public Node[,] copyMapValue() {
             }
             else if (view[i, j] == Gamestate.EMPTY || view[i, j] == Gamestate.ITEM)
             {
-                tmp = 0;
+                tmp = 0.1f;
+            }
+            else if (view[i, j] == Gamestate.GOLD)
+            {
+                tmp = 0.2f;
             }
             else if (view[i, j] == Gamestate.ENEMY)
             {
-                tmp = -65;
+                tmp = -5;
             }
             else if (view[i, j] == Gamestate.PLAYER)
             {
-                tmp = 1000;
+                tmp = 10000;
             }
 
             return tmp;
@@ -128,6 +148,27 @@ public Node[,] copyMapValue() {
         public float caculateNewValue(Node old)
         {
             return stepCost + gamma * old.GetValue();
+        }
+
+        public void printMap(int x, int y)
+        {
+            for (int i = 1; i < value.GetLength(0)-1; i++)
+            {
+                for (int j = 1; j < value.GetLength(1)-1; j++)
+                {
+                    if (view[i, j] == Gamestate.PLAYER)
+                    {
+                        Console.Write("Player-------------------"+ i+"-"+j);
+                    }
+                    if (x == i && y == j)
+                    {
+                        Console.Write("Enemy----.------------------" + value[i, j].GetValue());
+                    }
+                   Console.Write(value[i, j].GetValue() + "       ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("----------------------");
         }
 
 
