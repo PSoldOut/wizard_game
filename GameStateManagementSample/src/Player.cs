@@ -146,7 +146,7 @@ namespace wizard_game
 
             if (currentSpeed > 0) stepsTimer.start();
             else stepsTimer.pause();
-            
+
             stepsTimer.Update(gameTime);
         }
 
@@ -297,7 +297,7 @@ namespace wizard_game
                         equippedWeapon.position = position + equippedWeapon.equipedOffset;
                         return;
                     }
-                            
+
                 }
             }
         }
@@ -323,7 +323,7 @@ namespace wizard_game
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, damageArea.Width + lineWidth, lineWidth), hitboxColor);
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X + damageArea.Width, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
             GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y + damageArea.Height, damageArea.Width + lineWidth, lineWidth), hitboxColor);
-            
+
 
         }
 
