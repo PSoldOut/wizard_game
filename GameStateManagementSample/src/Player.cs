@@ -323,6 +323,7 @@ namespace wizard_game
                 if (item.state == Item.State.ON_FLOOR && item.area.Intersects(hitBox))
                 {
                     item.Effect();
+                    map.GetActiveRoom().setGamestateElement(item.position, Gamestate.EMPTY);
                     break;
                 }
 

@@ -23,10 +23,10 @@ namespace  wizard_game
 
         public override void Effect()
         {
-           Player.Get().coins++;
+           Player.Get().coins++;//für Enemy nichts
            GameplayScreen.items.Remove(this);
         }
 
-        
+
     }
 }

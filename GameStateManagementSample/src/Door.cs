@@ -61,7 +61,7 @@ namespace wizard_game
             {
                 _site = Site;
             }
-            Debug.WriteLine("get o" + _site);
+           //Debug.WriteLine("get o" + _site);
             switch (_site)
             {
                 case SiteEnum.Top:
@@ -142,7 +142,7 @@ namespace wizard_game
             switch (Site)
             {
                 case SiteEnum.Bottom:
-    
+
                     effect = SpriteEffects.FlipVertically;
                     break;
 
@@ -158,7 +158,7 @@ namespace wizard_game
                     effect = SpriteEffects.FlipHorizontally;
                     break;
             }
-            Debug.WriteLine("door " + hitBox + angle + effect + origin);
+          //  Debug.WriteLine("door " + hitBox + angle + effect + origin);
             GameStateManagementGame._spriteBatch.Draw(sprite.texture,
             hitBox,
             source,
@@ -177,7 +177,7 @@ namespace wizard_game
             get { return _site; }
             set
             {
-                Debug.WriteLine("set door to " + value);
+              //  Debug.WriteLine("set door to " + value);
                 switch (value)
                 {
                     case SiteEnum.Left: //left seite

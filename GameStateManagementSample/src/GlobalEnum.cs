@@ -2,6 +2,7 @@ namespace wizard_game{
     public enum Gamestate{
         WALL,
         ENEMY,
+        GOLD,
         ITEM,
         PLAYER,
         EMPTY
@@ -11,7 +12,8 @@ namespace wizard_game{
         GO_EAST,
         GO_WEST,
         GO_SOUTH,
-        GO_NORTH
+        GO_NORTH,
+        NONE
     }
 
     public enum EnemyType{

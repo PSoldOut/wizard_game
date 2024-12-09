@@ -34,6 +34,7 @@ namespace wizard_game
         public Gamestate[,] gamestate = new Gamestate[128, 72];
         public Room(int i)
         {
+            initGamestate();
             index = i;
             W_Width = gameInstance.GraphicsDevice.Viewport.Width;
             W_Height = gameInstance.GraphicsDevice.Viewport.Height;
@@ -47,6 +48,7 @@ namespace wizard_game
             //Debug.WriteLine(string.Format("Build wall with POS {0} and Size {1}", pos, size));
             Wall wall = new Wall(this, pos, size, "Floors/Brickwall5");
             walls.Add(wall);
+            setGamestateElement(new Vector2(pos.X, pos.Y), Gamestate.WALL);
             return wall;
 
         }
@@ -235,6 +237,44 @@ namespace wizard_game
         }
 
 
+        public void initGamestate()
+        {
+            for (int i = 0; i < gamestate.GetLength(0); i++)
+            {
+                for (int j = 0; j < gamestate.GetLength(1); j++)
+                {
+                    gamestate[i, j] = Gamestate.EMPTY;
+                }
+            }
+        }
+        public void PrintView()
+        {
+             for (int i = 0; i < gamestate.GetLength(0); i++)
+            {
+                for (int j = 0; j < gamestate.GetLength(1); j++)
+                {
+                    if(gamestate[i, j] == Gamestate.PLAYER || gamestate[i, j] == Gamestate.GOLD  )
+                    Console.Write(gamestate[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+         public void InitGamestate()
+        {
+            for (int i = 0; i < gamestate.GetLength(0); i++)
+            {
+                for (int j = 0; j < gamestate.GetLength(1); j++)
+                {
+                    gamestate[i, j] = Gamestate.EMPTY;
+                }
+            }
+        }
+        public void setGamestateElement(Vector2 pos, Gamestate state)
+        {
+            int cordX = (int)pos.X / 10;
+            int cordY = (int)pos.Y / 10;
+            gamestate[cordX, cordY] = state;
+        }
 
 
 
