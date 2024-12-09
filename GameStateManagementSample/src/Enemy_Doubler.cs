@@ -1,30 +1,62 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.Common;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
+
+using GameStateManagement;
+using System.Runtime.CompilerServices;
 
 namespace wizard_game
 {
-    class Enemy_prisoner : Enemy
+
+    class Enemy_Doubler : Enemy
     {
-        Map map;
-        public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
+        public static int MAX_DOUBLING = 4;
+
+        int doubling;
+        public string currentAnimation;
+
+        public Enemy_Doubler(int x, int y, Map map, EnemyType type, Room room, int doubling) : base(x, y, map, type, "doubler", room)
         {
-            dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6").CreateInstance();
-            dieSound.Volume = GameStateManagementGame.GetSoundVolume();
-            setSpeed();
-            this.map = map;
-            direction = new Vector2(1, 0);
+            this.doubling = doubling;
+            health = doubling;
         }
+
+
+
+        
+
+
+        public override void takeDamage(int damage)
+        {
+            if (doubling > 0)
+            {
+                doubling--;
+                int rX = GameplayScreen.rand.Next(-50, 50);
+                int rY = GameplayScreen.rand.Next(-50, 50);
+                GameplayScreen.acteurs.Add(new Enemy_Doubler((int)position.X + rX, (int)position.Y + rY, map, EnemyType.DOUBLER, map.GetActiveRoom(), doubling));
+            }
+            base.takeDamage(damage);   
+        }
+
+
+
+
+
+
+
+
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             Move();
-
-            sprite.Update(gameTime);
 
         }
 
@@ -46,6 +78,8 @@ namespace wizard_game
                 direction.Normalize();
                 Vector2 test = position + direction * speed;
 
+                
+
                 if (!DetacteCollison(test))
                 {
                     // Debug.WriteLine("no kollision");
@@ -55,7 +89,7 @@ namespace wizard_game
         }
 
         //bewegen sich  nach der Richtung des Players
-        public new void MoveToPlayer()
+        public void MoveToPlayer()
 
         {
 
@@ -97,6 +131,16 @@ namespace wizard_game
 
 
 
+
+
+        public override void Die()
+        {
+            base.Die();
+            sprite.setAnimation("idle_right");
+        }
+
+
+
         //überprüfen, ob Hindernisse (Wand) zw Player und Enemy vorliegen
         private bool IsObjBetweenEnemyAndPlayer()
         {
@@ -128,14 +172,13 @@ namespace wizard_game
                 int dy = Math.Abs(y2 - y1);
                 int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
                 int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
-                if(dx < dy){
+
                 for (int i = 0; i < dx; i++)
                 {
                     if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
                     {
                         return true;
                     }
-                }
                 }
                 // Keine Wand auf der Linie gefunden
                 return false;
@@ -189,6 +232,11 @@ namespace wizard_game
             }
             return false;
         }
+
+
+
+
+
 
 
 

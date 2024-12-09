@@ -21,7 +21,9 @@ namespace wizard_game
         public UI()
         {
             heartSprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>("heart"), 1, 1, 1, false);
+            heartSprite.layerDepth = 0.3f;
             goldSprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>("gold"), 1, 1, 1, false);
+            goldSprite.layerDepth = 0.3f;
             spriteFont = GameStateManagementGame.Get().Content.Load<SpriteFont>("Arial");
         }
         

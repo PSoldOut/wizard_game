@@ -16,7 +16,7 @@ namespace wizard_game
     public class Player : Acteur
     {
         private static Player instance;
-        public const int MAX_HEALTH = 8;
+        public const int PLAYER_MAX_HEALTH = 8;
         public float speed = 0.24f;
         public float currentSpeed;
         public string currentAnimation;
@@ -25,7 +25,6 @@ namespace wizard_game
         private Map map;
         private List<Weapon> weapons;
         private Weapon equippedWeapon;
-        public int health;
         public int coins;
         float stepsSpeed = 0.01f;
 
@@ -43,7 +42,7 @@ namespace wizard_game
             InitAnimations();
             direction = new Vector2(0, -1);
             this.weapons = new List<Weapon>();
-            health = MAX_HEALTH;
+            health = 2;
             map = _map;
             currentSpeed = 0;
             stepsTimer = new Timer(stepsSpeed, this);

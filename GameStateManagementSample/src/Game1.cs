@@ -33,7 +33,7 @@ namespace GameStateManagement
 
 
         public static int musicVolume = 0;
-        public static int soundVolume = 3;
+        public static int soundVolume = 1;
         public static int masterVolume = 1;
 
         Song mainMenuSong;

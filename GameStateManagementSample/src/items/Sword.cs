@@ -43,6 +43,7 @@ namespace wizard_game
             isAttacking = false;
             distance = 20;
             damageRadius = 100;
+            damage = 1;
 
         }
 
@@ -81,21 +82,26 @@ namespace wizard_game
             if (!isAttacking)
             {
                 isAttacking = true;
+                swishSound.Stop();
                 swishSound.Play();
+
+                for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
+                {
+                    if (attacker.damageArea.Intersects(GameplayScreen.acteurs[i].hitBox) && attacker != GameplayScreen.acteurs[i])
+                    {
+                            hitSound.Stop();
+                            hitSound.Play();
+                            GameplayScreen.acteurs[i].takeDamage(damage);
+                    }
+                }
             }
-            for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
-            {
-               if (attacker.damageArea.Intersects(GameplayScreen.acteurs[i].hitBox) && attacker != GameplayScreen.acteurs[i])
-               {
-                    hitSound.Play();
-                    GameplayScreen.acteurs[i].Die();
-               }
-            }
+            
         }
 
 
         public override void SetEquippedDown()
         {
+            if (isAttacking) return;
             equipedOffset = equipedOffsetDown;
             rotation = equipedRotation;
         }
@@ -103,6 +109,7 @@ namespace wizard_game
 
         public override void SetEquippedLeft()
         {
+            if (isAttacking) return;
             equipedOffset = equipedOffsetLeft;
             rotation = equipedRotation;
         }
@@ -110,6 +117,7 @@ namespace wizard_game
 
         public override void SetEquippedRight()
         {
+            if (isAttacking) return;
             equipedOffset = equipedOffsetRight;
             rotation = equipedRotation;
         }
@@ -117,6 +125,7 @@ namespace wizard_game
 
         public override void SetEquippedUp()
         {
+            if (isAttacking) return;
             equipedOffset = equipedOffsetUp;
             rotation = equipedRotation;
         }

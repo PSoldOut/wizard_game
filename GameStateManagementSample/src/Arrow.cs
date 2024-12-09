@@ -36,7 +36,9 @@ namespace wizard_game
             {
                 if (hitBox.Intersects(GameplayScreen.acteurs[i].hitBox) && GameplayScreen.acteurs[i] != attacker)
                 {
-                    GameplayScreen.acteurs[i].Die();
+                    hitSound.Stop();
+                    hitSound.Play();
+                    GameplayScreen.acteurs[i].takeDamage(damage);
                     GameplayScreen.projectiles.Remove(this);
                     return;
                 }
