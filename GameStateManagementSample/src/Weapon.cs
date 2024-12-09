@@ -27,7 +27,7 @@ namespace wizard_game
         public Vector2 equipedOffsetLeft;
         public Vector2 equipedOffsetRight;
         public Vector2 equipedOffsetUp;
-
+        public int damage;
 
         public Weapon(Vector2 position, int width, int height, string spriteName, bool hasCollision, WeaponName weaponName) :
             base(position, width, height, spriteName, hasCollision)
@@ -38,6 +38,7 @@ namespace wizard_game
             equipedOffsetLeft = new Vector2(0,0);
             equipedOffsetRight = new Vector2(0,0);
             equipedOffsetUp = new Vector2(0,0);
+            damage = 0;
         }
 
 

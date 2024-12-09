@@ -13,7 +13,7 @@ namespace wizard_game
 {
     class HealthPotion : Item
     {
-        int health = 15; 
+        int health = 1; 
         
         public HealthPotion(int x, int y) : base(new Vector2(x, y), 5, 5, "healthPotion", false)
         {
@@ -25,7 +25,7 @@ namespace wizard_game
         public override void Effect()
         {
             effectSound.Play();
-            if (Player.Get().health <= Player.MAX_HEALTH - health)
+            if (Player.Get().health <= Player.PLAYER_MAX_HEALTH - health)
                 Player.Get().health+=health;
             
             GameplayScreen.items.Remove(this);

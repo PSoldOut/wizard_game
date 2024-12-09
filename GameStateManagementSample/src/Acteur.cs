@@ -10,16 +10,30 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
 using GameStateManagement;
+using System.Runtime.CompilerServices;
 
 namespace wizard_game
 {
     public abstract class Acteur : GameEntity
     {
+        public static int DEFAULT_MAX_HEALTH = 4;
+        public int health;
         protected SoundEffectInstance dieSound;
+        protected SoundEffectInstance damageSound;
+        Timer dieTimer;
+        protected bool isDying;
+        protected bool isTakingDamage;
+
         public Acteur(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
         {
+            health = DEFAULT_MAX_HEALTH;
             dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6").CreateInstance();
             dieSound.Volume = GameStateManagementGame.GetSoundVolume();
+            damageSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-5").CreateInstance();
+            damageSound.Volume = GameStateManagementGame.GetSoundVolume();
+            dieTimer = new Timer(1, this);
+            isDying = false;
+            isTakingDamage = false;
         }
 
 
@@ -30,7 +44,9 @@ namespace wizard_game
         public virtual void Die()
         {
             dieSound.Play();
-            GameplayScreen.acteurs.Remove(this);
+            rotation = (float)(Math.PI/2);
+            dieTimer.start();
+            isDying = true;
             if (this!=Player.Get())
             {
                 int value = GameplayScreen.random.Next(2);
@@ -44,6 +60,48 @@ namespace wizard_game
                         break;
                 }
             }
+        }
+
+
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            dieTimer.Update(gameTime);
+            if (isTakingDamage)
+            {
+                Vector2 o = new Vector2(width/2, height/2);
+                sprite.origin = o;
+                float endRotation = 1;
+                rotation = MathHelper.Lerp(rotation, endRotation, 0.4f);
+                if (rotation <= endRotation + 0.05 && rotation >= endRotation - 0.05)
+                {
+                    isTakingDamage = false;
+                    if (isDying) rotation = (float)(Math.PI/2);
+                    else rotation = 0;
+                }
+            }
+            
+        }
+
+
+        public override void TimerCallback(Timer timer)
+        {
+            if (timer == dieTimer)
+            {
+                isDying = false;
+                GameplayScreen.acteurs.Remove(this);
+            }
+        }
+
+
+        public virtual void takeDamage(int damage)
+        {
+            damageSound.Play();
+            health-=damage;
+            isTakingDamage = true;
+            Console.WriteLine(health);
+            if (health <= 0) Die();
         }
 
     }

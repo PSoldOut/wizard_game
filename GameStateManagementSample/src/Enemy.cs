@@ -18,15 +18,13 @@ namespace wizard_game
         private bool drawHitBox = true;
         private int lineWidth = 2;
         private Color hitboxColor = Color.Purple;
-        public int health { set; get; }
         public Room room;
 
         // private Rectangle rect { get; set; }
-        Map map;
+        protected Map map;
         public Enemy(int x, int y, Map _map, EnemyType type, string spriteName, Room room) : base(new Vector2(x, y), 27, 45, spriteName, true)
         {
             direction = new Vector2(0, -1);
-            health = 100;
             map = _map;
             e_type = type;
             setSpeed();
@@ -120,10 +118,9 @@ namespace wizard_game
         //TODO: move()
         public override void Update(GameTime gameTime)
         {
+
             base.Update(gameTime);
             Move();
-
-            sprite.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -147,6 +144,9 @@ namespace wizard_game
                     break;
                 case EnemyType.PRISONER:
                     speed = 1.5f;
+                    break;
+                case EnemyType.DOUBLER:
+                    speed = 0.9f;
                     break;
                 default:
                     speed = 0.7f;
