@@ -35,13 +35,7 @@ namespace wizard_game
         SoundEffectInstance stepsSound;
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
-            stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
-            stepsSound.Volume = GameStateManagementGame.GetSoundVolume();
-            inventorySound = AssetManager.GetSoundInstance("inventory_sound_effects/cloth-inventory");
-            inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
-
-            LoadSprite(4,4,1,true);
-            
+            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
             InitAnimations();
             direction = new Vector2(0, -1);
             this.weapons = new List<Weapon>();
@@ -123,10 +117,10 @@ namespace wizard_game
             Room  room = map.GetActiveRoom();
             Vector2 oldPos = position;
             //Zustand als Empty
-            //room.setGamestateElement(position, Gamestate.EMPTY);
+           // room.setGamestateElement(position, Gamestate.EMPTY);
             position = position + direction * currentSpeed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             //Zustand als Player
-            //room.setGamestateElement(position, Gamestate.PLAYER);
+         //   room.setGamestateElement(position, Gamestate.PLAYER);
             DetacteCollisonX(oldPos);
             DetacteCollisonY(oldPos);
             sprite.setAnimation(currentAnimation);
@@ -146,11 +140,6 @@ namespace wizard_game
             {
                 equippedWeapon.position = position + equippedWeapon.equipedOffset;
             }
-
-            if (currentSpeed > 0) stepsTimer.start();
-            else stepsTimer.pause();
-            
-            stepsTimer.Update(gameTime);
         }
 
 
@@ -278,29 +267,7 @@ namespace wizard_game
                     if (equippedWeapon != null) equippedWeapon.state = Item.State.IN_INVENTORY;
                     equippedWeapon = w;
                     equippedWeapon.state = Item.State.EQUIPPED;
-                    if (equippedWeapon != null)
-                    {
-                        if (direction.Y < 0)
-                        {
-                            equippedWeapon.SetEquippedUp();
-                            equippedWeapon.sprite.layerDepth = 0.6f;
-                            if (direction.X < 0){equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f;}
-                            else if (direction.X > 0){equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
-                        }
-                        else if (direction.Y > 0)
-                        {
-                            equippedWeapon.SetEquippedDown(); equippedWeapon.sprite.layerDepth = 0.4f;
-                            if (direction.X > 0){equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
-                        }
-                        else
-                        {
-                            if (direction.X < 0) {equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f;}
-                            else {equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
-                        }
-                        equippedWeapon.position = position + equippedWeapon.equipedOffset;
-                        return;
-                    }
-                            
+                    return;
                 }
             }
         }
@@ -322,15 +289,20 @@ namespace wizard_game
         {
             base.Draw(gameTime);
             if (equippedWeapon != null) equippedWeapon.Draw(gameTime);
-            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
-            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, damageArea.Width + lineWidth, lineWidth), hitboxColor);
-            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X + damageArea.Width, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
-            GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y + damageArea.Height, damageArea.Width + lineWidth, lineWidth), hitboxColor);
-            
-
         }
 
 
+
+        public void Fire(int x, int y)
+        {
+            Vector2 firePos = new Vector2(x, y);
+
+            double radians = Math.Atan2(firePos.Y - hitBox.Center.Y, firePos.X - hitBox.Center.X);
+
+            Vector2 direction = new Vector2((float)Math.Cos(radians),
+                                               (float)Math.Sin(radians));
+            direction.Normalize();
+        }
 
 
 
