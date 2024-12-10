@@ -100,7 +100,6 @@ namespace GameStateManagement
 
 
 
-
         public override void LoadContent()
         {
             if (content == null)
@@ -112,7 +111,6 @@ namespace GameStateManagement
             goldTexture = content.Load<Texture2D>("gold");
             spriteFont = content.Load<SpriteFont>("Arial");
             background = content.Load<Texture2D>("Floors/Brickwall5");
-
 
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that

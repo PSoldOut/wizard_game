@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -26,8 +27,9 @@ namespace wizard_game
             float distance = caculateDistance();
             if (distance <= 100)
             {
-                Attack();
+                Attack(distance);
             }
+            UnloadFireball();
             sprite.Update(gameTime);
 
         }
@@ -93,10 +95,42 @@ namespace wizard_game
         }
 
         //Wwenn der Abstand klein ist, wird gegen Spieler kämpfen
-        public new void Attack()
+        public void Attack(float distance)
 
         {
             MoveToPlayer();
+            if (distance >= 0)
+            {
+                createFireBalls(position, Player.Get().position);
+            }
+            SetEnemyState(EnemyState.ATTACKING);
         }
+        public void createFireBalls(Vector2 enemyPos, Vector2 playerPos)
+        {
+            // Erstelle die Position für den Fireball (in der Nähe des Feindes)
+            float posX = position.X + width / 2; // Position anpassen
+            float posY = position.Y + height / 2; // Position anpassen
+
+            // Erstelle den Fireball
+            Fireball fireball = new Fireball(posX, posY);
+            fireball.SetDirection(direction);
+            // Setze den Angriffszustand des Fireballs
+            fireball.SetAttackstate(true);
+            // Füge den Fireball der Projektilliste hinzu
+            GameplayScreen.projectiles.Add(fireball);
+        }
+
+        public void UnloadFireball()
+        {
+            foreach (Projectile p in GameplayScreen.projectiles)
+            {
+                if (p is Fireball fireball)
+                {
+                    if(fireball.hitBox.Intersects(Player.Get().hitBox))
+                    fireball.SetAttackstate(false);
+                }
+            }
+        }
+
     }
 }
