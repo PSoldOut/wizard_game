@@ -11,9 +11,16 @@ namespace wizard_game
     class Enemy : Acteur
     {
 
+        public enum EnemyState
+        {
+            ATTACKING,
+            DIE,
+            NORMAL
+        }
         public Texture2D enemy_texture;
         public float speed;
         private EnemyType e_type;
+        private EnemyState e_state;
 
         private bool drawHitBox = true;
         private int lineWidth = 2;
@@ -65,7 +72,6 @@ namespace wizard_game
 
         private bool IsObjectInFields(Vector2 test)
         {
-            //  Debug.WriteLine(test);
             // Berechne die Positionen in den Feldern (Index in room.fields)
             if (!isValidPos(test))
             {
@@ -75,7 +81,6 @@ namespace wizard_game
             int cordY = (int)test.Y / 10;
 
             // Gibt zurück, ob das Feld auf true gesetzt ist
-            //Debug.WriteLine(cordX + ", " + cordY + "  " + room.fields[cordX, cordY] + this.GetType());
             return room.fields[cordX, cordY];
 
         }
@@ -154,6 +159,16 @@ namespace wizard_game
             }
         }
 
+        public void SetEnemyState(EnemyState enemyState)
+        {
+            e_state = enemyState;
+        }
+
+        public EnemyState GetEnemyState()
+        {
+            return e_state;
+        }
+
         public void Move()
         {
 
@@ -180,8 +195,10 @@ namespace wizard_game
 
         public override void Attack()
         {
-
+          
         }
+
+
 
         public void MoveToPlayer()
 

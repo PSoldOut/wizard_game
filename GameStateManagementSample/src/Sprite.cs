@@ -59,15 +59,15 @@ public class Sprite
         animationIndex = 0;
         frameAnimations = new int[maxAnimations][];
         nameToIndexDic = new Dictionary<string, int>();
-        currentFrameData= new Color[frameWidth * frameHeight];
+        currentFrameData = new Color[frameWidth * frameHeight];
         this.isAnimated = isAnimated;
-        this.origin = new Vector2(0,0);
+        this.origin = new Vector2(0, 0);
         this.rotation = 0;
         flipped = false;
         this.isPlaying = false;
     }
 
-    public Sprite(Texture2D texture, int hFrames, int vFrames, float scale) : this(texture, hFrames, vFrames, scale, false){}
+    public Sprite(Texture2D texture, int hFrames, int vFrames, float scale) : this(texture, hFrames, vFrames, scale, false) { }
 
 
     public void Update(GameTime gameTime)
@@ -76,7 +76,7 @@ public class Sprite
         {
             currentTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             //setting the next frame of the current animation (animationIndex) after some time.
-            if (currentTime >= animationSpeed)           
+            if (currentTime >= animationSpeed)
             {
                 currentTime -= animationSpeed;
                 int animLength = frameAnimations[animationIndex].Length;
@@ -93,7 +93,7 @@ public class Sprite
 
     public void Draw(int x, int y)
     {
-        if (flipped) 
+        if (flipped)
             GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)x, (int)y, (int)(frameWidth * scale), (int)(frameHeight * scale)),
                 new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.FlipHorizontally, layerDepth);
         else
@@ -125,7 +125,7 @@ public class Sprite
         this.animationFrameIndex = 0;
         currentFrame = frameAnimations[animationIndex][animationFrameIndex];
 
-        
+
 
         texture.GetData(
             0,
@@ -135,7 +135,7 @@ public class Sprite
             frameHeight * frameWidth
 
             );
-        
+
     }
 
     //set the current animation but not restartin it when it was already the current animation
@@ -162,7 +162,10 @@ public class Sprite
         this.flipped = flipped;
     }
 
-
+    public void SetScale(float scale)
+    {
+        this.scale = scale;
+    }
     public Color[] GetCurrentColorData()
     {
         return currentFrameData;
