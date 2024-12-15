@@ -8,6 +8,9 @@ namespace wizard_game
 {
     class Enemy_Guard : Enemy
     {
+        Timer attackTimer;
+
+        bool canAttack = true;
         static int idEnemy;
         int blut = 10;
 
@@ -17,19 +20,25 @@ namespace wizard_game
             direction = new Vector2(1, 0);
             sprite.setAnimation("idle_right");
             idEnemy++;
+            attackTimer = new Timer(0.05, this);
         }
 
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            attackTimer.Update(gameTime);
             Move();
             float distance = caculateDistance();
-            if (distance <= 100)
+            if (distance <= 500)
             {
-                Attack(distance);
+                Attack();
             }
-            UnloadFireball();
+            else
+            {
+                SetEnemyState(EnemyState.NORMAL);
+            }
+            //UnloadFireball();
             sprite.Update(gameTime);
 
         }
@@ -63,28 +72,24 @@ namespace wizard_game
                 int randomNumber = random.Next(1, 101);
                 if (randomNumber % 4 == 0)
                 {
-                    // TODO: rechts
                     direction.X = 1;
                     direction.Y = 0;
                     anim = "idle_right";
                 }
                 else if (randomNumber % 4 == 1)
                 {
-                    //TODO: unten
                     direction.X = 0;
                     direction.Y = 1;
                     anim = "idle_down";
                 }
                 else if (randomNumber % 4 == 2)
                 {
-                    //TODO: oben
                     direction.X = 0;
                     direction.Y = -1;
                     anim = "idle_up";
                 }
                 else
                 {
-                    //TODO: links
                     direction.X = -1;
                     direction.Y = 0;
                     anim = "idle_left";
@@ -95,42 +100,45 @@ namespace wizard_game
         }
 
         //Wwenn der Abstand klein ist, wird gegen Spieler kämpfen
-        public void Attack(float distance)
+        public override void Attack()
 
         {
             MoveToPlayer();
-            if (distance >= 0)
+            if (canAttack)
             {
-                createFireBalls(position, Player.Get().position);
+                createFireBalls();
             }
+
             SetEnemyState(EnemyState.ATTACKING);
+            canAttack = false;
+            attackTimer.start();
         }
-        public void createFireBalls(Vector2 enemyPos, Vector2 playerPos)
+        public void createFireBalls()
         {
             // Erstelle die Position für den Fireball (in der Nähe des Feindes)
-            float posX = position.X + width / 2; // Position anpassen
-            float posY = position.Y + height / 2; // Position anpassen
+            float posX = position.X + width / 2;
+            float posY = position.Y + height / 2;
+
+            // Berechne die Richtung des Fireballs zum Spieler
+            Vector2 playerPosition = Player.Get().position;
+            Vector2 fireballDirection = playerPosition - new Vector2(posX, posY);
+            fireballDirection.Normalize(); // Richtung normalisieren
 
             // Erstelle den Fireball
-            Fireball fireball = new Fireball(posX, posY);
-            fireball.SetDirection(direction);
-            // Setze den Angriffszustand des Fireballs
+            Fireball fireball = new Fireball(posX, posY, this);
+            fireball.SetDirection(fireballDirection);
             fireball.SetAttackstate(true);
-            // Füge den Fireball der Projektilliste hinzu
             GameplayScreen.projectiles.Add(fireball);
         }
 
-        public void UnloadFireball()
+        public override void TimerCallback(Timer timer)
         {
-            foreach (Projectile p in GameplayScreen.projectiles)
+            base.TimerCallback(timer);
+            if (timer == attackTimer)
             {
-                if (p is Fireball fireball)
-                {
-                    if(fireball.hitBox.Intersects(Player.Get().hitBox))
-                    fireball.SetAttackstate(false);
-                }
+                canAttack = true; // Cooldown beendet, Angriff wieder möglich
             }
-        }
 
+        }
     }
 }

@@ -104,7 +104,7 @@
 /processorParam:TextureFormat=Color
 /build:doubler.gif
 
-#begin fireball.jpg
+#begin fireball.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -114,7 +114,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:fireball.jpg
+/build:fireball.png
 
 #begin Floors/Brickwall5.png
 /importer:TextureImporter

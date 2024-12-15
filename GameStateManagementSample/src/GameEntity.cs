@@ -130,7 +130,7 @@ namespace wizard_game
                 position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);
                 hitBox.X = (int)position.X;
                 hitBox.Y = (int)position.Y;
-                openGateSound.Play();
+                //openGateSound.Play();
                 return false;
             }
             Color[] data = sprite.GetCurrentColorData();

@@ -19,14 +19,14 @@ namespace wizard_game
         GameEntity master;
 
         public Timer(double seconds)
-        {   
+        {
             this.seconds = seconds;
             this.secondsRemaining = seconds;
             isRunning = false;
         }
 
         public Timer(double seconds, GameEntity master)
-        {   
+        {
             this.seconds = seconds;
             this.secondsRemaining = seconds;
             isRunning = false;
@@ -57,7 +57,7 @@ namespace wizard_game
 
         public void Update(GameTime gameTime)
         {
-            if (isRunning) secondsRemaining-=gameTime.ElapsedGameTime.TotalSeconds;
+            if (isRunning) secondsRemaining -=gameTime.ElapsedGameTime.TotalSeconds;
             if (secondsRemaining <= 0) stop();
         }
 
