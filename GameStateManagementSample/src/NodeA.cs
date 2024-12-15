@@ -133,7 +133,7 @@ class NodeA
 				}
 			}
 		}
-        Console.WriteLine("---------------------------------------------");
+      //  Console.WriteLine("---------------------------------------------");
 		return goldCount;
     }
 

@@ -51,7 +51,7 @@ namespace wizard_game
                 }
             }
 
-            Console.WriteLine("No solution found.");
+          //  Console.WriteLine("No solution found.");
             return null;
         }
     }

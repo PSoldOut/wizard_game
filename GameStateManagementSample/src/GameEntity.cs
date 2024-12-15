@@ -40,8 +40,8 @@ namespace wizard_game
 
         public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
         {
-            openGateSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("Horror_sound_Library/Gate_Open_00").CreateInstance();
-            openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
+            //openGateSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("Horror_sound_Library/Gate_Open_00").CreateInstance();
+            //openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
 
             //Debug.WriteLine("init new game entity" + position.ToString() + " w" +width + " h "+height+" name"+spritename);
             this.position = position;
@@ -120,7 +120,7 @@ namespace wizard_game
                 position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);
                 hitBox.X = (int)position.X;
                 hitBox.Y = (int)position.Y;
-                openGateSound.Play();
+                //openGateSound.Play();
                 return false;
             }
             Color[] data = sprite.GetCurrentColorData();
@@ -152,7 +152,7 @@ namespace wizard_game
         }
 
 
-        
+
         public virtual void TimerCallback(Timer timer){}
     }
 
