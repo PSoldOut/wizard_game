@@ -59,7 +59,7 @@ namespace wizard_game
             int i = 0;
             while (DetacteCollison(tmp) && i < 10)
             {
-                Console.WriteLine("auifhseoighseogihseogih");
+                //Console.WriteLine("auifhseoighseogihseogih");
                 // tmp = position - direction * speed;
                 // int randomNumber = random.Next(1, 101);
                 // if (randomNumber % 4 == 0)

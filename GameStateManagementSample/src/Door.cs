@@ -158,7 +158,7 @@ namespace wizard_game
                     effect = SpriteEffects.FlipHorizontally;
                     break;
             }
-            Debug.WriteLine("door " + hitBox + angle + effect + origin);
+            //Debug.WriteLine("door " + hitBox + angle + effect + origin);
             GameStateManagementGame._spriteBatch.Draw(sprite.texture,
             hitBox,
             source,
