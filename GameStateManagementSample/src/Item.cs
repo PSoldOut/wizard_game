@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using GameStateManagement;
+using Manager;
 
 namespace wizard_game
 {
@@ -25,7 +26,7 @@ namespace wizard_game
 
         public Item(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
         {
-            effectSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/leather_inventory").CreateInstance();
+            effectSound = AssetManager.GetSoundInstance("inventory_sound_effects/leather_inventory");
             this.area = new Rectangle((int)position.X, (int)position.Y, 50, 50);
             state = State.ON_FLOOR;
         }

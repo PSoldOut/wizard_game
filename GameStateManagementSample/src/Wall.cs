@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -30,11 +31,7 @@ namespace wizard_game
 
             idx = _id;
             room = _room;
-            if (spritename != null)
-            {
-                sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 1);
-            }
-            else
+            if (spritename == null)
             {
 
                 image = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
@@ -43,7 +40,7 @@ namespace wizard_game
             }
 
 
-
+            LoadSprite();
             setFields();
         }
         private void setFields()
@@ -144,6 +141,7 @@ namespace wizard_game
         public override void Draw(GameTime gameTime)
         {
             //Debug.WriteLine("Call Override");
+
             GameStateManagementGame._spriteBatch.Draw(sprite.texture, hitBox, Color.White);
             drawDebugHitBox();
             //base.Draw(gameTime);

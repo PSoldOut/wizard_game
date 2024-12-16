@@ -32,7 +32,7 @@ namespace wizard_game
 
             //hab das in konstruktor verschoben weil es loadContent nicht mehr gibt. wir haben ja DrawableGameComponent rausgenommen
             //Load Content: Texture für Enemy
-            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
+            LoadSprite(4,4,1,true);
             InitAnimations();
             enemy_texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             enemy_texture.SetData(new Color[] { Color.Black });

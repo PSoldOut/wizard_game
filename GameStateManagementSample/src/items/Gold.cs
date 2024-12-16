@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -18,9 +19,9 @@ namespace  wizard_game
 
         public Gold(int x, int y) : base(new Vector2(x, y), 27, 27, "gold", false)
         {
-            effectSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/ring_inventory").CreateInstance();
+            effectSound = AssetManager.GetSoundInstance("inventory_sound_effects/ring_inventory");
             effectSound.Volume = GameStateManagementGame.GetSoundVolume();
-            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.4f);
+            LoadSprite(1,1,0.4f);
             width = sprite.frameWidth;
             height = sprite.frameHeight;
         }

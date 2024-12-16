@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 
@@ -12,7 +13,7 @@ namespace wizard_game
         Map map;
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
         {
-            dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6").CreateInstance();
+            dieSound = AssetManager.GetSoundInstance("monster_sfx_pack/monster-6");
             dieSound.Volume = GameStateManagementGame.GetSoundVolume();
             setSpeed();
             this.map = map;

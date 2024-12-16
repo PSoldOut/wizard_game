@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using System.Diagnostics;
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -34,11 +35,13 @@ namespace wizard_game
         SoundEffectInstance stepsSound;
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
-            stepsSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("footsteps/step_lth1").CreateInstance();
+            stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
             stepsSound.Volume = GameStateManagementGame.GetSoundVolume();
-            inventorySound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/cloth-inventory").CreateInstance();
+            inventorySound = AssetManager.GetSoundInstance("inventory_sound_effects/cloth-inventory");
             inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
-            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
+
+            LoadSprite(4,4,1,true);
+            
             InitAnimations();
             direction = new Vector2(0, -1);
             this.weapons = new List<Weapon>();

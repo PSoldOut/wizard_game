@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Audio;
 
 using GameStateManagement;
 using System.Runtime.CompilerServices;
+using Manager;
 
 namespace wizard_game
 {
@@ -27,9 +28,9 @@ namespace wizard_game
         public Acteur(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
         {
             health = DEFAULT_MAX_HEALTH;
-            dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6").CreateInstance();
+            dieSound = ((SoundEffect) AssetManager.Get("monster_sfx_pack/monster-6")).CreateInstance();
             dieSound.Volume = GameStateManagementGame.GetSoundVolume();
-            damageSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-5").CreateInstance();
+            damageSound = ((SoundEffect) AssetManager.Get("monster_sfx_pack/monster-5")).CreateInstance();
             damageSound.Volume = GameStateManagementGame.GetSoundVolume();
             dieTimer = new Timer(1, this);
             isDying = false;

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Audio;
+using Manager;
 
 namespace wizard_game
 {
@@ -40,7 +41,8 @@ namespace wizard_game
 
         public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
         {
-            openGateSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("Horror_sound_Library/Gate_Open_00").CreateInstance();
+            
+            openGateSound = AssetManager.GetSoundInstance("Horror_Sound_Library/Gate_Open_00");
             openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
 
             //Debug.WriteLine("init new game entity" + position.ToString() + " w" +width + " h "+height+" name"+spritename);
@@ -48,6 +50,7 @@ namespace wizard_game
             this.width = width;
             this.height = height;
             this.spritename = spritename;
+            
             this.hasCollision = hasCollision;
             hitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             image_hitbox = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
@@ -55,6 +58,13 @@ namespace wizard_game
 
             damageOffset = new Vector2(damageDistance, 0);
             damageArea = new Rectangle((int)(position.X+damageOffset.X), (int)(position.Y+damageOffset.Y), 27, 45);
+        }
+        public void LoadSprite(int hFrames=1, int vFrames=1, float scale=1,bool isAnimated=false)
+        {
+            if(spritename!="" && spritename !=null)
+            {
+                sprite = new Sprite(AssetManager.GetTexture(spritename), hFrames, vFrames, scale,isAnimated);
+            }
         }
 
         public virtual void OnInput(GameStateManagementGame.InputState input)

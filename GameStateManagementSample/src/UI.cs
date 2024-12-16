@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using System.Diagnostics;
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -20,11 +21,12 @@ namespace wizard_game
 
         public UI()
         {
-            heartSprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>("heart"), 1, 1, 1, false);
+            heartSprite = new Sprite(AssetManager.GetTexture("heart"), 1, 1, 1, false);
             heartSprite.layerDepth = 0.3f;
-            goldSprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>("gold"), 1, 1, 1, false);
+            
+            goldSprite = new Sprite(AssetManager.GetTexture("gold"), 1, 1, 1, false);
             goldSprite.layerDepth = 0.3f;
-            spriteFont = GameStateManagementGame.Get().Content.Load<SpriteFont>("Arial");
+            spriteFont = AssetManager.GetFont("Arial");
         }
         
 

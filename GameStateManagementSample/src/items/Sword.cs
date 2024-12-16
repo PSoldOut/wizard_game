@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using System.Diagnostics;
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -27,11 +28,12 @@ namespace wizard_game
 
         public Sword(int x, int y) : base(new Vector2(x, y), 20, 5, "sword", false, WeaponName.SWORD)
         {
-            hitSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("hits/hit02.mp3").CreateInstance();
+            hitSound = AssetManager.GetSoundInstance("hits/hit02.mp3");
             hitSound.Volume = GameStateManagementGame.GetSoundVolume();
-            swishSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("battle_sound_effects/swish_2").CreateInstance();
+
+            swishSound = AssetManager.GetSoundInstance("battle_sound_effects/swish_2");
             swishSound.Volume = GameStateManagementGame.GetSoundVolume();
-            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.16f);
+            LoadSprite(1,1,0.16f);
             equipedOffsetRight = new Vector2(26,23);
             equipedOffsetLeft = new Vector2(-2, 23);
             equipedOffsetDown = new Vector2(18,33);
