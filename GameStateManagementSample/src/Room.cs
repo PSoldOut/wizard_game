@@ -134,15 +134,15 @@ namespace wizard_game
             }
             if (usedSitesForDoor.Count == 1)
             {
-                for (int c = 0; c < 5; c++)
+                for (int c = 0; c < 1; c++)
                 {
 
 
                     int XLength = fields.GetLength(0);
                     int YLength = fields.GetLength(1);
-                    int x = rnd.Next(XLength);
-                    int y = rnd.Next(YLength);
-                    DirEnum dir = (DirEnum)rnd.Next(0, 4);
+                    int x = rnd.Next(XLength/4,XLength/4*3);
+                    int y = rnd.Next(YLength/4,YLength/4*3);
+                    DirEnum dir = (DirEnum)rnd.Next(0, 0);
                     DirEnum dirOld = dir;
                     bool changeDir = false;
                     int iteraions = 50;
@@ -150,8 +150,11 @@ namespace wizard_game
                     int dirChangesMax = 5;
                     for (int i = 0; i < iteraions; i++)
                     {
+                        Debug.WriteLine((x, y));
                         if (changeDir || rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))
                         {
+                            Debug.WriteLine("change dir");
+
                             if (changeDir)
                             {
                                 changeDir = false;
@@ -191,10 +194,15 @@ namespace wizard_game
                                 }
                                 if (WallOverlap(new Point((x + 2) * 10, y * 10), 20, 20))
                                 {
+                                    Debug.WriteLine("overlap 1");
                                     changeDir = true;
                                     continue;
                                 }
-
+                                if (CheckNeighbors(x, y, dir))
+                                {
+                                    changeDir = true;
+                                    continue;
+                                }
 
 
                                 break;
@@ -247,7 +255,7 @@ namespace wizard_game
                                 break;
 
                         }
-                        //Debug.WriteLine(("create wall att ", new Point(x * 10, y * 10)));
+                        Debug.WriteLine(("create wall att ", new Point(x * 10, y * 10)));
                         if (!WallOverlap(new Point(x * 10, y * 10), 20, 20))
                         {
                             wallBuilder(new Point(x * 10, y * 10), new Point(20, 20));
@@ -267,17 +275,18 @@ namespace wizard_game
             return door.Site;
 
         }
-        public bool CheckNeighbors(int x,int y ,DirEnum dir)
+        private bool CheckNeighbors(int x, int y, DirEnum dir)
         {
-            switch(dir)
+            switch (dir)
             {
                 case DirEnum.Left:
-
-                break
+                    if (WallOverlap(new Point(x, y), 40, 20)) return true;
+                    break;
             }
+            Debug.WriteLine("neibor not overlap");
             return false;
         }
-        
+
         public bool WallOverlap(Point position, int width, int height)
         {
             for (int x = 0; x < width / 10; x++)
@@ -286,9 +295,9 @@ namespace wizard_game
                 {
                     int cordX = (int)position.X / 10 + x;
                     int cordY = (int)position.Y / 10 + y;
-                    if(fields.GetLength(0)>=cordX || cordX<0)return true;
-                    if(fields.GetLength(1)>=cordY|| cordY<0)return true;
-                    if (fields[cordX, cordY])return true;
+                    if (cordX >= fields.GetLength(0) || cordX < 0) return true;
+                    if (cordY >= fields.GetLength(1) || cordY < 0) return true;
+                    if (fields[cordX, cordY]) return true;
 
 
                 }
