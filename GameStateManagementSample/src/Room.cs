@@ -141,13 +141,13 @@ namespace wizard_game
 
                 DirEnum dirOld = dir;
                 bool changeDir = false;
-                int iteraions = 50;
+                int iteraions = 70;
                 int dirChanges = 1;
                 int dirChangesMax = 5;
                 for (int i = 0; i < iteraions; i++)
                 {
                     //Debug.WriteLine((x, y));
-                    if (changeDir || rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))
+                    if (changeDir)//|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges)
                     {
                         //Debug.WriteLine("change dir");
 
@@ -187,17 +187,19 @@ namespace wizard_game
                         break;
                     }
 
-
+                    int res;
                     switch (dir)
                     {
                         case DirEnum.Right:
                             x += 2;
-
-                            if (CheckNeighbors(x, y, dir))
+                            res = CheckNeighbors(x, y, dir);
+                            if (res == 1)
                             {
-                                Debug.WriteLine("CheckNeighbors for right" + " x " + x + " y " + y);
-                                x -= 2;
-                                changeDir = true;
+                                i = iteraions;
+                                continue;
+                            }
+                            if (res == 2)
+                            {
                                 continue;
                             }
 
@@ -206,36 +208,42 @@ namespace wizard_game
                         case DirEnum.Left:
                             x -= 2;
 
-                            if (CheckNeighbors(x, y, dir))
+                            res = CheckNeighbors(x, y, dir);
+                            if (res == 1)
                             {
-                                Debug.WriteLine("CheckNeighbors for left" + " x " + x + " y " + y);
-                                x += 2;
-                                changeDir = true;
+                                i = iteraions;
                                 continue;
                             }
-
+                            if (res == 2)
+                            {
+                                continue;
+                            }
                             break;
                         case DirEnum.Top:
                             y -= 2;
 
-                            if (CheckNeighbors(x, y, dir))
+                            res = CheckNeighbors(x, y, dir);
+                            if (res == 1)
                             {
-                                Debug.WriteLine("CheckNeighbors for top" + " x " + x + " y " + y);
-                                y += 2;
-                                changeDir = true;
+                                i = iteraions;
                                 continue;
                             }
-
+                            if (res == 2)
+                            {
+                                continue;
+                            }
 
                             break;
                         case DirEnum.Bottom:
                             y += 2;
-
-                            if (CheckNeighbors(x, y, dir))
+                            res = CheckNeighbors(x, y, dir);
+                            if (res == 1)
                             {
-                                Debug.WriteLine("CheckNeighbors for bott" + " x " + x + " y " + y);
-                                y -= 2;
-                                changeDir = true;
+                                i = iteraions;
+                                continue;
+                            }
+                            if (res == 2)
+                            {
                                 continue;
                             }
 
@@ -252,36 +260,45 @@ namespace wizard_game
                 Debug.WriteLine(("max", XLength, YLength));
             }
         }
-        private bool CheckNeighbors(int x, int y, DirEnum dir)
+        private int CheckNeighbors(int x, int y, DirEnum dir)
         {
             x *= 10;
             y *= 10;
             switch (dir)
             {
                 case DirEnum.Right:
-                    if (WallOverlap(new Point(x, y), 80, 20)) return true;//checkt right
+                    if (x > W_Width - 80)
+                    {
+                        return 1;
+                    }
 
-                    if (WallOverlap(new Point(x, y - 40), 40, 120)) return true;//front
                     break;
                 case DirEnum.Left:
-                    if (WallOverlap(new Point(x - 60, y), 80, 20)) return true;//check left
-
-                    if (WallOverlap(new Point(x - 80, y - 40), 40, 120)) return true;//front
+                    if (x < 80)
+                    {
+                        return 1;
+                    }
                     break;
+
                 case DirEnum.Top:
-                    if (WallOverlap(new Point(x, y), 80, 20)) return true;
-
-                    if (WallOverlap(new Point(x - 40, y - 80), 120, 40)) return true;//front
-
+                    if (y < 80)
+                    {
+                        return 1;
+                    }
                     break;
+
+
                 case DirEnum.Bottom:
-                    if (WallOverlap(new Point(x, y), 80, 20)) return true;
-
-                    if (WallOverlap(new Point(x - 40, y), 40, 120)) return true;//front
+                    if (y > W_Height - 80)
+                    {
+                        return 1;
+                    }
                     break;
+
             }
+            
             //Debug.WriteLine("neibor not overlap");
-            return false;
+            return 0;
         }
 
         public bool WallOverlap(Point position, int width, int height)
@@ -305,25 +322,6 @@ namespace wizard_game
 
             }
             return false;
-        }
-        public void generateObstacles(int count)
-        {
-            return;
-            int generated = 0;
-            while (generated != count)
-            {
-                Point rockPos = new Point(rnd.Next(10, 120) * 10, rnd.Next(10, 60) * 10);
-                if (intersectObstacle(rockPos))
-                {
-                    Debug.WriteLine("Rocks intersect we draw new");
-                    continue;
-                }
-                //Debug.WriteLine("Draw " + generated + " Pos: " + rockPos);
-                Tile rock = new Tile(this, Tile.tileType.Rock, rockPos);
-                obstacles.Add(rock);
-                generated++;
-            }
-
         }
         public bool intersectObstacle(Point pos)
         {
