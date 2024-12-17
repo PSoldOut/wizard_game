@@ -134,15 +134,17 @@ namespace wizard_game
             }
             if (usedSitesForDoor.Count == 1)
             {
-                for (int c = 0; c < 1; c++)
+                for (int c = 0; c < 3; c++)
                 {
 
 
                     int XLength = fields.GetLength(0);
                     int YLength = fields.GetLength(1);
-                    int x = rnd.Next(XLength/4,XLength/4*3);
-                    int y = rnd.Next(YLength/4,YLength/4*3);
-                    DirEnum dir = (DirEnum)rnd.Next(0, 0);
+                    int x = rnd.Next(XLength / 4, XLength / 4 * 3);
+                    int y = rnd.Next(YLength / 4, YLength / 4 * 3);
+                    //x = 50;
+                    //y = 50;
+                    DirEnum dir = (DirEnum)rnd.Next(3, 3);
                     DirEnum dirOld = dir;
                     bool changeDir = false;
                     int iteraions = 50;
@@ -150,8 +152,8 @@ namespace wizard_game
                     int dirChangesMax = 5;
                     for (int i = 0; i < iteraions; i++)
                     {
-                        Debug.WriteLine((x, y));
-                        if (changeDir || rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))
+                        //Debug.WriteLine((x, y));
+                        if (changeDir|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))//
                         {
                             Debug.WriteLine("change dir");
 
@@ -184,87 +186,61 @@ namespace wizard_game
                         }
                         switch (dir)
                         {
-                            case DirEnum.Left:
+                            case DirEnum.Right:
                                 x += 2;
-                                if (x >= XLength - 3)
+
+                                if (CheckNeighbors(x, y, dir))
                                 {
+                                    Debug.WriteLine("CheckNeighbors for right");
                                     x -= 2;
                                     changeDir = true;
                                     continue;
                                 }
-                                if (WallOverlap(new Point((x + 2) * 10, y * 10), 20, 20))
-                                {
-                                    Debug.WriteLine("overlap 1");
-                                    changeDir = true;
-                                    continue;
-                                }
-                                if (CheckNeighbors(x, y, dir))
-                                {
-                                    changeDir = true;
-                                    continue;
-                                }
 
 
                                 break;
-                            case DirEnum.Right:
+                            case DirEnum.Left:
                                 x -= 2;
-                                if (x < 2)
+
+                                if (CheckNeighbors(x, y, dir))
                                 {
+                                    Debug.WriteLine("CheckNeighbors for left");
                                     x += 2;
                                     changeDir = true;
                                     continue;
                                 }
-                                if (WallOverlap(new Point((x - 2) * 10, y * 10), 20, 20))
-                                {
-                                    changeDir = true;
-                                    continue;
-                                }
-
 
                                 break;
                             case DirEnum.Top:
                                 y -= 2;
-                                if (y < 2)
+
+                                if (CheckNeighbors(x, y, dir))
                                 {
+                                    Debug.WriteLine("CheckNeighbors for top");
                                     y += 2;
                                     changeDir = true;
                                     continue;
                                 }
-                                if (WallOverlap(new Point(x * 10, (y - 2) * 10), 20, 20))
-                                {
-                                    changeDir = true;
-                                    continue;
-                                }
 
 
                                 break;
-                            case DirEnum.Bottom://left
+                            case DirEnum.Bottom:
                                 y += 2;
-                                if (y >= YLength - 3)
+
+                                if (CheckNeighbors(x, y, dir))
                                 {
+                                    Debug.WriteLine("CheckNeighbors for bott");
                                     y -= 2;
                                     changeDir = true;
                                     continue;
                                 }
-                                if (WallOverlap(new Point(x * 10, (y + 2) * 10), 20, 20))
-                                {
-                                    changeDir = true;
-                                    continue;
-                                }
 
                                 break;
 
                         }
-                        Debug.WriteLine(("create wall att ", new Point(x * 10, y * 10)));
-                        if (!WallOverlap(new Point(x * 10, y * 10), 20, 20))
-                        {
-                            wallBuilder(new Point(x * 10, y * 10), new Point(20, 20));
 
-                        }
-                        else
-                        {
-                            changeDir = true;
-                        }
+                        //Debug.WriteLine(("create wall att ", new Point(x * 10, y * 10)));
+                        wallBuilder(new Point(x * 10, y * 10), new Point(20, 20));
 
                     }
 
@@ -277,13 +253,40 @@ namespace wizard_game
         }
         private bool CheckNeighbors(int x, int y, DirEnum dir)
         {
+            x*=10;
+            y*=10;
             switch (dir)
             {
+                case DirEnum.Right:
+                    if (WallOverlap(new Point(x, y), 40, 20)) return true;//checkt right
+                    if (WallOverlap(new Point(x, y + 20), 20, 20)) return true;//check bottom
+                    if (WallOverlap(new Point(x, y + 40), 20, 20)) return true;//check bottom
+                    if (WallOverlap(new Point(x, y - 20), 20, 20)) return true;//check top
+                    if (WallOverlap(new Point(x, y - 40), 20, 20)) return true;//check top
+                    break;
+
+
                 case DirEnum.Left:
-                    if (WallOverlap(new Point(x, y), 40, 20)) return true;
+                    if (WallOverlap(new Point(x - 40, y), 40, 20)) return true;//check left
+                    if (WallOverlap(new Point(x, y + 20), 20, 20)) return true;//check bottom
+                    if (WallOverlap(new Point(x, y + 40), 20, 20)) return true;//check bottom
+                    if (WallOverlap(new Point(x, y - 20), 20, 20)) return true;//check top
+                    if (WallOverlap(new Point(x, y - 40), 20, 20)) return true;//check top
+                    break;
+                case DirEnum.Top:
+                    if (WallOverlap(new Point(x, y), 40, 20)) return true;//checkt right
+                    if (WallOverlap(new Point(x - 40, y), 40, 20)) return true;//check left
+                    if (WallOverlap(new Point(x, y - 20), 20, 20)) return true;//check top
+                    if (WallOverlap(new Point(x, y - 40), 20, 20)) return true;//check top
+                    break;
+                case DirEnum.Bottom:
+                    if (WallOverlap(new Point(x, y), 40, 20)) return true;//checkt right
+                    if (WallOverlap(new Point(x - 40, y), 40, 20)) return true;//check left
+                    if (WallOverlap(new Point(x, y + 20), 20, 20)) return true;//check bottom
+                    if (WallOverlap(new Point(x, y + 40), 20, 20)) return true;//check bottom
                     break;
             }
-            Debug.WriteLine("neibor not overlap");
+            //Debug.WriteLine("neibor not overlap");
             return false;
         }
 
