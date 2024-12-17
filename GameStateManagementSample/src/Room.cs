@@ -105,7 +105,12 @@ namespace wizard_game
         }
         public void BuildWalls()
         {
-            for (int c = 0; c < 3; c++)
+            //debug
+            /*for (int i = 0; i < 60; i++)
+            {
+                wallBuilder(new Point(i * 20, 500), new Point(20, 20));
+            }*/
+            for (int c = 0; c < 5; c++)
             {
 
                 Debug.WriteLine("new wall #######");
@@ -117,7 +122,7 @@ namespace wizard_game
                 //x = 50;
                 //y = 50;
                 DirEnum dir = (DirEnum)rnd.Next(0, 4);
-                //DirEnum dir = DirEnum.Right;
+                //DirEnum dir = DirEnum.Bottom;
                 switch (dir)
                 {
                     case DirEnum.Right:
@@ -144,10 +149,11 @@ namespace wizard_game
                 int iteraions = 70;
                 int dirChanges = 1;
                 int dirChangesMax = 5;
+
                 for (int i = 0; i < iteraions; i++)
                 {
                     //Debug.WriteLine((x, y));
-                    if (changeDir)//|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges)
+                    if (changeDir|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))//|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges)
                     {
                         //Debug.WriteLine("change dir");
 
@@ -202,6 +208,17 @@ namespace wizard_game
                             {
                                 continue;
                             }
+                            if (res == 3)
+                            {
+
+                                x += 8;
+                                if (CheckBorder(x, y, dir))
+                                {
+                                    i = iteraions;
+
+                                }
+                                continue;
+                            }
 
 
                             break;
@@ -218,9 +235,21 @@ namespace wizard_game
                             {
                                 continue;
                             }
+                            if (res == 3)
+                            {
+
+                                x -= 8;
+                                if (CheckBorder(x, y, dir))
+                                {
+                                    i = iteraions;
+
+                                }
+                                continue;
+                            }
                             break;
                         case DirEnum.Top:
                             y -= 2;
+
 
                             res = CheckNeighbors(x, y, dir);
                             if (res == 1)
@@ -232,7 +261,17 @@ namespace wizard_game
                             {
                                 continue;
                             }
+                            if (res == 3)
+                            {
 
+                                y -= 8;
+                                if (CheckBorder(x, y, dir))
+                                {
+                                    i = iteraions;
+
+                                }
+                                continue;
+                            }
                             break;
                         case DirEnum.Bottom:
                             y += 2;
@@ -244,6 +283,17 @@ namespace wizard_game
                             }
                             if (res == 2)
                             {
+                                continue;
+                            }
+                            if (res == 3)
+                            {
+
+                                y += 8;
+                                if (CheckBorder(x, y, dir))
+                                {
+                                    i = iteraions;
+
+                                }
                                 continue;
                             }
 
@@ -260,43 +310,92 @@ namespace wizard_game
                 Debug.WriteLine(("max", XLength, YLength));
             }
         }
-        private int CheckNeighbors(int x, int y, DirEnum dir)
+        private bool CheckBorder(int x, int y, DirEnum dir)
         {
             x *= 10;
             y *= 10;
             switch (dir)
             {
                 case DirEnum.Right:
-                    if (x > W_Width - 80)
+                    if (x > W_Width - 80) return true;
+                    break;
+                case DirEnum.Left:
+                    if (x < 80) return true;
+                    break;
+                case DirEnum.Top:
+                    if (y < 80) return true;
+                    break;
+                case DirEnum.Bottom:
+                    if (y > W_Height - 100) return true;
+                    break;
+
+            }
+            return false;
+        }
+        private int CheckNeighbors(int x, int y, DirEnum dir)
+        {
+
+            if (CheckBorder(x, y, dir))
+            {
+                return 1;
+            }
+            x *= 10;
+            y *= 10;
+            switch (dir)
+            {
+                case DirEnum.Right:
+                    if (WallOverlap(new Point(x, y - 40), 40, 100))
                     {
-                        return 1;
+
+                        return 2;
                     }
+                    if (WallOverlap(new Point(x, y), 60, 20)) //in front 
+                    {
+                        return 3;
+                    }
+
 
                     break;
                 case DirEnum.Left:
-                    if (x < 80)
+                    if (WallOverlap(new Point(x - 40, y - 40), 40, 100))
                     {
-                        return 1;
+
+                        return 2;
+                    }
+                    if (WallOverlap(new Point(x - 40, y), 60, 20)) //in front 
+                    {
+                        return 3;
                     }
                     break;
 
                 case DirEnum.Top:
-                    if (y < 80)
+                    if (WallOverlap(new Point(x - 40, y - 40), 100, 40))
                     {
-                        return 1;
+
+                        return 2;
+                    }
+                    if (WallOverlap(new Point(x, y - 40), 20, 60)) //in front 
+                    {
+                        return 3;
                     }
                     break;
 
 
                 case DirEnum.Bottom:
-                    if (y > W_Height - 80)
+                    if (WallOverlap(new Point(x - 40, y), 100, 40))
                     {
-                        return 1;
+
+                        return 2;
                     }
+                    if (WallOverlap(new Point(x, y), 20, 60)) //in front 
+                    {
+                        return 3;
+                    }
+                    break;
                     break;
 
             }
-            
+
             //Debug.WriteLine("neibor not overlap");
             return 0;
         }
