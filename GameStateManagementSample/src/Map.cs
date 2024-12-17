@@ -106,7 +106,10 @@ namespace wizard_game
         }
 
 
-
+        public void ReloadWalls()
+        {
+            activeRoom.ReloadWalls();
+        }
 
         public bool DetacteCollison(Rectangle hitbox, Color[] playerImage, bool deleteBots = true)
         {
