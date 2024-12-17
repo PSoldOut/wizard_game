@@ -15,14 +15,18 @@ namespace wizard_game
         bool isAttacking;
         SoundEffect shootSound;
         Timer timer;
-        public Fireball(float x, float y, Enemy attacker) : base(new Vector2(x, y), 1, 1, "fireball", false, attacker)
+        public static int FIREBALL_WIDTH = 60;
+        public static int FIREBALL_HEIGHT = 60;
+        public Fireball(float x, float y, Enemy attacker) : base(new Vector2(x, y), FIREBALL_WIDTH, FIREBALL_HEIGHT, "fireball", false, attacker)
         {
-            shootSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("battle_sound_effects/Bow");
-            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.12f);
-            sprite.SetScale(0.03f);
+            shootSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("fire");
+            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.03f);
+            sprite.offset = new Vector2(FIREBALL_WIDTH/2.0f, FIREBALL_HEIGHT/2.0f);
+            sprite.origin = new Vector2(FIREBALL_WIDTH/0.03f/2.0f, FIREBALL_HEIGHT/0.03f/2.0f);
+            
             timer = new Timer(3, this);
             isAttacking = false;
-            speed = 100f;
+            speed = 250f;
         }
 
         public override void Update(GameTime gameTime)
@@ -34,9 +38,7 @@ namespace wizard_game
             if (Math.Sqrt(Math.Pow(position.X - Player.Get().position.X, 2) + Math.Pow(position.Y - Player.Get().position.Y, 2)) < 20)
             {
                 //Console.WriteLine("player erreicht");
-                shootSound.Play();
                 GameplayScreen.projectiles.Remove(this);
-
                 return;
             }
             if (Math.Abs(position.X - startPos.X) > 400 || Math.Abs(position.Y - startPos.Y) > 400)
@@ -48,11 +50,22 @@ namespace wizard_game
 
             position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Console.WriteLine("direction: " + direction);
-                   }
+
+
+            float opposite = direction.X;
+            float adjecent = direction.Y;
+            float alpha = (float)Math.Atan2(opposite,adjecent);
+            rotation = -alpha;
+
+         }
+
+
+
 
         public void SetAttackstate(bool isAttacking)
         {
             timer.start();
+            shootSound.Play();
             this.isAttacking = isAttacking;
         }
 
@@ -73,14 +86,15 @@ namespace wizard_game
         }
 
         public new void SetDirection(Vector2 fireballDirection){
-             Vector2 tmp = new Vector2(0,0);
-            if(fireballDirection.X > 0){
-                tmp.X = 1;
-            }else tmp.X = -1;
-             if(fireballDirection.Y > 0){
-                tmp.Y = 1;
-            }else tmp.Y = -1;
-             direction = tmp;
+            // Vector2 tmp = new Vector2(0,0);
+            //if(fireballDirection.X > 0){
+            //    tmp.X = 1;
+            //}else tmp.X = -1;
+            // if(fireballDirection.Y > 0){
+            //    tmp.Y = 1;
+            //}else tmp.Y = -1;
+            // direction = tmp;
+            this.direction = fireballDirection;
         }
 
 

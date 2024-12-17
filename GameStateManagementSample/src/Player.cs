@@ -27,9 +27,7 @@ namespace wizard_game
         private List<Weapon> weapons;
         private Weapon equippedWeapon;
         public int coins;
-        float stepsSpeed = 0.01f;
-        float currentStepFreq = 0.0f;
-        float stepSoundFreq = 0.3f;
+        float stepsSpeed = 0.1f;
         Timer stepsTimer;
 
         SoundEffectInstance inventorySound;
@@ -114,7 +112,7 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
+            if (isDying) return;
             damageArea.X = (int)(position.X+damageOffset.X);
             damageArea.Y = (int)(position.Y+damageOffset.Y);
 
@@ -131,7 +129,7 @@ namespace wizard_game
             DetacteCollisonX(oldPos);
             DetacteCollisonY(oldPos);
             sprite.setAnimation(currentAnimation);
-            sprite.Update(gameTime);
+            
             if (equippedWeapon != null) equippedWeapon.Update(gameTime);
             //keeping the position of the weapons by the player
             foreach (Weapon w in weapons)
@@ -152,12 +150,6 @@ namespace wizard_game
             else stepsTimer.pause();
 
             stepsTimer.Update(gameTime);
-            if (currentSpeed > 0 && currentStepFreq >= stepSoundFreq)
-            {
-                stepsSound.Play();
-                currentStepFreq = 0;
-            }
-            currentStepFreq++;
         }
 
 
@@ -215,6 +207,10 @@ namespace wizard_game
                 int x = GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth);
                 int y = GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight);
                 position = new Vector2(x, y);
+            }
+            if (inputState.IsNewKeyPress(Keys.K))
+            {
+                takeDamage(1);
             }
         }
 
@@ -347,6 +343,7 @@ namespace wizard_game
 
 
 
+
         public void CheckForItems()
         {
             foreach(Item item in GameplayScreen.items)
@@ -375,9 +372,39 @@ namespace wizard_game
         }
 
 
+        public void reset()
+        {
+            weapons = new List<Weapon>();
+            position = new Vector2(400,400);
+            health = 2;
+            coins = 0;
+            rotation = 0;
+        }
+
+
+        public override void Die()
+        {
+            base.Die();
+            sprite.setAnimation("idle_right");
+            equippedWeapon = null;
+        }
+
+
         public override void TimerCallback(Timer timer)
         {
+            ScreenManager screenManager = GameStateManagementGame.Get().screenManager;
             if (timer == stepsTimer) stepsSound.Play();
+            if (timer == dieTimer)
+            {
+                isDying = false;
+                for (int i = screenManager.screens.Count-1; i >= 0; i--)
+                {
+                    screenManager.screens.Remove(screenManager.screens[i]);
+                }
+                screenManager.AddScreen(new BackgroundScreen(), null);
+                screenManager.AddScreen(new MainMenuScreen(), null);
+                reset();
+            }
         }
 
     }

@@ -51,7 +51,7 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            sprite.Update(gameTime);
+            if (isDying) return;
             if (path.Count ==0)
             {
                 cordXInGamestate = (int)position.X / 10;
@@ -66,7 +66,7 @@ namespace wizard_game
                 }
             }
             
-            if (moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
+            if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
             //Console.WriteLine("count: " + path.Count() + "nextTarget:" + path[path.Count-1]);
 
         }
@@ -74,7 +74,7 @@ namespace wizard_game
         //Bewegung des Gegners: wenn kein Objekt auf dem Weg zu Spieler gibt, dann verfolgt er spieler
         public new void Move()
         {
-            if (!IsObjBetweenEnemyAndPlayer() && !isDying)
+            if (!IsObjBetweenEnemyAndPlayer())
             {
                 follow();
             }

@@ -21,9 +21,10 @@ namespace wizard_game
         public int health;
         protected SoundEffectInstance dieSound;
         protected SoundEffectInstance damageSound;
-        Timer dieTimer;
+        protected Timer dieTimer;
         protected bool isDying;
         protected bool isTakingDamage;
+        ParticleSystem particleSystem;
 
         public Acteur(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
         {
@@ -35,6 +36,7 @@ namespace wizard_game
             dieTimer = new Timer(1, this);
             isDying = false;
             isTakingDamage = false;
+            particleSystem = new ParticleSystem();
         }
 
 
@@ -68,6 +70,7 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            particleSystem.Update(gameTime);
             dieTimer.Update(gameTime);
             if (isTakingDamage)
             {
@@ -86,6 +89,13 @@ namespace wizard_game
         }
 
 
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            particleSystem.Draw(image_hitbox);
+        }
+
+
         public override void TimerCallback(Timer timer)
         {
             if (timer == dieTimer)
@@ -99,6 +109,7 @@ namespace wizard_game
         public virtual void takeDamage(int damage)
         {
             damageSound.Play();
+            particleSystem.AddBloodEffect(new Vector2(position.X+width/2, position.Y+height/2), 20);
             health-=damage;
             isTakingDamage = true;
             Console.WriteLine(health);

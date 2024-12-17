@@ -27,10 +27,11 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (isDying) return;
             attackTimer.Update(gameTime);
             Move();
             float distance = caculateDistance();
-            if (distance <= 150)
+            if (distance <= 350)
             {
                 Attack();
             }
@@ -108,12 +109,12 @@ namespace wizard_game
         public void createFireBalls()
         {
             // Erstelle die Position für den Fireball (in der Nähe des Feindes)
-            float posX = position.X + width / 2;
-            float posY = position.Y + height / 2;
+            float posX = position.X + width / 2 - Fireball.FIREBALL_WIDTH/2;
+            float posY = position.Y + height / 2 - Fireball.FIREBALL_HEIGHT/2;
 
             // Berechne die Richtung des Fireballs zum Spieler
             Vector2 playerPosition = Player.Get().position;
-            Vector2 fireballDirection = playerPosition - new Vector2(posX, posY);
+            Vector2 fireballDirection = playerPosition - position;
             fireballDirection.Normalize(); // Richtung normalisieren
 
             // Erstelle den Fireball

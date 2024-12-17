@@ -53,6 +53,7 @@ namespace wizard_game
             shootSound.Play();
             sprite.setAnimation("shoot");
             Arrow arrow = new Arrow((int)(attacker.position.X+attacker.width/2), (int)(attacker.position.Y+attacker.height/2), attacker);
+            GameplayScreen.projectiles.Add(arrow);
             arrow.SetDirection(Player.Get().GetDirection());
         }
 
@@ -88,28 +89,28 @@ namespace wizard_game
         public override void SetEquippedDown()
         {
             equipedOffset = equipedOffsetDown;
-            sprite.setFlipped(false);
+            sprite.setFlippedY(false);
         }
 
 
         public override void SetEquippedLeft()
         {
             equipedOffset = equipedOffsetLeft;
-            sprite.setFlipped(true);
+            sprite.setFlippedY(true);
         }
 
 
         public override void SetEquippedRight()
         {
             equipedOffset = equipedOffsetRight;
-            sprite.setFlipped(false);
+            sprite.setFlippedY(false);
         }
 
 
         public override void SetEquippedUp()
         {
             equipedOffset = equipedOffsetUp;
-            sprite.setFlipped(true);
+            sprite.setFlippedY(true);
         }
 
     }

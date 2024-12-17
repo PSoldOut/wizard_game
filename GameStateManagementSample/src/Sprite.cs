@@ -38,7 +38,8 @@ public class Sprite
     bool isPlaying;
     public float rotation;
     public Vector2 origin;
-    private bool flipped;
+    private bool flippedX;
+    private bool flippedY;
     Dictionary<String, int> nameToIndexDic;                    //dictionary for mapping name of the anomation to the index in the 2d array
     Color[] currentFrameData;
     public Vector2 offset;
@@ -64,7 +65,8 @@ public class Sprite
         this.isAnimated = isAnimated;
         this.origin = new Vector2(0, 0);
         this.rotation = 0;
-        flipped = false;
+        flippedX = false;
+        flippedY = false;
         this.isPlaying = false;
         offset = new Vector2(0,0);
     }
@@ -95,12 +97,11 @@ public class Sprite
 
     public void Draw(int x, int y)
     {
-        if (flipped)
-            GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)(x+offset.X), (int)(y+offset.Y), (int)(frameWidth * scale), (int)(frameHeight * scale)),
-                new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.FlipHorizontally, layerDepth);
-        else
-            GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)(x+offset.X), (int)(y+offset.Y), (int)(frameWidth * scale), (int)(frameHeight * scale)),
-            new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.None, layerDepth);
+        SpriteEffects effects = SpriteEffects.None;
+        if (flippedY) effects = effects | SpriteEffects.FlipHorizontally;
+        if (flippedX) effects = effects | SpriteEffects.FlipVertically;
+        GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)(x+offset.X), (int)(y+offset.Y), (int)(frameWidth * scale), (int)(frameHeight * scale)),
+            new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, effects, layerDepth);
     }
 
 
@@ -153,16 +154,29 @@ public class Sprite
 
 
 
-    public void Flip()
+    public void FlipX()
     {
-        flipped = !flipped;
+        flippedX = !flippedX;
+    }
+
+    public void FlipY()
+    {
+        flippedY = !flippedY;
     }
 
 
-    public void setFlipped(bool flipped)
+    public void setFlippedX(bool flipped)
     {
-        this.flipped = flipped;
+        this.flippedX = flipped;
     }
+
+
+
+    public void setFlippedY(bool flipped)
+    {
+        this.flippedY = flipped;
+    }
+
 
     public void SetScale(float scale)
     {

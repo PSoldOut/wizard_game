@@ -116,6 +116,12 @@
 /processorParam:TextureFormat=Color
 /build:doubler.gif
 
+#begin fire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:fire.wav
+
 #begin fireball.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -27,7 +27,6 @@ namespace wizard_game
         public Projectile(Vector2 pos, int width, int height, string spritename, bool hasCollision, Acteur attacker) : base(pos, width, height, spritename, hasCollision)
         {
             hitSound = AssetManager.GetSoundInstance("hits/hit03.mp3");
-            GameplayScreen.projectiles.Add(this);
             this.attacker = attacker;
             startPos = position;
             damage = DEFAULT_DAMAGE;
