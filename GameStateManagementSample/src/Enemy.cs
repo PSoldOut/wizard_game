@@ -175,12 +175,12 @@ namespace wizard_game
         }
 
 
-
-        // Die neue Hitbox bei der Bewegung
-        public Rectangle getNextRect(Vector2 position)
+        //rechnen Abstand zwischen Player und Gegner
+        public float caculateDistance()
         {
-            return new Rectangle((int)position.X, (int)position.Y, enemy_texture.Width,
-                                                 enemy_texture.Height);
+            float distanceX = position.X - Player.Get().position.X;
+            float distanceY = position.Y - Player.Get().position.Y;
+            return (float)Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
         }
 
         public bool isWall(int x, int y)
@@ -195,7 +195,7 @@ namespace wizard_game
 
         public override void Attack()
         {
-          
+
         }
 
 

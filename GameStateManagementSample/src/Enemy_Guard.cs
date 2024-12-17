@@ -20,7 +20,7 @@ namespace wizard_game
             direction = new Vector2(1, 0);
             sprite.setAnimation("idle_right");
             idEnemy++;
-            attackTimer = new Timer(0.05, this);
+            attackTimer = new Timer(1, this);
         }
 
 
@@ -50,14 +50,6 @@ namespace wizard_game
             chooseADirection();
             direction.Normalize();
             position += direction * speed;
-        }
-
-        //rechnen Abstand zwischen Player und Gegner
-        public float caculateDistance()
-        {
-            float distanceX = position.X - Player.Get().position.X;
-            float distanceY = position.Y - Player.Get().position.Y;
-            return (float)Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
         }
 
         //wählen eine andere Richtung wenn Kollision auftritt

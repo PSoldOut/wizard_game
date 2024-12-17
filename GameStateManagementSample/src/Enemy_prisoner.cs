@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -51,6 +52,17 @@ namespace wizard_game
                     // Debug.WriteLine("no kollision");
                     position = test;
                 }
+
+//                 if (caculateDistance() < 50)
+//                 {
+//                     dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("battle_sound_effects/hit01").CreateInstance();
+//                     dieSound.Play();
+//    //Wird aber kontinuierlich displayed
+//                 }
+//                 else
+//                 {
+                    dieSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("monster_sfx_pack/monster-6").CreateInstance();
+                // }
             }
         }
 
@@ -75,7 +87,7 @@ namespace wizard_game
                     direction.X = -1; // nach links
                     sprite.setAnimation("left");
                 }
-                direction.Y = 0; // Nur entlang der X-Achse bewegen
+                //  direction.Y = 0; // Nur entlang der X-Achse bewegen
             }
             else // Bewegung entlang der Y-Achse
             {
@@ -89,7 +101,7 @@ namespace wizard_game
                     direction.Y = -1; // nach oben
                     sprite.setAnimation("up");
                 }
-                direction.X = 0; // Nur entlang der Y-Achse bewegen
+                //  direction.X = 0; // Nur entlang der Y-Achse bewegen
             }
 
             //Debug.WriteLine(direction + " direction");
@@ -100,10 +112,9 @@ namespace wizard_game
         //überprüfen, ob Hindernisse (Wand) zw Player und Enemy vorliegen
         private bool IsObjBetweenEnemyAndPlayer()
         {
-            // Spieler- und Gegnerposition abrufen
             Vector2 playerPos = Player.Get().position;
             Vector2 enemyPos = position;
-            bool[,] fields = room.fields; // Wände oder Hindernisse
+            bool[,] fields = room.fields;
 
             // Positionen in Raster-Koordinaten umrechnen (z. B. bei 10 Pixel pro Feld)
             int x1 = (int)enemyPos.X / 10;
@@ -126,16 +137,17 @@ namespace wizard_game
             {
                 int dx = Math.Abs(x2 - x1);
                 int dy = Math.Abs(y2 - y1);
-                int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
-                int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
-                if(dx < dy){
-                for (int i = 0; i < dx; i++)
+                int sx = x1 < x2 ? 1 : -1;
+                int sy = y1 < y2 ? 1 : -1;
+                if (dx < dy)
                 {
-                    if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
+                    for (int i = 0; i < dx; i++)
                     {
-                        return true;
+                        if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
+                        {
+                            return true;
+                        }
                     }
-                }
                 }
                 // Keine Wand auf der Linie gefunden
                 return false;
@@ -154,7 +166,9 @@ namespace wizard_game
                         return true;
                     }
                 }
-            }else{
+            }
+            else
+            {
                 for (int i = y2; i < y1; i++)
                 {
                     if (fields[x1, i])
@@ -178,7 +192,9 @@ namespace wizard_game
                         return true;
                     }
                 }
-            }else{
+            }
+            else
+            {
                 for (int i = x2; i < x1; i++)
                 {
                     if (fields[i, y1])
