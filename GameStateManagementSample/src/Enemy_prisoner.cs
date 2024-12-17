@@ -14,7 +14,7 @@ namespace wizard_game
         Map map;
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
         {
-            dieSound = AssetManager.GetSoundInstance("monster_sfx_pack/monster-6");
+            dieSound = AssetManager.GetSoundInstance("monster_sfx_pack/monster-6");     //sterbesound
             dieSound.Volume = GameStateManagementGame.GetSoundVolume();
             setSpeed();
             this.map = map;
@@ -138,21 +138,125 @@ namespace wizard_game
             {
                 int dx = Math.Abs(x2 - x1);
                 int dy = Math.Abs(y2 - y1);
-                int sx = x1 < x2 ? 1 : -1;
-                int sy = y1 < y2 ? 1 : -1;
-                if (dx < dy)
+                int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
+                int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
+
+                for (int i = 0; i < dx; i++)
                 {
-                    for (int i = 0; i < dx; i++)
+                    if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
                     {
-                        if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
-                // Keine Wand auf der Linie gefunden
-                return false;
             }
+            //-----------------------------------------------------------
+            
+            // Positionen in Raster-Koordinaten umrechnen (z. B. bei 10 Pixel pro Feld)
+            x1 = (int)(enemyPos.X + width) / 10;
+            y1 = (int)(enemyPos.Y + height) / 10;
+            x2 = (int)(playerPos.X + Player.Get().GetWidth()) / 10;
+            y2 = (int)(playerPos.Y + Player.Get().GetHeight()) / 10;
+
+            if (x1 == x2)
+            {
+                return DetectObjInDirectionY(x1, y1, y2, fields);
+            }
+
+            else if (y1 == y2)
+            {
+
+                return DetectObjInDirectionX(y1, x1, x2, fields);
+            }
+
+            else
+            {
+                int dx = Math.Abs(x2 - x1);
+                int dy = Math.Abs(y2 - y1);
+                int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
+                int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
+
+                for (int i = 0; i < dx; i++)
+                {
+                    if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
+                    {
+                        return true;
+                    }
+                }
+            
+            }
+
+            //------------------------------------------------------
+            // Positionen in Raster-Koordinaten umrechnen (z. B. bei 10 Pixel pro Feld)
+            x1 = (int)(enemyPos.X + width) / 10;
+            y1 = (int)enemyPos.Y / 10;
+            x2 = (int)(playerPos.X + Player.Get().GetWidth()) / 10;
+            y2 = (int)(playerPos.Y + Player.Get().GetHeight()) / 10;
+
+            if (x1 == x2)
+            {
+                return DetectObjInDirectionY(x1, y1, y2, fields);
+            }
+
+            else if (y1 == y2)
+            {
+
+                return DetectObjInDirectionX(y1, x1, x2, fields);
+            }
+
+            else
+            {
+                int dx = Math.Abs(x2 - x1);
+                int dy = Math.Abs(y2 - y1);
+                int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
+                int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
+
+                for (int i = 0; i < dx; i++)
+                {
+                    if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
+                    {
+                        return true;
+                    }
+                }
+            
+            }
+
+
+
+            //-----------------------------------------------------
+            // Positionen in Raster-Koordinaten umrechnen (z. B. bei 10 Pixel pro Feld)
+            x1 = (int)enemyPos.X / 10;
+            y1 = (int)(enemyPos.Y + height) / 10;
+            x2 = (int)(playerPos.X + Player.Get().GetWidth()) / 10;
+            y2 = (int)(playerPos.Y + Player.Get().GetHeight()) / 10;
+
+            if (x1 == x2)
+            {
+                return DetectObjInDirectionY(x1, y1, y2, fields);
+            }
+
+            else if (y1 == y2)
+            {
+
+                return DetectObjInDirectionX(y1, x1, x2, fields);
+            }
+
+            else
+            {
+                int dx = Math.Abs(x2 - x1);
+                int dy = Math.Abs(y2 - y1);
+                int sx = x1 < x2 ? 1 : -1; // Schritt in x-Richtung
+                int sy = y1 < y2 ? 1 : -1; // Schritt in y-Richtung
+
+                for (int i = 0; i < dx; i++)
+                {
+                    if (fields[x1 + i * sx, y1 + (int)(dy / dx) * sy])
+                    {
+                        return true;
+                    }
+                }
+            
+            }
+            return false;
         }
 
         public bool DetectObjInDirectionY(int x1, int y1, int y2, bool[,] fields)

@@ -28,15 +28,17 @@ namespace wizard_game
         private Weapon equippedWeapon;
         public int coins;
         float stepsSpeed = 0.01f;
-
+        float currentStepFreq = 0.0f;
+        float stepSoundFreq = 0.3f;
         Timer stepsTimer;
 
         SoundEffectInstance inventorySound;
         SoundEffectInstance stepsSound;
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
-            stepsSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("footsteps/step_lth1");
-            inventorySound = GameStateManagementGame.Get().Content.Load<SoundEffect>("inventory_sound_effects/cloth-inventory");
+            stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
+            inventorySound = AssetManager.GetSoundInstance("inventory_sound_effects/cloth-inventory");
+            
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
             InitAnimations();
             direction = new Vector2(0, -1);

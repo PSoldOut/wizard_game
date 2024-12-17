@@ -32,9 +32,9 @@ namespace GameStateManagement
     {
 
 
-        public static int musicVolume = 0;
-        public static int soundVolume = 1;
-        public static int masterVolume = 1;
+        public static int musicVolume = 3;
+        public static int soundVolume = 3;
+        public static int masterVolume = 3;
 
         Song mainMenuSong;
         public struct InputState
@@ -129,18 +129,7 @@ namespace GameStateManagement
 
 
 
-        public static float GetSoundVolume()
-        {
-            if (soundVolume == 0 || masterVolume == 0) return 0.0f;
-            else return soundVolume/8.0f + masterVolume/8.0f;
-        }
-
-        public static float GetMusicVolume()
-        {
-            if (musicVolume == 0 || masterVolume == 0) return 0.0f;
-            else return musicVolume/8.0f + masterVolume/8.0f;
-        }
-
+        
 
 
         public static float GetSoundVolume()

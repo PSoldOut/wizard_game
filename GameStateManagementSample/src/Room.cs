@@ -131,7 +131,7 @@ namespace wizard_game
         public void generateObstacles(int count)
         {
             int generated = 0;
-            while (generated != count && false)
+            while (generated != count)
             {
                 Point rockPos = new Point(rnd.Next(10, 120) * 10, rnd.Next(10, 60) * 10);
                 if (intersectObstacle(rockPos))

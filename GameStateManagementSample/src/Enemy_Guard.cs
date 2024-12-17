@@ -30,7 +30,7 @@ namespace wizard_game
             attackTimer.Update(gameTime);
             Move();
             float distance = caculateDistance();
-            if (distance <= 500)
+            if (distance <= 150)
             {
                 Attack();
             }
