@@ -39,7 +39,6 @@ namespace wizard_game
             {
                 SetEnemyState(EnemyState.NORMAL);
             }
-            //UnloadFireball();
             sprite.Update(gameTime);
 
         }

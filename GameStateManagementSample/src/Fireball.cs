@@ -14,6 +14,7 @@ namespace wizard_game
 
         bool isAttacking;
         SoundEffect shootSound;
+        Player player;
         Timer timer;
         public static int FIREBALL_WIDTH = 60;
         public static int FIREBALL_HEIGHT = 60;
@@ -23,7 +24,7 @@ namespace wizard_game
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.03f);
             sprite.offset = new Vector2(FIREBALL_WIDTH/2.0f, FIREBALL_HEIGHT/2.0f);
             sprite.origin = new Vector2(FIREBALL_WIDTH/0.03f/2.0f, FIREBALL_HEIGHT/0.03f/2.0f);
-            
+
             timer = new Timer(3, this);
             isAttacking = false;
             speed = 250f;
@@ -32,19 +33,17 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            player = Player.Get();
             timer.Update(gameTime);
             timer.start();
             
             if (Math.Sqrt(Math.Pow(position.X - Player.Get().position.X, 2) + Math.Pow(position.Y - Player.Get().position.Y, 2)) < 20)
             {
+                shootSound.Play();
+                player.takeDamage(2);
                 //Console.WriteLine("player erreicht");
                 GameplayScreen.projectiles.Remove(this);
-                return;
-            }
-            if (Math.Abs(position.X - startPos.X) > 400 || Math.Abs(position.Y - startPos.Y) > 400)
-            {
-                //Console.WriteLine("weit...");
-                GameplayScreen.projectiles.Remove(this);
+
                 return;
             }
 
