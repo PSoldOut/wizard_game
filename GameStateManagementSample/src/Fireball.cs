@@ -20,7 +20,7 @@ namespace wizard_game
             shootSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("battle_sound_effects/Bow");
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.12f);
             sprite.SetScale(0.03f);
-            timer = new Timer(1, this);
+            timer = new Timer(3, this);
             isAttacking = false;
             speed = 100f;
         }
@@ -30,12 +30,8 @@ namespace wizard_game
             base.Update(gameTime);
             timer.Update(gameTime);
             timer.start();
-            if (timer.getSecondsRemaining() < 0.03)
-            {
-
-                return;
-            }
-            if (Math.Sqrt(Math.Pow(position.X - Player.Get().position.X, 2) + Math.Pow(position.Y - Player.Get().position.Y, 2)) < 100)
+            
+            if (Math.Sqrt(Math.Pow(position.X - Player.Get().position.X, 2) + Math.Pow(position.Y - Player.Get().position.Y, 2)) < 20)
             {
                 //Console.WriteLine("player erreicht");
                 shootSound.Play();
