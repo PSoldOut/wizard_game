@@ -1,10 +1,11 @@
 
 
 using System;
-using System.Diagnostics;
+
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace wizard_game
 {
@@ -40,6 +41,8 @@ namespace wizard_game
             //hab das in konstruktor verschoben weil es loadContent nicht mehr gibt. wir haben ja DrawableGameComponent rausgenommen
             //Load Content: Texture für Enemy
             LoadSprite(4,4,1,true);
+            sprite.offset = new Vector2(width/2, height/2);
+            sprite.origin = new Vector2(width/2, height/2);
             InitAnimations();
             enemy_texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             enemy_texture.SetData(new Color[] { Color.Black });
@@ -200,10 +203,70 @@ namespace wizard_game
 
 
 
-        public void MoveToPlayer()
 
+        public bool moveToTarget(Vector2 target)
         {
+            if ((target - position + new Vector2(width/2, height/2)).Length() < 20) return true;
+            direction = target - position + new Vector2(width/2, height/2);
+            direction.Normalize();
+            //Console.WriteLine("direction:" + direction);
+            position += direction * speed;
+            return false;
+        }
 
+
+
+
+        public NodeA AStar(NodeA startNode)
+        {
+            List<NodeA> closedList = new List<NodeA>();
+            List<NodeA> openList = [startNode];
+            while (openList.Count > 0)
+            {
+            //    Console.WriteLine(openList.Count);
+                openList.Sort((n1,n2) => (n1.GetCost() + Math.Abs((int)(Player.Get().position.X/10) - n1.GetX()) + Math.Abs((int)(Player.Get().position.Y/10) - n1.GetY())).CompareTo(
+                                          n2.GetCost() + Math.Abs((int)(Player.Get().position.X/10) - n2.GetX()) + Math.Abs((int)(Player.Get().position.Y/10) - n2.GetY())));
+                NodeA currentNode = openList[0];
+                openList.RemoveAt(0);
+
+                if (Math.Abs(currentNode.GetX() - (int)(Player.Get().position.X/10)) < 2 && Math.Abs(currentNode.GetY() - (int)(Player.Get().position.Y/10)) < 2)
+                {
+                  //  Console.WriteLine("found solution!");
+                    return currentNode;
+                }
+
+
+
+                // Wenn der aktuelle Knoten noch nicht verarbeitet wurde, füge ihn der Closed-List hinzu
+                if (!closedList.Contains(currentNode))
+                {
+                    closedList.Add(currentNode);
+
+                    // Expandieren der Nachfolgerknoten
+                    var successors = currentNode.Expand();
+                    foreach (var successor in successors){
+                        if(!openList.Contains(successor)){
+                            openList.Add(successor);
+                        }
+                    }
+
+                }
+            }
+
+        //    Console.WriteLine("No solution found.");
+            return null;
+        }
+
+
+
+
+
+
+
+
+
+        public void MoveToPlayer()
+        {
             float deltaX = Player.Get().position.X - position.X;
             float deltaY = Player.Get().position.Y - position.Y;
 

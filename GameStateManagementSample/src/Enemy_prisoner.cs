@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using GameStateManagement;
@@ -12,21 +15,59 @@ namespace wizard_game
     class Enemy_prisoner : Enemy
     {
         Map map;
+        NodeA startNode = null;
+        NodeA solutionNode = null;
+        List<Vector2> path = new List<Vector2>();
+        int cordXInGamestate;
+        int cordYInGamestate;
+        Gamestate[,] currentView;
+
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
         {
             dieSound = AssetManager.GetSoundInstance("monster_sfx_pack/monster-6");     //sterbesound
             dieSound.Volume = GameStateManagementGame.GetSoundVolume();
             setSpeed();
+            //speed = 0.5f;
             this.map = map;
             direction = new Vector2(1, 0);
+
+            using (StreamWriter writer = new StreamWriter("C:\\Users\\Philipp\\Desktop\\gitProjects\\wizard_game\\GameStateManagementSample\\src\\test.txt"))
+            {
+                currentView = room.gamestate;
+                for (int row = 0; row < currentView.GetLength(1); row++) // Erste Dimension: Zeilen
+                {
+                    for (int col = 0; col < currentView.GetLength(0); col++) // Zweite Dimension: Spalten
+                    {
+                        Gamestate state = currentView[col, row];
+                        writer.Write("\t" + state + "\t");
+                    }
+                    writer.WriteLine();
+                }
+                //throw new Exception("fertig");
+            }
+            
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Move();
-
             sprite.Update(gameTime);
+            if (path.Count ==0)
+            {
+                cordXInGamestate = (int)position.X / 10;
+                cordYInGamestate = (int)position.Y / 10;
+                currentView = room.gamestate;
+                startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
+                solutionNode = AStar(startNode);
+                while(solutionNode != null)
+                {
+                    path.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
+                    solutionNode = solutionNode.GetParent();
+                }
+            }
+            
+            if (moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
+            //Console.WriteLine("count: " + path.Count() + "nextTarget:" + path[path.Count-1]);
 
         }
 

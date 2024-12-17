@@ -39,7 +39,9 @@ namespace wizard_game
             stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
             inventorySound = AssetManager.GetSoundInstance("inventory_sound_effects/cloth-inventory");
             
-            sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 4, 4, 1, true);
+            LoadSprite(4, 4, 1, true);
+            sprite.offset = new Vector2(width/2, height/2);
+            sprite.origin = new Vector2(width/2, height/2);
             InitAnimations();
             direction = new Vector2(0, -1);
             this.weapons = new List<Weapon>();
@@ -47,6 +49,7 @@ namespace wizard_game
             map = _map;
             currentSpeed = 0;
             stepsTimer = new Timer(stepsSpeed, this);
+            
         }
 
 
@@ -55,7 +58,7 @@ namespace wizard_game
         {
             if (instance == null)
             {
-                instance = new Player(100, 100, GameplayScreen.map);
+                instance = new Player(500, 100, GameplayScreen.map);
                 return instance;
             }
             else return instance;
@@ -206,6 +209,12 @@ namespace wizard_game
             {
                 inventorySound.Play();
                 EquipWeapon(Weapon.WeaponName.BOW);
+            }
+            if (inputState.IsNewKeyPress(Keys.R))
+            {
+                int x = GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth);
+                int y = GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight);
+                position = new Vector2(x, y);
             }
         }
 

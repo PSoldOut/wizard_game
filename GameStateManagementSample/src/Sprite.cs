@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using wizard_game;
 
@@ -40,7 +41,7 @@ public class Sprite
     private bool flipped;
     Dictionary<String, int> nameToIndexDic;                    //dictionary for mapping name of the anomation to the index in the 2d array
     Color[] currentFrameData;
-
+    public Vector2 offset;
     public float layerDepth = 0.5f;
 
     public Sprite(Texture2D texture, int hFrames, int vFrames, float scale, bool isAnimated)
@@ -65,6 +66,7 @@ public class Sprite
         this.rotation = 0;
         flipped = false;
         this.isPlaying = false;
+        offset = new Vector2(0,0);
     }
 
     public Sprite(Texture2D texture, int hFrames, int vFrames, float scale) : this(texture, hFrames, vFrames, scale, false) { }
@@ -94,10 +96,10 @@ public class Sprite
     public void Draw(int x, int y)
     {
         if (flipped)
-            GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)x, (int)y, (int)(frameWidth * scale), (int)(frameHeight * scale)),
+            GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)(x+offset.X), (int)(y+offset.Y), (int)(frameWidth * scale), (int)(frameHeight * scale)),
                 new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.FlipHorizontally, layerDepth);
         else
-            GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)x, (int)y, (int)(frameWidth * scale), (int)(frameHeight * scale)),
+            GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)(x+offset.X), (int)(y+offset.Y), (int)(frameWidth * scale), (int)(frameHeight * scale)),
             new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, SpriteEffects.None, layerDepth);
     }
 

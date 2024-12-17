@@ -27,7 +27,7 @@ namespace wizard_game
         protected string spritename;
         bool hasCollision;
 
-        private bool drawHitBox = false;
+        private bool drawHitBox = true;
         public int lineWidth = 2;
         public Color hitboxColor = Color.Purple;
         public Texture2D image_hitbox;
@@ -58,6 +58,7 @@ namespace wizard_game
 
             damageOffset = new Vector2(damageDistance, 0);
             damageArea = new Rectangle((int)(position.X+damageOffset.X), (int)(position.Y+damageOffset.Y), 27, 45);
+            
         }
         public void LoadSprite(int hFrames=1, int vFrames=1, float scale=1,bool isAnimated=false)
         {
@@ -130,7 +131,7 @@ namespace wizard_game
                 position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);
                 hitBox.X = (int)position.X;
                 hitBox.Y = (int)position.Y;
-                //openGateSound.Play();
+                openGateSound.Play();
                 return false;
             }
             Color[] data = sprite.GetCurrentColorData();
