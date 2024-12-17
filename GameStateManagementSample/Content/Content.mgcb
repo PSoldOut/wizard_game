@@ -50,6 +50,18 @@
 /processorParam:Quality=Best
 /build:battle_sound_effects/Bow.wav
 
+#begin battle_sound_effects/fireball.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:battle_sound_effects/fireball.mp3
+
+#begin battle_sound_effects/hit01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:battle_sound_effects/hit01.wav
+
 #begin battle_sound_effects/swish_2.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
