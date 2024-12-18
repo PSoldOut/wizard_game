@@ -16,15 +16,15 @@ namespace wizard_game
         SoundEffect shootSound;
         Player player;
         Timer timer;
-        public static int FIREBALL_WIDTH = 60;
-        public static int FIREBALL_HEIGHT = 60;
+        public static int FIREBALL_WIDTH = 30;
+        public static int FIREBALL_HEIGHT = 30;
         public Fireball(float x, float y, Enemy attacker) : base(new Vector2(x, y), FIREBALL_WIDTH, FIREBALL_HEIGHT, "fireball", false, attacker)
         {
             shootSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("fire");
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.03f);
             sprite.offset = new Vector2(FIREBALL_WIDTH/2.0f, FIREBALL_HEIGHT/2.0f);
-            sprite.origin = new Vector2(FIREBALL_WIDTH/0.03f/2.0f, FIREBALL_HEIGHT/0.03f/2.0f);
-
+            sprite.origin = new Vector2(60/0.03f/2.0f, 60/0.03f/2.0f);          //die 60 ist ein bischen gefuscht
+            damage = 2;
             timer = new Timer(3, this);
             isAttacking = false;
             speed = 250f;
@@ -37,15 +37,27 @@ namespace wizard_game
             timer.Update(gameTime);
             timer.start();
             
-            if (Math.Sqrt(Math.Pow(position.X - Player.Get().position.X, 2) + Math.Pow(position.Y - Player.Get().position.Y, 2)) < 20)
-            {
-                shootSound.Play();
-                player.takeDamage(2);
-                //Console.WriteLine("player erreicht");
-                GameplayScreen.projectiles.Remove(this);
 
+            for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
+            {
+                if (hitBox.Intersects(GameplayScreen.acteurs[i].hitBox) && GameplayScreen.acteurs[i] != attacker)
+                {
+                    hitSound.Stop();
+                    hitSound.Play();
+                    GameplayScreen.acteurs[i].takeDamage(damage);
+                    GameplayScreen.projectiles.Remove(this);
+                    return;
+                }
+            }
+
+
+            if (DetacteCollison())
+            {
+                GameplayScreen.projectiles.Remove(this);
                 return;
             }
+
+
 
             position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Console.WriteLine("direction: " + direction);

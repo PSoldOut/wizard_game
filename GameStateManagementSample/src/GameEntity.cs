@@ -55,6 +55,7 @@ namespace wizard_game
             hitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             image_hitbox = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             image_hitbox.SetData(new Color[] { Color.Red });
+            
 
             damageOffset = new Vector2(damageDistance, 0);
             damageArea = new Rectangle((int)(position.X+damageOffset.X), (int)(position.Y+damageOffset.Y), 27, 45);

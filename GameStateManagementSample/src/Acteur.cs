@@ -92,7 +92,7 @@ namespace wizard_game
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            particleSystem.Draw(image_hitbox);
+            particleSystem.Draw();
         }
 
 
@@ -110,6 +110,7 @@ namespace wizard_game
         {
             damageSound.Play();
             particleSystem.AddBloodEffect(new Vector2(position.X+width/2, position.Y+height/2), 20);
+            //particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 20);
             health-=damage;
             isTakingDamage = true;
             Console.WriteLine(health);
