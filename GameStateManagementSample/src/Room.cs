@@ -29,19 +29,36 @@ namespace wizard_game
         int W_Width;
         private List<Door.SiteEnum> usedSitesForDoor = new List<Door.SiteEnum>();
         public bool[,] fields = new bool[128, 72];
+        public bool[,] fields_Walls = new bool[128, 72];
         GameStateManagementGame gameInstance = GameStateManagementGame.Get();
         bool enabled = true;
         public Gamestate[,] gamestate = new Gamestate[128, 72];
+        int outerWallWidth = 20;
+        enum DirEnum : int
+        {
+
+            Left = 0,
+            Top = 1,
+            Bottom = 2,
+            Right = 3,
+
+        }
         public Room(int i)
         {
             initGamestate();
             index = i;
             W_Width = gameInstance.GraphicsDevice.Viewport.Width;
             W_Height = gameInstance.GraphicsDevice.Viewport.Height;
-            wallBuilder(new Point(0, 0), new Point(W_Width, 10), "Top");//TopWall
-            wallBuilder(new Point(0, 0), new Point(10, W_Height), "left");//left wall
-            wallBuilder(new Point(0, W_Height - 10), new Point(W_Width, 10), "Bottom"); //Bottom Wall
-            wallBuilder(new Point(W_Width - 10, 0), new Point(10, W_Height), "Right");//Right wall
+            SideWalls();
+            BuildWalls();
+            Debug.WriteLine("build walls");
+        }
+        private void SideWalls()
+        {
+            wallBuilder(new Point(0, 0), new Point(W_Width, outerWallWidth), "Top");//TopWall
+            wallBuilder(new Point(0, 0), new Point(outerWallWidth, W_Height), "left");//left wall
+            wallBuilder(new Point(0, W_Height - outerWallWidth), new Point(W_Width, outerWallWidth), "Bottom"); //Bottom Wall
+            wallBuilder(new Point(W_Width - outerWallWidth, 0), new Point(outerWallWidth, W_Height), "Right");//Right wall
         }
         private Wall wallBuilder(Point pos, Point size, String id = null)
         {
@@ -82,69 +99,330 @@ namespace wizard_game
                 }
 
             }
-
-
-
-
             door.Site = site;
 
-            // Debug.WriteLine("Set door to " + door.Pos);
             doors.Add(door);
-            if (usedSitesForDoor.Count == 1)//erste tür im raum
-            {
-                Debug.WriteLine(door.Center);
-                Point size = new Point(0, 0);
-                Point pos = new Point(0, 0);
-                int wallLength = rnd.Next(3, 10) * 10;
-                switch (site)
-                {
-                    case Door.SiteEnum.Left: //left seite
-
-                        size = new Point(wallLength, 10);
-                        pos = door.Center + new Point(-15, 30);
-                        break;
-                    case Door.SiteEnum.Top: //top
-                        size = new Point(10, wallLength);
-                        pos = door.Center + new Point(30, -15);
-                        break;
-                    case Door.SiteEnum.Bottom: //bottom
-                        size = new Point(10, wallLength);
-                        pos = door.Center + new Point(30, 15) - size;
-
-                        break;
-                    case Door.SiteEnum.Right: //right seite
-                        size = new Point(wallLength, 10);
-                        pos = door.Center + new Point(15, 30) - size;
-                        break;
-
-
-                }
-
-                //Wall wall = wallBuilder(pos, size);
-                generateObstacles(10);
-
-            }
             return door.Site;
 
-
         }
-        public void generateObstacles(int count)
+        public void BuildWalls()
         {
-            int generated = 0;
-            while (generated != count)
+            //debug
+            /*for (int i = 0; i < 60; i++)
             {
-                Point rockPos = new Point(rnd.Next(10, 120) * 10, rnd.Next(10, 60) * 10);
-                if (intersectObstacle(rockPos))
+                wallBuilder(new Point(i * 20, 500), new Point(20, 20));
+            }*/
+            for (int c = 0; c < 5; c++)
+            {
+
+                Debug.WriteLine("new wall #######");
+                int XLength = fields.GetLength(0);
+                int YLength = fields.GetLength(1);
+                int x = rnd.Next(XLength / 4, XLength / 4 * 3);
+                int y = rnd.Next(YLength / 4, YLength / 4 * 3);
+
+                //x = 50;
+                //y = 50;
+                DirEnum dir = (DirEnum)rnd.Next(0, 4);
+                //DirEnum dir = DirEnum.Bottom;
+                switch (dir)
                 {
-                    Debug.WriteLine("Rocks intersect we draw new");
-                    continue;
+                    case DirEnum.Right:
+                        x = 0;
+                        break;
+                    case DirEnum.Left:
+                        x = XLength - outerWallWidth / 10;
+
+                        break;
+                    case DirEnum.Top:
+                        y = YLength - outerWallWidth / 10;
+
+                        break;
+                    case DirEnum.Bottom:
+                        y = 0;
+                        break;
+
                 }
-                //Debug.WriteLine("Draw " + generated + " Pos: " + rockPos);
-                Tile rock = new Tile(this, Tile.tileType.Rock, rockPos);
-                obstacles.Add(rock);
-                generated++;
+                Debug.WriteLine("start dir " + dir + " x" + x + " y:" + y);
+
+
+                DirEnum dirOld = dir;
+                bool changeDir = false;
+                int iteraions = 70;
+                int dirChanges = 1;
+                int dirChangesMax = 5;
+
+                for (int i = 0; i < iteraions; i++)
+                {
+                    //Debug.WriteLine((x, y));
+                    if (changeDir|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))//|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges)
+                    {
+                        //Debug.WriteLine("change dir");
+
+                        if (changeDir)
+                        {
+                            changeDir = false;
+                        }
+
+
+                        while (true)
+                        {
+                            dir = (DirEnum)rnd.Next(0, 4);
+                            //nicht in die gegenrichtung
+                            if (dirOld == DirEnum.Left && dir == DirEnum.Right) continue;
+                            if (dirOld == DirEnum.Right && dir == DirEnum.Left) continue;
+                            if (dirOld == DirEnum.Top && dir == DirEnum.Bottom) continue;
+                            if (dirOld == DirEnum.Bottom && dir == DirEnum.Top) continue;
+
+                            if (dir != dirOld)
+                            {
+                                Debug.WriteLine("Change dir form " + dirOld + " to " + dir);
+                                dirOld = dir;
+                                if (!changeDir && dirChangesMax > dirChanges)
+                                {
+                                    dirChanges++;
+                                }
+
+                                break;
+                            }
+
+
+                        }
+
+                    }
+                    if (dirChanges >= dirChangesMax)
+                    {
+                        break;
+                    }
+
+                    int res;
+                    switch (dir)
+                    {
+                        case DirEnum.Right:
+                            x += 2;
+                            res = CheckNeighbors(x, y, dir);
+                            if (res == 1)
+                            {
+                                i = iteraions;
+                                continue;
+                            }
+                            if (res == 2)
+                            {
+                                continue;
+                            }
+                            if (res == 3)
+                            {
+
+                                x += 8;
+                                if (CheckBorder(x, y, dir))
+                                {
+                                    i = iteraions;
+
+                                }
+                                continue;
+                            }
+
+
+                            break;
+                        case DirEnum.Left:
+                            x -= 2;
+
+                            res = CheckNeighbors(x, y, dir);
+                            if (res == 1)
+                            {
+                                i = iteraions;
+                                continue;
+                            }
+                            if (res == 2)
+                            {
+                                continue;
+                            }
+                            if (res == 3)
+                            {
+
+                                x -= 8;
+                                if (CheckBorder(x, y, dir))
+                                {
+                                    i = iteraions;
+
+                                }
+                                continue;
+                            }
+                            break;
+                        case DirEnum.Top:
+                            y -= 2;
+
+
+                            res = CheckNeighbors(x, y, dir);
+                            if (res == 1)
+                            {
+                                i = iteraions;
+                                continue;
+                            }
+                            if (res == 2)
+                            {
+                                continue;
+                            }
+                            if (res == 3)
+                            {
+
+                                y -= 8;
+                                if (CheckBorder(x, y, dir))
+                                {
+                                    i = iteraions;
+
+                                }
+                                continue;
+                            }
+                            break;
+                        case DirEnum.Bottom:
+                            y += 2;
+                            res = CheckNeighbors(x, y, dir);
+                            if (res == 1)
+                            {
+                                i = iteraions;
+                                continue;
+                            }
+                            if (res == 2)
+                            {
+                                continue;
+                            }
+                            if (res == 3)
+                            {
+
+                                y += 8;
+                                if (CheckBorder(x, y, dir))
+                                {
+                                    i = iteraions;
+
+                                }
+                                continue;
+                            }
+
+                            break;
+
+
+                    }
+                    //Debug.WriteLine(("create wall att ", new Point(x * 10, y * 10)));
+                    wallBuilder(new Point(x * 10, y * 10), new Point(20, 20));
+
+                }
+
+
+                Debug.WriteLine(("max", XLength, YLength));
+            }
+        }
+        private bool CheckBorder(int x, int y, DirEnum dir)
+        {
+            x *= 10;
+            y *= 10;
+            switch (dir)
+            {
+                case DirEnum.Right:
+                    if (x > W_Width - 80) return true;
+                    break;
+                case DirEnum.Left:
+                    if (x < 80) return true;
+                    break;
+                case DirEnum.Top:
+                    if (y < 80) return true;
+                    break;
+                case DirEnum.Bottom:
+                    if (y > W_Height - 100) return true;
+                    break;
+
+            }
+            return false;
+        }
+        private int CheckNeighbors(int x, int y, DirEnum dir)
+        {
+
+            if (CheckBorder(x, y, dir))
+            {
+                return 1;
+            }
+            x *= 10;
+            y *= 10;
+            switch (dir)
+            {
+                case DirEnum.Right:
+                    if (WallOverlap(new Point(x, y - 40), 40, 100))
+                    {
+
+                        return 2;
+                    }
+                    if (WallOverlap(new Point(x, y), 60, 20)) //in front 
+                    {
+                        return 3;
+                    }
+
+
+                    break;
+                case DirEnum.Left:
+                    if (WallOverlap(new Point(x - 40, y - 40), 40, 100))
+                    {
+
+                        return 2;
+                    }
+                    if (WallOverlap(new Point(x - 40, y), 60, 20)) //in front 
+                    {
+                        return 3;
+                    }
+                    break;
+
+                case DirEnum.Top:
+                    if (WallOverlap(new Point(x - 40, y - 40), 100, 40))
+                    {
+
+                        return 2;
+                    }
+                    if (WallOverlap(new Point(x, y - 40), 20, 60)) //in front 
+                    {
+                        return 3;
+                    }
+                    break;
+
+
+                case DirEnum.Bottom:
+                    if (WallOverlap(new Point(x - 40, y), 100, 40))
+                    {
+
+                        return 2;
+                    }
+                    if (WallOverlap(new Point(x, y), 20, 60)) //in front 
+                    {
+                        return 3;
+                    }
+                    break;
+                    break;
+
             }
 
+            //Debug.WriteLine("neibor not overlap");
+            return 0;
+        }
+
+        public bool WallOverlap(Point position, int width, int height)
+        {
+            for (int x = 0; x < width / 10; x++)
+            {
+                for (int y = 0; y < height / 10; y++)
+                {
+                    int cordX = (int)position.X / 10 + x;
+                    int cordY = (int)position.Y / 10 + y;
+                    if (cordX >= fields.GetLength(0) || cordX < 0) return true;
+                    if (cordY >= fields.GetLength(1) || cordY < 0) return true;
+                    if (fields[cordX, cordY])
+                    {
+                        //Debug.WriteLine("inersect at" + position);
+                        return true;
+                    }
+
+
+                }
+
+            }
+            return false;
         }
         public bool intersectObstacle(Point pos)
         {
@@ -201,6 +479,7 @@ namespace wizard_game
 
             return false;
         }
+
         public Door DetacteCollisonDoor(Rectangle hitbox, bool deleteBots = true)
         {
             foreach (Door door in doors)
@@ -234,6 +513,15 @@ namespace wizard_game
                 door.Draw(gameTime);
             }
 
+        }
+        //debug
+        public void ReloadWalls()
+        {
+            walls.Clear();
+            fields = new bool[128, 72];
+            fields_Walls = new bool[128, 72];
+            SideWalls();
+            BuildWalls();
         }
 
 

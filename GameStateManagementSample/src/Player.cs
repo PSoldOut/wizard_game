@@ -119,7 +119,7 @@ namespace wizard_game
             CheckForItems();
 
             direction.Normalize();
-            Room  room = map.GetActiveRoom();
+            Room room = map.GetActiveRoom();
             Vector2 oldPos = position;
             //Zustand als Empty
            // room.setGamestateElement(position, Gamestate.EMPTY);
@@ -165,6 +165,11 @@ namespace wizard_game
             if (keyboardState.IsKeyDown(Keys.A)) nextDir += WalkLeft();
             if (keyboardState.IsKeyDown(Keys.S)) nextDir += WalkDown();
             if (keyboardState.IsKeyDown(Keys.D)) nextDir += WalkRight();
+            //debug
+            if (inputState.IsNewKeyPress(Keys.R))
+            {
+                map.ReloadWalls();
+            }
             if (nextDir.Length() != 0) direction = nextDir;
 
             //the correct idle animation is determined when the player is not moving. in which side is the player looking?
@@ -220,7 +225,7 @@ namespace wizard_game
         // returns the direction vector
         private Vector2 WalkUp()
         {
-            if (equippedWeapon!=null) equippedWeapon.sprite.layerDepth = 0.6f;
+            if (equippedWeapon != null) equippedWeapon.sprite.layerDepth = 0.6f;
             damageOffset.X = 0;
             damageOffset.Y = -damageDistance;
             currentSpeed = speed;
@@ -234,7 +239,7 @@ namespace wizard_game
 
         private Vector2 WalkDown()
         {
-            if (equippedWeapon!=null) equippedWeapon.sprite.layerDepth = 0.4f;
+            if (equippedWeapon != null) equippedWeapon.sprite.layerDepth = 0.4f;
             damageOffset.X = 0;
             damageOffset.Y = damageDistance;
             currentSpeed = speed;
@@ -247,7 +252,7 @@ namespace wizard_game
 
         private Vector2 WalkLeft()
         {
-            if (equippedWeapon!=null) equippedWeapon.sprite.layerDepth = 0.6f;
+            if (equippedWeapon != null) equippedWeapon.sprite.layerDepth = 0.6f;
             damageOffset.X = -damageDistance;
             damageOffset.Y = 0;
             currentSpeed = speed;
@@ -260,7 +265,7 @@ namespace wizard_game
 
         private Vector2 WalkRight()
         {
-            if (equippedWeapon!=null) equippedWeapon.sprite.layerDepth = 0.4f;
+            if (equippedWeapon != null) equippedWeapon.sprite.layerDepth = 0.4f;
             damageOffset.X = damageDistance;
             damageOffset.Y = 0;
             currentSpeed = speed;
@@ -293,18 +298,18 @@ namespace wizard_game
                         {
                             equippedWeapon.SetEquippedUp();
                             equippedWeapon.sprite.layerDepth = 0.6f;
-                            if (direction.X < 0){equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f;}
-                            else if (direction.X > 0){equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                            if (direction.X < 0) { equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f; }
+                            else if (direction.X > 0) { equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f; }
                         }
                         else if (direction.Y > 0)
                         {
                             equippedWeapon.SetEquippedDown(); equippedWeapon.sprite.layerDepth = 0.4f;
-                            if (direction.X > 0){equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                            if (direction.X > 0) { equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f; }
                         }
                         else
                         {
-                            if (direction.X < 0) {equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f;}
-                            else {equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f;}
+                            if (direction.X < 0) { equippedWeapon.SetEquippedLeft(); equippedWeapon.sprite.layerDepth = 0.6f; }
+                            else { equippedWeapon.SetEquippedRight(); equippedWeapon.sprite.layerDepth = 0.4f; }
                         }
                         equippedWeapon.position = position + equippedWeapon.equipedOffset;
                         return;
@@ -344,9 +349,10 @@ namespace wizard_game
 
 
 
+
         public void CheckForItems()
         {
-            foreach(Item item in GameplayScreen.items)
+            foreach (Item item in GameplayScreen.items)
             {
                 if (item.state == Item.State.ON_FLOOR && item.area.Intersects(hitBox))
                 {
