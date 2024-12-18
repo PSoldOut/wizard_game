@@ -80,6 +80,16 @@ namespace wizard_game
             }
         }
 
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            foreach(Vector2 p in path)
+            {
+                drawPoint(p);
+            }
+        }
+
         //Den Spieler verfolgen
         public void follow()
         {

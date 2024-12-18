@@ -44,7 +44,7 @@ namespace wizard_game
                 startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
                 AStern search = new AStern();
                 //solutionNode = search.Start(startNode);
-                solutionNode = AStar(startNode);
+                //solutionNode = AStar(startNode);
            //     Console.Write("solution was found");
                 //throw new Exception("jej  X:" + solutionNode.GetX() + "  Y:" + solutionNode.GetY());
                 NodeA tmp = solutionNode;

@@ -258,6 +258,15 @@ namespace wizard_game
         }
 
 
+        public void drawPoint(Vector2 pos)
+        {
+            Texture2D texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
+            texture.SetData(new Color[] {Color.Red});
+            GameStateManagementGame._spriteBatch.Draw(texture, pos, null, Color.Red, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.0f);
+            
+        }
+
+
 
 
 
