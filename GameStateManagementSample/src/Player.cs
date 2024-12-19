@@ -37,6 +37,8 @@ namespace wizard_game
         public int exp;
         public int lp;  //lernpunkte
 
+
+
         SoundEffectInstance inventorySound;
         SoundEffectInstance stepsSound;
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
@@ -56,7 +58,7 @@ namespace wizard_game
             stepsTimer = new Timer(stepsSpeed, this);
             rank = 1;
             exp = 0;
-            lp = 0;
+            lp = 20;
             
         }
 
@@ -217,16 +219,46 @@ namespace wizard_game
             if (inputState.IsNewKeyPress(Keys.Space)) Attack();
 
             //switching weapons
+            
+           
             if (inputState.IsNewKeyPress(Keys.D1))
             {
-                inventorySound.Play();
-                EquipWeapon(Weapon.WeaponName.SWORD);
+                if (UI.Get().isInTabmenu && lp > 0)
+                {
+                    extraMaxHealth++;
+                    lp--;
+                }
+                else
+                {
+                    inventorySound.Play();
+                    EquipWeapon(Weapon.WeaponName.SWORD);
+                }
+                
             }
             if (inputState.IsNewKeyPress(Keys.D2))
             {
-                inventorySound.Play();
-                EquipWeapon(Weapon.WeaponName.BOW);
+                if (UI.Get().isInTabmenu && lp > 0)
+                {
+                    rangedExtraDamage++;
+                    rangedExtraVelocity++;
+                    lp--;
+                }
+                else
+                {
+                    inventorySound.Play();
+                    EquipWeapon(Weapon.WeaponName.BOW);
+                }
             }
+
+            if (inputState.IsNewKeyPress(Keys.D3))
+            {
+                if (UI.Get().isInTabmenu && lp > 0)
+                {
+                    meeleExtraDamage++;
+                    lp--;
+                }
+            }
+            
             if (inputState.IsNewKeyPress(Keys.R))
             {
                 int x = GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth);
@@ -412,6 +444,11 @@ namespace wizard_game
             health = 2;
             coins = 0;
             rotation = 0;
+            lp = 20;
+            extraMaxHealth = 0;
+            meeleExtraDamage = 0;
+            rangedExtraDamage = 0;
+            rangedExtraVelocity = 0;
         }
 
 

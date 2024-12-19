@@ -94,7 +94,7 @@ namespace wizard_game
                     {
                             hitSound.Stop();
                             hitSound.Play();
-                            GameplayScreen.acteurs[i].takeDamage(damage);
+                            GameplayScreen.acteurs[i].takeDamage(damage + attacker.meeleExtraDamage);
                     }
                 }
             }

@@ -43,7 +43,7 @@ namespace wizard_game
                 {
                     hitSound.Stop();
                     hitSound.Play();
-                    GameplayScreen.acteurs[i].takeDamage(damage);
+                    GameplayScreen.acteurs[i].takeDamage(damage + attacker.rangedExtraDamage);
                     GameplayScreen.projectiles.Remove(this);
                     return;
                 }
@@ -54,7 +54,7 @@ namespace wizard_game
                 return;
             }
 
-            position += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position += (speed + attacker.rangedExtraVelocity) * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
             float opposite = direction.X;
             float adjecent = direction.Y;
             float alpha = (float)Math.Atan2(opposite,adjecent);

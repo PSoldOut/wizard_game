@@ -18,20 +18,34 @@ namespace wizard_game
         private static UI instance;
         Sprite heartSprite;
         Sprite goldSprite;
+        Sprite tabmenuSprite;
+        Sprite bowSprite;
+        Sprite swordSprite;
         SpriteFont spriteFont;
 
         float upperOffsetY = 21;
         float bottomOffsetY = 40;
-        bool isInTabmenu;
+        public bool isInTabmenu;
+        float tabmenuSpriteScale = 3;
 
         private UI()
         {
             heartSprite = new Sprite(AssetManager.GetTexture("heart"), 1, 1, 1, false);
-            heartSprite.layerDepth = 0.3f;
+            heartSprite.layerDepth = 0.2f;
+
+            bowSprite = new Sprite(AssetManager.GetTexture("bow"), 6, 4, 1, false);
+            bowSprite.layerDepth = 0.2f;
+            bowSprite.currentFrame = 1;
+
+            swordSprite = new Sprite(AssetManager.GetTexture("sword"), 1, 1, 1, false);
+            swordSprite.layerDepth = 0.2f;
+            swordSprite.scale = 0.25f;
 
             goldSprite = new Sprite(AssetManager.GetTexture("gold"), 1, 1, 1, false);
             goldSprite.layerDepth = 0.3f;
             spriteFont = AssetManager.GetFont("Arial");
+            tabmenuSprite = new Sprite(AssetManager.GetTexture("panel_brown"), 1, 1, tabmenuSpriteScale, false);
+            tabmenuSprite.layerDepth = 0.3f;
             isInTabmenu = false;
         }
 
@@ -52,10 +66,7 @@ namespace wizard_game
 
         public void Update(GameTime gameTime)
         {
-            if (isInTabmenu)
-            {
-                Console.WriteLine("in tabmenu");
-            }
+            
         }
 
         public void Draw(GameTime gameTime)
@@ -70,7 +81,23 @@ namespace wizard_game
             GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Rank: " + Player.Get().rank + "          exp: " + Player.Get().exp + "/" + Player.current_rank_exp_needed, new Vector2(gsmg.graphics.PreferredBackBufferWidth/2 - 120, gsmg.graphics.PreferredBackBufferHeight-bottomOffsetY), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
             GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + GameplayScreen.fps.ToString(), new Vector2(20, gsmg.graphics.PreferredBackBufferHeight-bottomOffsetY), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
             GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Room: " + GameplayScreen.map.roomIndex.ToString(), new Vector2(120, gsmg.graphics.PreferredBackBufferHeight-bottomOffsetY), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
+            if (isInTabmenu)
+            {
+                Vector2 posPanel = new Vector2(GameStateManagementGame.Get().graphics.PreferredBackBufferWidth/2-(int)(tabmenuSprite.texture.Width*tabmenuSpriteScale/2), GameStateManagementGame.Get().graphics.PreferredBackBufferHeight/2-(int)(tabmenuSprite.texture.Height*tabmenuSpriteScale/2));
+                tabmenuSprite.Draw((int)posPanel.X, (int)posPanel.Y);
+                GameStateManagementGame._spriteBatch.DrawString(spriteFont, "LP: " + Player.Get().lp, new Vector2(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale/2, posPanel.Y+tabmenuSprite.texture.Height * tabmenuSpriteScale/8), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
 
+                heartSprite.scale = 2;
+                heartSprite.Draw((int)(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (1.0f/3.0f) - heartSprite.texture.Width*heartSprite.scale), (int)(posPanel.Y+tabmenuSprite.texture.Height * tabmenuSpriteScale/3));
+                heartSprite.scale = 1;
+
+                bowSprite.Draw((int)(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (2.0f/3.0f) - bowSprite.texture.Width*bowSprite.scale/6), (int)(posPanel.Y+tabmenuSprite.texture.Height * tabmenuSpriteScale/3 - 10));
+
+                swordSprite.Draw((int)(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (3.0f/3.0f) - swordSprite.texture.Width*swordSprite.scale - 15), (int)(posPanel.Y+tabmenuSprite.texture.Height * tabmenuSpriteScale/3));
+                GameStateManagementGame._spriteBatch.DrawString(spriteFont, Player.Get().extraMaxHealth.ToString(), new Vector2(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (1.0f/3.0f) - 35, posPanel.Y + +tabmenuSprite.texture.Height * tabmenuSpriteScale/1.4f), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
+                GameStateManagementGame._spriteBatch.DrawString(spriteFont, Player.Get().rangedExtraDamage.ToString(), new Vector2(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (2.0f/3.0f) - 45, posPanel.Y + +tabmenuSprite.texture.Height * tabmenuSpriteScale/1.4f), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
+                GameStateManagementGame._spriteBatch.DrawString(spriteFont, Player.Get().meeleExtraDamage.ToString(), new Vector2(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (3.0f/3.0f) - 55, posPanel.Y + +tabmenuSprite.texture.Height * tabmenuSpriteScale/1.4f), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
+            }
         }
     }
 

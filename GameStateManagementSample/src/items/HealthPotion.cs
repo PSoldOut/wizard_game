@@ -27,7 +27,7 @@ namespace wizard_game
         public override void Effect()
         {
             effectSound.Play();
-            if (Player.Get().health <= Player.PLAYER_MAX_HEALTH - health)
+            if (Player.Get().health <= Player.PLAYER_MAX_HEALTH - health + Player.Get().extraMaxHealth)
                 Player.Get().health+=health;
 
             GameplayScreen.items.Remove(this);

@@ -742,6 +742,18 @@
 /processorParam:TextureFormat=Color
 /build:Obstacles/Rock_MOSSY_BIG.PNG
 
+#begin panel_brown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:panel_brown.png
+
 #begin Player.png
 /importer:TextureImporter
 /processor:TextureProcessor

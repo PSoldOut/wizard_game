@@ -9,6 +9,8 @@
 
 #endregion File Description
 
+using wizard_game;
+
 namespace GameStateManagement
 {
     /// <summary>
@@ -70,6 +72,7 @@ namespace GameStateManagement
             }
             ScreenManager.AddScreen(new BackgroundScreen(), null);
             ScreenManager.AddScreen(new MainMenuScreen(), null);
+            Player.Get().reset();
         }
 
         #endregion Handle Input

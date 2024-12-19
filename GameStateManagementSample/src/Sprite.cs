@@ -24,7 +24,7 @@ public class Sprite
 
 
     double currentTime;
-    int currentFrame;
+    public int currentFrame;
     int hFrames;
     int vFrames;
     public int frameWidth { get; }                             //width in pixels
