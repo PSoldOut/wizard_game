@@ -142,7 +142,7 @@ namespace wizard_game
         {
             //Debug.WriteLine("Call Override");
 
-            GameStateManagementGame._spriteBatch.Draw(sprite.texture, hitBox, Color.White);
+            GameStateManagementGame._spriteBatch.Draw(sprite.texture, hitBox, null, Color.White, 0.0f, new Vector2(0,0), SpriteEffects.None, 0.5f);
             drawDebugHitBox();
             //base.Draw(gameTime);
         }

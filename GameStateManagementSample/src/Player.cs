@@ -16,6 +16,10 @@ namespace wizard_game
 
     public class Player : Acteur
     {
+        public const int RANK_2_EXP_NEEDED = 500;  //die exp die nötig sind um von rang 1 auf rang 2 zu kommen
+        public const float RANK_EXP_MULTIPLIER = 0.5f; //der faktor mit dem current_rank_exp multiplioziert wird und auf sich selbst addiert wird
+        public static int current_rank_exp_needed = RANK_2_EXP_NEEDED; //die exp die aktuell nötig sind um ein level aufzusteigen
+        
         private static Player instance;
         public const int PLAYER_MAX_HEALTH = 8;
         public float speed = 0.24f;
@@ -29,6 +33,9 @@ namespace wizard_game
         public int coins;
         float stepsSpeed = 0.1f;
         Timer stepsTimer;
+        public int rank;
+        public int exp;
+        public int lp;  //lernpunkte
 
         SoundEffectInstance inventorySound;
         SoundEffectInstance stepsSound;
@@ -43,10 +50,13 @@ namespace wizard_game
             InitAnimations();
             direction = new Vector2(0, -1);
             this.weapons = new List<Weapon>();
-            health = 2;
+            health = PLAYER_MAX_HEALTH;
             map = _map;
             currentSpeed = 0;
             stepsTimer = new Timer(stepsSpeed, this);
+            rank = 1;
+            exp = 0;
+            lp = 0;
             
         }
 
@@ -105,7 +115,17 @@ namespace wizard_game
 
 
 
-
+        public void PickupExp(int exp)
+        {
+            this.exp += exp;
+            if (this.exp >= current_rank_exp_needed)
+            {
+                this.exp = this.exp -  current_rank_exp_needed;
+                rank++;
+                CalcCurrentRankExp();
+                lp++;
+            }
+        }
 
 
 
@@ -216,6 +236,10 @@ namespace wizard_game
             if (inputState.IsNewKeyPress(Keys.K))
             {
                 takeDamage(1);
+            }
+            if (inputState.IsNewKeyPress(Keys.Tab))
+            {
+                UI.Get().toggleTabmenu();
             }
         }
 
@@ -346,7 +370,10 @@ namespace wizard_game
 
 
 
-
+        public void CalcCurrentRankExp()
+        {
+            current_rank_exp_needed += (int)(current_rank_exp_needed * RANK_EXP_MULTIPLIER);
+        }
 
 
 

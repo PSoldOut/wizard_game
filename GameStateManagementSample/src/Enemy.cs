@@ -22,7 +22,7 @@ namespace wizard_game
         public float speed;
         private EnemyType e_type;
         private EnemyState e_state;
-
+        public int expDrop;
         private bool drawHitBox = true;
         private int lineWidth = 2;
         private Color hitboxColor = Color.Purple;
@@ -47,6 +47,7 @@ namespace wizard_game
             enemy_texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             enemy_texture.SetData(new Color[] { Color.Black });
             //hitBox = getNextRect(position);
+            expDrop = 100;
         }
 
 
@@ -270,7 +271,12 @@ namespace wizard_game
 
 
 
-
+        public override void Die()
+        {
+            base.Die();
+            Player.Get().PickupExp(expDrop);
+            
+        }
 
 
 

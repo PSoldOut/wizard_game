@@ -41,7 +41,7 @@ namespace GameStateManagement
 
 
         bool mousePressed = false;
-        private int fps;
+        public static int fps;
         private SpriteFont spriteFont;
 
 
@@ -68,7 +68,7 @@ namespace GameStateManagement
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             rand = new Random();
 
-            ui = new UI();
+            ui = UI.Get();
 
             items = new List<Item>();
             acteurs = new List<Acteur>();
@@ -202,6 +202,7 @@ namespace GameStateManagement
 
         public override void Draw(GameTime gameTime)
         {
+            base.Draw(gameTime);
             if (!this.IsActive) // todo spiel vielleich im hintergrunt anzeigen.
             {
                 return;
@@ -209,15 +210,12 @@ namespace GameStateManagement
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.CornflowerBlue, 0, 0);
             Rectangle screenRectangle = new Rectangle(0, 0, 1280, 720);
             GameStateManagementGame._spriteBatch.Draw(background, screenRectangle, null, Color.White, 0, new Vector2(0,0), SpriteEffects.None, 1.0f);
-            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "FPS: " + fps.ToString(), new Vector2(20, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight-40), Color.Wheat);
-            GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Room: " + map.roomIndex.ToString(), new Vector2(120, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight-40), Color.Wheat);
 
             for (int i = 0; i < items.Count; i++) items[i].Draw(gameTime);
             for (int i = 0; i < projectiles.Count; i++) projectiles[i].Draw(gameTime);
             for (int i = 0; i < acteurs.Count; i++) acteurs[i].Draw(gameTime);
             map.Draw(gameTime);
             ui.Draw(gameTime);
-            base.Draw(gameTime);
         }
 
 
