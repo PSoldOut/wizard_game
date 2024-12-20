@@ -51,22 +51,22 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            //if (isDying) return;
-            //if (path.Count ==0)
-            //{
-            //    cordXInGamestate = (int)position.X / 10;
-            //    cordYInGamestate = (int)position.Y / 10;
-            //    currentView = room.gamestate;
-            //    startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
-            //    solutionNode = AStar(startNode);
-            //    while(solutionNode != null)
-            //    {
-            //        path.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
-            //        solutionNode = solutionNode.GetParent();
-            //    }
-            //}
-            //
-            //if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
+            if (isDying) return;
+            if (path.Count ==0)
+            {
+                cordXInGamestate = (int)(position.X + width/2) / 10;
+                cordYInGamestate = (int)(position.Y + height/2) / 10;
+                currentView = room.gamestate;
+                startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
+                solutionNode = AStar(startNode);
+                while(solutionNode != null)
+                {
+                    path.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
+                    solutionNode = solutionNode.GetParent();
+                }
+            }
+            
+            if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
             //Console.WriteLine("count: " + path.Count() + "nextTarget:" + path[path.Count-1]);
 
         }

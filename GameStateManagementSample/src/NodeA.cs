@@ -73,13 +73,17 @@ class NodeA
         LinkedList<NodeA> successors = new LinkedList<NodeA>();
 
         // Prüfen und Hinzufügen der möglichen Nachbarn (Bewegungsrichtungen)
-        AddSuccessor(successors, x + 1, y, EnemyAction.GO_SOUTH);
-        AddSuccessor(successors, x - 1, y, EnemyAction.GO_NORTH);
-        AddSuccessor(successors, x, y + 1, EnemyAction.GO_EAST);
-        AddSuccessor(successors, x, y - 1, EnemyAction.GO_WEST);
+        AddSuccessor2(successors, x + 1, y, EnemyAction.GO_SOUTH);
+        AddSuccessor2(successors, x - 1, y, EnemyAction.GO_NORTH);
+        AddSuccessor2(successors, x, y + 1, EnemyAction.GO_EAST);
+        AddSuccessor2(successors, x, y - 1, EnemyAction.GO_WEST);
 
         return successors;
     }
+
+
+
+
 
     private void AddSuccessor(LinkedList<NodeA> successors, int newX, int newY, EnemyAction action)
     {
@@ -95,6 +99,38 @@ class NodeA
             successors.AddLast(successor);
         }
     }
+
+
+
+
+    private void AddSuccessor2(LinkedList<NodeA> successors, int newX, int newY, EnemyAction action)
+    {
+    //    Console.WriteLine(view[newX, newY]+ "-x-"+newX+"-y-"+newY);
+        if (IsInBounds(newX, newY) && view[newX, newY] != Gamestate.WALL && 
+            IsInBounds(newX, newY+1) && view[newX, newY+1] != Gamestate.WALL &&
+            IsInBounds(newX+1, newY) && view[newX+1, newY] != Gamestate.WALL &&
+            IsInBounds(newX+1, newY+1) && view[newX+1, newY+1] != Gamestate.WALL &&
+            IsInBounds(newX, newY-1) && view[newX, newY-1] != Gamestate.WALL &&
+            IsInBounds(newX-1, newY) && view[newX-1, newY] != Gamestate.WALL &&
+            IsInBounds(newX-1, newY-1) && view[newX-1, newY-1] != Gamestate.WALL &&
+            IsInBounds(newX, newY+2) && view[newX, newY+2] != Gamestate.WALL &&
+            IsInBounds(newX, newY-2) && view[newX, newY-2] != Gamestate.WALL &&
+            IsInBounds(newX, newY+3) && view[newX, newY+3] != Gamestate.WALL &&
+            IsInBounds(newX, newY-3) && view[newX, newY-3] != Gamestate.WALL)
+            
+        {
+            Gamestate[,] copiedView = CopyView(view);
+            copiedView[x, y] = Gamestate.EMPTY;
+            copiedView[newX, newY] = Gamestate.ENEMY;
+
+            NodeA successor = new NodeA(copiedView, newX, newY, this, action, cost + 1);
+        //  Console.WriteLine(successor.GetX() + "-" + successor.GetY() + "-"+ successor.GetCost());
+            successors.AddLast(successor);
+        }
+    }
+
+
+
 
     private bool IsInBounds(int newX, int newY)
     {

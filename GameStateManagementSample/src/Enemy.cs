@@ -207,8 +207,8 @@ namespace wizard_game
 
         public bool moveToTarget(Vector2 target)
         {
-            if ((target - position + new Vector2(width/2, height/2)).Length() < 20) return true;
-            direction = target - position + new Vector2(width/2, height/2);
+            if ((target - GetMidPos()).Length() < 20) return true;
+            direction = target - GetMidPos();
             direction.Normalize();
             //Console.WriteLine("direction:" + direction);
             position += direction * speed;
@@ -222,15 +222,17 @@ namespace wizard_game
         {
             List<NodeA> closedList = new List<NodeA>();
             List<NodeA> openList = [startNode];
+
+            Vector2 target = Player.Get().GetMidPos()/10;
             while (openList.Count > 0)
             {
             //    Console.WriteLine(openList.Count);
-                openList.Sort((n1,n2) => (n1.GetCost() + Math.Abs((int)(Player.Get().position.X/10) - n1.GetX()) + Math.Abs((int)(Player.Get().position.Y/10) - n1.GetY())).CompareTo(
-                                          n2.GetCost() + Math.Abs((int)(Player.Get().position.X/10) - n2.GetX()) + Math.Abs((int)(Player.Get().position.Y/10) - n2.GetY())));
+                openList.Sort((n1,n2) => (n1.GetCost() + Math.Abs((int)target.X - n1.GetX()) + Math.Abs((int)target.Y - n1.GetY())).CompareTo(
+                                          n2.GetCost() + Math.Abs((int)target.X - n2.GetX()) + Math.Abs((int)target.Y - n2.GetY())));
                 NodeA currentNode = openList[0];
                 openList.RemoveAt(0);
 
-                if (Math.Abs(currentNode.GetX() - (int)(Player.Get().position.X/10)) < 2 && Math.Abs(currentNode.GetY() - (int)(Player.Get().position.Y/10)) < 2)
+                if (Math.Abs(currentNode.GetX() - (int)target.X) < 2 && Math.Abs(currentNode.GetY() - (int)target.Y) < 2)
                 {
                   //  Console.WriteLine("found solution!");
                     return currentNode;
