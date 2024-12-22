@@ -47,11 +47,9 @@ namespace wizard_game
         public abstract void Attack(Acteur attacker);
 
 
-        public abstract void SetEquippedLeft();   
-        public abstract void SetEquippedRight();   
-        public abstract void SetEquippedUp();   
-        public abstract void SetEquippedDown();   
-
-
+        public abstract void SetEquippedLeft();
+        public abstract void SetEquippedRight();
+        public abstract void SetEquippedUp();
+        public abstract void SetEquippedDown();
     }
 }
