@@ -45,7 +45,7 @@ namespace wizard_game
                 }
                 //throw new Exception("fertig");
             }
-            
+
         }
 
         public override void Update(GameTime gameTime)
@@ -65,9 +65,8 @@ namespace wizard_game
                     solutionNode = solutionNode.GetParent();
                 }
             }
-            
+
             if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
-            //Console.WriteLine("count: " + path.Count() + "nextTarget:" + path[path.Count-1]);
 
         }
 
@@ -76,7 +75,7 @@ namespace wizard_game
         {
             if (!IsObjBetweenEnemyAndPlayer())
             {
-                follow();
+               // follow();
             }
         }
 
@@ -201,7 +200,7 @@ namespace wizard_game
                 }
             }
             //-----------------------------------------------------------
-            
+
             // Positionen in Raster-Koordinaten umrechnen (z. B. bei 10 Pixel pro Feld)
             x1 = (int)(enemyPos.X + width) / 10;
             y1 = (int)(enemyPos.Y + height) / 10;
@@ -233,7 +232,7 @@ namespace wizard_game
                         return true;
                     }
                 }
-            
+
             }
 
             //------------------------------------------------------
@@ -268,7 +267,7 @@ namespace wizard_game
                         return true;
                     }
                 }
-            
+
             }
 
 
@@ -305,7 +304,7 @@ namespace wizard_game
                         return true;
                     }
                 }
-            
+
             }
             return false;
         }

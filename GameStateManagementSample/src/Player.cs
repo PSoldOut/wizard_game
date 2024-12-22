@@ -19,9 +19,9 @@ namespace wizard_game
         public const int RANK_2_EXP_NEEDED = 500;  //die exp die nötig sind um von rang 1 auf rang 2 zu kommen
         public const float RANK_EXP_MULTIPLIER = 0.5f; //der faktor mit dem current_rank_exp multiplioziert wird und auf sich selbst addiert wird
         public static int current_rank_exp_needed = RANK_2_EXP_NEEDED; //die exp die aktuell nötig sind um ein level aufzusteigen
-        
+
         private static Player instance;
-        public const int PLAYER_MAX_HEALTH = 8;
+        public const int PLAYER_MAX_HEALTH = 100;
         public float speed = 0.24f;
         public float currentSpeed;
         public string currentAnimation;
@@ -45,7 +45,7 @@ namespace wizard_game
         {
             stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
             inventorySound = AssetManager.GetSoundInstance("inventory_sound_effects/cloth-inventory");
-            
+
             LoadSprite(4, 4, 1, true);
             sprite.offset = new Vector2(width/2, height/2);
             sprite.origin = new Vector2(width/2, height/2);
@@ -56,10 +56,13 @@ namespace wizard_game
             map = _map;
             currentSpeed = 0;
             stepsTimer = new Timer(stepsSpeed, this);
+
             rank = 1;
             exp = 0;
+            lp = 0;
+
             lp = 20;
-            
+
         }
 
 
@@ -151,7 +154,7 @@ namespace wizard_game
             DetacteCollisonX(oldPos);
             DetacteCollisonY(oldPos);
             sprite.setAnimation(currentAnimation);
-            
+
             if (equippedWeapon != null) equippedWeapon.Update(gameTime);
             //keeping the position of the weapons by the player
             foreach (Weapon w in weapons)
@@ -219,8 +222,8 @@ namespace wizard_game
             if (inputState.IsNewKeyPress(Keys.Space)) Attack();
 
             //switching weapons
-            
-           
+
+
             if (inputState.IsNewKeyPress(Keys.D1))
             {
                 if (UI.Get().isInTabmenu && lp > 0)
@@ -233,7 +236,7 @@ namespace wizard_game
                     inventorySound.Play();
                     EquipWeapon(Weapon.WeaponName.SWORD);
                 }
-                
+
             }
             if (inputState.IsNewKeyPress(Keys.D2))
             {
@@ -258,7 +261,7 @@ namespace wizard_game
                     lp--;
                 }
             }
-            
+
             if (inputState.IsNewKeyPress(Keys.R))
             {
                 int x = GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth);

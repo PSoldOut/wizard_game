@@ -36,7 +36,7 @@ namespace wizard_game
             player = Player.Get();
             timer.Update(gameTime);
             timer.start();
-            
+
 
             for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
             {

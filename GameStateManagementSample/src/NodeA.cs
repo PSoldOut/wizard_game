@@ -23,7 +23,6 @@ class NodeA
         this.parent = parent;
         this.nextAction = direction;
         this.cost = stepCost;
-       setGoldCount(getGoldCount());
         this.currentValue = 0;
     }
 
@@ -77,7 +76,10 @@ class NodeA
         AddSuccessor2(successors, x - 1, y, EnemyAction.GO_NORTH);
         AddSuccessor2(successors, x, y + 1, EnemyAction.GO_EAST);
         AddSuccessor2(successors, x, y - 1, EnemyAction.GO_WEST);
-
+        // foreach(NodeA n in successors)   {
+        //     Console.WriteLine(n.GetX()+"+++++---"+n.GetY());
+        // }
+        // Console.WriteLine("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
         return successors;
     }
 
@@ -106,7 +108,7 @@ class NodeA
     private void AddSuccessor2(LinkedList<NodeA> successors, int newX, int newY, EnemyAction action)
     {
     //    Console.WriteLine(view[newX, newY]+ "-x-"+newX+"-y-"+newY);
-        if (IsInBounds(newX, newY) && view[newX, newY] != Gamestate.WALL && 
+        if (IsInBounds(newX, newY) && view[newX, newY] != Gamestate.WALL &&
             IsInBounds(newX, newY+1) && view[newX, newY+1] != Gamestate.WALL &&
             IsInBounds(newX+1, newY) && view[newX+1, newY] != Gamestate.WALL &&
             IsInBounds(newX+1, newY+1) && view[newX+1, newY+1] != Gamestate.WALL &&
@@ -117,7 +119,7 @@ class NodeA
             IsInBounds(newX, newY-2) && view[newX, newY-2] != Gamestate.WALL &&
             IsInBounds(newX, newY+3) && view[newX, newY+3] != Gamestate.WALL &&
             IsInBounds(newX, newY-3) && view[newX, newY-3] != Gamestate.WALL)
-            
+
         {
             Gamestate[,] copiedView = CopyView(view);
             copiedView[x, y] = Gamestate.EMPTY;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 namespace wizard_game
@@ -10,28 +11,29 @@ namespace wizard_game
 
         private List<NodeA> closedList;
         private List<NodeA> openList;
+    Vector2 positionGold;
 
-
-        public AStern()
+        public AStern(Vector2 positionGold)
         {
             closedList = new List<NodeA>();
             openList = new List<NodeA>();
+            this.positionGold = positionGold;
         }
 
         public NodeA Start(NodeA startNode)
         {
-
+            if(positionGold.X < 0) return null;
             openList.Add(startNode);
             while (openList.Count > 0)
             {
-                openList.Sort((n1,n2) => (n1.GetCost() + n1.getGoldCount()).CompareTo(n2.GetCost()
-                +n2.getGoldCount()));
+                 openList.Sort((n1,n2) => (n1.GetCost() + Math.Abs((int)positionGold.X - n1.GetX()) + Math.Abs((int)positionGold.Y - n1.GetY())).CompareTo(
+                                          n2.GetCost() + Math.Abs((int)positionGold.X - n2.GetX()) + Math.Abs((int)positionGold.Y - n2.GetY())));
                 NodeA currentNode = openList[0];
                 openList.RemoveAt(0);
 
-                // Zielüberprüfung (z.B. alle Goldmünzen aufgesammelt)
-                if (currentNode.getGoldCount() == 5)
+                if (Math.Abs(currentNode.GetX() - (int)positionGold.X) < 2 && Math.Abs(currentNode.GetY() - (int)positionGold.Y) < 2)
                 {
+                   Console.WriteLine("found solution!");
                     return currentNode;
                 }
 
@@ -51,7 +53,7 @@ namespace wizard_game
                 }
             }
 
-          //  Console.WriteLine("No solution found.");
+            Console.WriteLine("No solution found.");
             return null;
         }
     }

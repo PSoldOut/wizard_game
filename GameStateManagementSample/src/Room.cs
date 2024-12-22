@@ -51,7 +51,7 @@ namespace wizard_game
             W_Height = gameInstance.GraphicsDevice.Viewport.Height;
             SideWalls();
             BuildWalls();
-            Debug.WriteLine("build walls");
+           // Debug.WriteLine("build walls");
         }
         private void SideWalls()
         {
@@ -115,7 +115,7 @@ namespace wizard_game
             for (int c = 0; c < 5; c++)
             {
 
-                Debug.WriteLine("new wall #######");
+               // Debug.WriteLine("new wall #######");
                 int XLength = fields.GetLength(0);
                 int YLength = fields.GetLength(1);
                 int x = rnd.Next(XLength / 4, XLength / 4 * 3);
@@ -143,7 +143,7 @@ namespace wizard_game
                         break;
 
                 }
-                Debug.WriteLine("start dir " + dir + " x" + x + " y:" + y);
+             //   Debug.WriteLine("start dir " + dir + " x" + x + " y:" + y);
 
 
                 DirEnum dirOld = dir;
@@ -351,7 +351,7 @@ namespace wizard_game
 
                         return 2;
                     }
-                    if (WallOverlap(new Point(x, y), 60, 20)) //in front 
+                    if (WallOverlap(new Point(x, y), 60, 20)) //in front
                     {
                         return 3;
                     }
@@ -364,7 +364,7 @@ namespace wizard_game
 
                         return 2;
                     }
-                    if (WallOverlap(new Point(x - 40, y), 60, 20)) //in front 
+                    if (WallOverlap(new Point(x - 40, y), 60, 20)) //in front
                     {
                         return 3;
                     }
@@ -376,7 +376,7 @@ namespace wizard_game
 
                         return 2;
                     }
-                    if (WallOverlap(new Point(x, y - 40), 20, 60)) //in front 
+                    if (WallOverlap(new Point(x, y - 40), 20, 60)) //in front
                     {
                         return 3;
                     }
@@ -389,7 +389,7 @@ namespace wizard_game
 
                         return 2;
                     }
-                    if (WallOverlap(new Point(x, y), 20, 60)) //in front 
+                    if (WallOverlap(new Point(x, y), 20, 60)) //in front
                     {
                         return 3;
                     }
@@ -541,10 +541,10 @@ namespace wizard_game
             {
                 for (int j = 0; j < gamestate.GetLength(1); j++)
                 {
-                    if(gamestate[i, j] == Gamestate.PLAYER || gamestate[i, j] == Gamestate.GOLD  )
-                    Console.Write(gamestate[i, j] + " ");
+                    if(gamestate[i, j] == Gamestate.PLAYER || gamestate[i, j] == Gamestate.GOLD  ){}
+                 //   Console.Write(gamestate[i, j] + " ");
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
             }
         }
          public void InitGamestate()
