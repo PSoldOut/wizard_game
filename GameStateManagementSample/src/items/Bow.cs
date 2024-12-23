@@ -22,6 +22,7 @@ namespace wizard_game
         SoundEffect shootSound;
         Timer attackTimer;
         float attackSpeed = 1.0f;
+        ParticleSystem particleSystem;
         public Bow(int x, int y) : base(new Vector2(x, y), 20, 45, "bow", false, WeaponName.BOW)
         {
             shootSound = AssetManager.GetSound("battle_sound_effects/Bow");
@@ -42,6 +43,7 @@ namespace wizard_game
 
             isAttacking = false;
             attackTimer = new Timer(attackSpeed);
+            particleSystem = new ParticleSystem(40);
         }
 
 
@@ -72,6 +74,19 @@ namespace wizard_game
             {
                 rotation = equipedRotation;
             }
+            if (this.state == State.ON_FLOOR)
+            {
+                particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height), 1, Color.AliceBlue);
+                particleSystem.Update(gameTime);
+            }
+        }
+
+
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            if (this.state == State.ON_FLOOR) particleSystem.Draw();
         }
 
 
@@ -82,6 +97,7 @@ namespace wizard_game
             Player.Get().AddWeapon(this);
             this.state = State.IN_INVENTORY;
             GameplayScreen.items.Remove(this);
+            sprite.color = Color.White;
         }
 
 

@@ -44,6 +44,7 @@ public class Sprite
     Color[] currentFrameData;
     public Vector2 offset;
     public float layerDepth = 0.5f;
+    public Color color;
 
     public Sprite(Texture2D texture, int hFrames, int vFrames, float scale, bool isAnimated)
     {
@@ -69,6 +70,7 @@ public class Sprite
         flippedY = false;
         this.isPlaying = false;
         offset = new Vector2(0,0);
+        color = Color.White;
     }
 
     public Sprite(Texture2D texture, int hFrames, int vFrames, float scale) : this(texture, hFrames, vFrames, scale, false) { }
@@ -101,7 +103,7 @@ public class Sprite
         if (flippedY) effects = effects | SpriteEffects.FlipHorizontally;
         if (flippedX) effects = effects | SpriteEffects.FlipVertically;
         GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)(x+offset.X), (int)(y+offset.Y), (int)(frameWidth * scale), (int)(frameHeight * scale)),
-            new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), Color.White, rotation, origin, effects, layerDepth);
+            new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), color, rotation, origin, effects, layerDepth);
     }
 
 

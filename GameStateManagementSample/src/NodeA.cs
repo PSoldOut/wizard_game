@@ -107,8 +107,9 @@ class NodeA
 
     private void AddSuccessor2(LinkedList<NodeA> successors, int newX, int newY, EnemyAction action)
     {
-    //    Console.WriteLine(view[newX, newY]+ "-x-"+newX+"-y-"+newY);
-        if (IsInBounds(newX, newY) && view[newX, newY] != Gamestate.WALL &&
+        //es werden die umliegenden zellen überprüft weil der enemy ja größer ist als nur eine zelle.
+        //so werden nur knoten expandiert wo der enemy auch hinpasst ohne teilweise durch eine wand zu laufen
+        if (IsInBounds(newX, newY) && view[newX, newY] != Gamestate.WALL && 
             IsInBounds(newX, newY+1) && view[newX, newY+1] != Gamestate.WALL &&
             IsInBounds(newX+1, newY) && view[newX+1, newY] != Gamestate.WALL &&
             IsInBounds(newX+1, newY+1) && view[newX+1, newY+1] != Gamestate.WALL &&

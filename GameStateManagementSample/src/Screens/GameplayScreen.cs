@@ -84,6 +84,8 @@ namespace GameStateManagement
             items.Add(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
             items.Add(new Sword(300, 100));
             items.Add(new Bow(200, 100));
+            items.Add(new Shoes(150,150));
+            items.Add(new Role(200,200));
             //---------------------------------------
 
 
@@ -91,12 +93,11 @@ namespace GameStateManagement
 
             //map.Initialize();
 
-            acteurs.Add(Player.Get());
-          //  acteurs.Add(new Enemy_Guard(100, 100, map, EnemyType.GUARD, map.GetActiveRoom()));
+            acteurs.Add(new Enemy_Guard(100, 100, map, EnemyType.GUARD, map.GetActiveRoom()));
             acteurs.Add(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
-        //    acteurs.Add(new Enemy_Doubler(400,300, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
-          // acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
-
+            acteurs.Add(new Enemy_Doubler(400,300, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
+            acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
+            acteurs.Add(Player.Get());
 
         }
 

@@ -27,7 +27,7 @@ namespace wizard_game
         protected string spritename;
         bool hasCollision;
 
-        private bool drawHitBox = true;
+        private bool drawHitBox = false;
         public int lineWidth = 2;
         public Color hitboxColor = Color.Purple;
         public Texture2D image_hitbox;
@@ -122,6 +122,15 @@ namespace wizard_game
         }
 
 
+
+
+        public void drawPoint(Vector2 pos)
+        {
+            Texture2D texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
+            texture.SetData(new Color[] {Color.Red});
+            GameStateManagementGame._spriteBatch.Draw(texture, pos, null, Color.Red, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.0f);
+            
+        }
 
 
         protected bool DetacteCollison()

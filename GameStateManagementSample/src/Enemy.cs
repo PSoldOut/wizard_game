@@ -19,7 +19,6 @@ namespace wizard_game
             NORMAL
         }
         public Texture2D enemy_texture;
-        public float speed;
         private EnemyType e_type;
         private EnemyState e_state;
         public int expDrop;
@@ -27,6 +26,7 @@ namespace wizard_game
         private int lineWidth = 2;
         private Color hitboxColor = Color.Purple;
         public Room room;
+        public float currentSpeed;
 
         // private Rectangle rect { get; set; }
         protected Map map;
@@ -43,11 +43,13 @@ namespace wizard_game
             LoadSprite(4,4,1,true);
             sprite.offset = new Vector2(width/2, height/2);
             sprite.origin = new Vector2(width/2, height/2);
+            sprite.layerDepth = NEXT_LAYER_DEPTH;
             InitAnimations();
             enemy_texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             enemy_texture.SetData(new Color[] { Color.Black });
             //hitBox = getNextRect(position);
             expDrop = 100;
+            currentSpeed = 0;
         }
 
 
@@ -212,6 +214,7 @@ namespace wizard_game
             direction.Normalize();
             //Console.WriteLine("direction:" + direction);
             position += direction * speed;
+            currentSpeed = speed;
             return false;
         }
 
@@ -261,13 +264,6 @@ namespace wizard_game
         }
 
 
-        public void drawPoint(Vector2 pos)
-        {
-            Texture2D texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
-            texture.SetData(new Color[] {Color.Red});
-            GameStateManagementGame._spriteBatch.Draw(texture, pos, null, Color.Red, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.0f);
-            
-        }
 
 
 

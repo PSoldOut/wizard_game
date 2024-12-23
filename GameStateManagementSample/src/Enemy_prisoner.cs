@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using GameStateManagement;
 using Manager;
 using Microsoft.Xna.Framework;
@@ -22,6 +23,11 @@ namespace wizard_game
         int cordYInGamestate;
         Gamestate[,] currentView;
 
+        Timer attackTimer;
+        bool aStarThreadIsRunning = false;
+        bool isAttacking;
+        bool canAttack;
+
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
         {
             dieSound = AssetManager.GetSoundInstance("monster_sfx_pack/monster-6");     //sterbesound
@@ -30,6 +36,9 @@ namespace wizard_game
             //speed = 0.5f;
             this.map = map;
             direction = new Vector2(1, 0);
+            attackTimer = new Timer(1.5f, this);
+            isAttacking = false;
+            canAttack = true;
 
             using (StreamWriter writer = new StreamWriter("C:\\Users\\Philipp\\Desktop\\gitProjects\\wizard_game\\GameStateManagementSample\\src\\test.txt"))
             {
@@ -45,28 +54,49 @@ namespace wizard_game
                 }
                 //throw new Exception("fertig");
             }
-
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             if (isDying) return;
-            if (path.Count ==0)
-            {
-                cordXInGamestate = (int)(position.X + width/2) / 10;
-                cordYInGamestate = (int)(position.Y + height/2) / 10;
-                currentView = room.gamestate;
-                startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
-                solutionNode = AStar(startNode);
-                while(solutionNode != null)
+            attackTimer.Update(gameTime);
+            if (path.Count ==0 && !aStarThreadIsRunning)
+            {                
+                aStarThreadIsRunning = true;
+                Task.Run(()=>
                 {
-                    path.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
-                    solutionNode = solutionNode.GetParent();
+                    cordXInGamestate = (int)(position.X + width/2) / 10;
+                    cordYInGamestate = (int)(position.Y + height/2) / 10;
+                    currentView = room.gamestate;
+                    startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
+                    solutionNode = AStar(startNode);  
+                    while(solutionNode != null)
+                    {
+                        path.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
+                        solutionNode = solutionNode.GetParent();
+                    }
+                    aStarThreadIsRunning = false;                  
+                });
+
+            }
+            if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
+            
+
+            
+
+            if (isAttacking)
+            {
+                Vector2 o = new Vector2(width/2, height/2);
+                sprite.origin = o;
+                float endRotation = 1;
+                rotation = MathHelper.Lerp(rotation, endRotation, 0.4f);
+                if (rotation <= endRotation + 0.05 && rotation >= endRotation - 0.05)
+                {
+                    rotation = 0;
+                    isAttacking = false;
                 }
             }
-
-            if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
 
         }
 
@@ -156,6 +186,19 @@ namespace wizard_game
             }
 
             //Debug.WriteLine(direction + " direction");
+        }
+
+
+        public override void Attack()
+        {
+            base.Attack();
+            if (!isAttacking && canAttack)
+            {
+                isAttacking = true;
+                canAttack = false;
+                attackTimer.start();
+            }
+
         }
 
 
@@ -362,6 +405,12 @@ namespace wizard_game
         }
 
 
+
+        public override void TimerCallback(Timer timer)
+        {
+            base.TimerCallback(timer);
+            if (timer == attackTimer) canAttack = true;
+        }
 
     }
 }

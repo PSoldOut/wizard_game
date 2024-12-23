@@ -18,6 +18,7 @@ namespace wizard_game
     public abstract class Acteur : GameEntity
     {
         public static int DEFAULT_MAX_HEALTH = 4;
+        public static float NEXT_LAYER_DEPTH = 0.01f;
         public int health;
         protected SoundEffectInstance dieSound;
         protected SoundEffectInstance damageSound;
@@ -25,6 +26,7 @@ namespace wizard_game
         protected bool isDying;
         protected bool isTakingDamage;
         ParticleSystem particleSystem;
+        public float speed = 0.24f;
 
         public int rangedExtraDamage = 0;
         public int rangedExtraVelocity = 0;
@@ -42,6 +44,10 @@ namespace wizard_game
             isDying = false;
             isTakingDamage = false;
             particleSystem = new ParticleSystem();
+            speed = 0.24f;
+
+            NEXT_LAYER_DEPTH += 0.01f;
+            if (NEXT_LAYER_DEPTH >= 1.0f) NEXT_LAYER_DEPTH = 0.01f;
         }
 
 

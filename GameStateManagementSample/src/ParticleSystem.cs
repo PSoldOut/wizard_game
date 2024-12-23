@@ -23,6 +23,7 @@ public class Particle
     public float TimeToLive; // Lebenszeit in Sekunden
     public Color Color;
     public static Texture2D texture;
+
     public Particle(Vector2 position, Vector2 velocity, Vector2 acceleration, float timeToLive, Color color)
     {
         this.Position = position;
@@ -39,10 +40,20 @@ public class ParticleSystem
 {
     private List<Particle> particles = new List<Particle>();
     private Random random = GameplayScreen.rand;
+    public int maxParticle = 100;
+
+    public ParticleSystem(){}
+
+    public ParticleSystem(int maxParticle)
+    {
+        this.maxParticle = maxParticle;
+    }
+
     public void AddBloodEffect(Vector2 position, int amount)
     {
         for (int i = 0; i < amount; i++)
         {
+            if (particles.Count >= maxParticle) break;
             // Zufällige Geschwindigkeit für Blutspritzer
             Vector2 velocity = new Vector2(
                 (float)(random.NextDouble() * 2 - 1), // X-Richtung: -1 bis 1
@@ -56,18 +67,19 @@ public class ParticleSystem
         }
     }
 
-    public void AddMagicEffect(Vector2 position, int amount)
+    public void AddMagicEffect(Vector2 position, int amount, Color clr)
     {
         for (int i = 0; i < amount; i++)
         {
+            if (particles.Count >= maxParticle) break;
             Vector2 velocity = new Vector2(
-                (float)(random.NextDouble() * 2 - 1), -5 + ((float)(random.NextDouble() * 2 - 1))) * 50f; // Geschwindigkeit skalieren
+                (float)(random.NextDouble() * 2 - 1), -5 + ((float)(random.NextDouble() * 2 - 1))) * 20f; // Geschwindigkeit skalieren
 
-            Vector2 acceleration = new Vector2(0, -2);
+            Vector2 acceleration = new Vector2(0, -0.5f);
 
-            float timeToLive = (float)(random.NextDouble()*1 + 1);
-            Vector2 nPosition = new Vector2((float)(position.X + random.NextDouble() * 20 -10), (float)(position.Y + random.NextDouble() * 10 -5));
-            particles.Add(new Particle(nPosition, velocity, acceleration, timeToLive, Color.AliceBlue));
+            float timeToLive = (float)(random.NextDouble()*0.3 + 0.3);
+            Vector2 nPosition = new Vector2((float)(position.X + random.NextDouble() * 40 -20), (float)(position.Y + random.NextDouble() * 10 -5));
+            particles.Add(new Particle(nPosition, velocity, acceleration, timeToLive, clr));
         }
     }
 

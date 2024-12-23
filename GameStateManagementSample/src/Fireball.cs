@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,9 +19,9 @@ namespace wizard_game
         Timer timer;
         public static int FIREBALL_WIDTH = 30;
         public static int FIREBALL_HEIGHT = 30;
-        public Fireball(float x, float y, Enemy attacker) : base(new Vector2(x, y), FIREBALL_WIDTH, FIREBALL_HEIGHT, "fireball", false, attacker)
+        public Fireball(float x, float y, Acteur attacker) : base(new Vector2(x, y), FIREBALL_WIDTH, FIREBALL_HEIGHT, "fireball", false, attacker)
         {
-            shootSound = GameStateManagementGame.Get().Content.Load<SoundEffect>("fire");
+            shootSound = AssetManager.GetSound("fire");
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.03f);
             sprite.offset = new Vector2(FIREBALL_WIDTH/2.0f, FIREBALL_HEIGHT/2.0f);
             sprite.origin = new Vector2(60/0.03f/2.0f, 60/0.03f/2.0f);          //die 60 ist ein bischen gefuscht

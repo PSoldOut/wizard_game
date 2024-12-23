@@ -16,7 +16,7 @@ namespace wizard_game
 
         public enum WeaponName
         {
-            SWORD, BOW, SPEAR
+            SWORD, BOW, SPEAR, ROLE
         }
 
         public WeaponName name;

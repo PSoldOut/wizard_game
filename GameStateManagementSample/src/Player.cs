@@ -21,8 +21,7 @@ namespace wizard_game
         public static int current_rank_exp_needed = RANK_2_EXP_NEEDED; //die exp die aktuell nötig sind um ein level aufzusteigen
 
         private static Player instance;
-        public const int PLAYER_MAX_HEALTH = 100;
-        public float speed = 0.24f;
+        public const int PLAYER_MAX_HEALTH = 8;
         public float currentSpeed;
         public string currentAnimation;
         public int id;
@@ -49,6 +48,7 @@ namespace wizard_game
             LoadSprite(4, 4, 1, true);
             sprite.offset = new Vector2(width/2, height/2);
             sprite.origin = new Vector2(width/2, height/2);
+            sprite.layerDepth = NEXT_LAYER_DEPTH;
             InitAnimations();
             direction = new Vector2(0, -1);
             this.weapons = new List<Weapon>();
@@ -62,7 +62,8 @@ namespace wizard_game
             lp = 0;
 
             lp = 20;
-
+            speed = 0.24f;
+            
         }
 
 
@@ -198,25 +199,7 @@ namespace wizard_game
             if (nextDir.Length() != 0) direction = nextDir;
 
             //the correct idle animation is determined when the player is not moving. in which side is the player looking?
-            if (currentSpeed == 0)
-            {
-                if (direction.Y < 0)
-                {
-                    currentAnimation = "idle_up";
-                    if (direction.X < 0) currentAnimation = "idle_left";
-                    else if (direction.X > 0) currentAnimation = "idle_right";
-                }
-                else if (direction.Y > 0)
-                {
-                    currentAnimation = "idle_down";
-                    if (direction.X > 0) currentAnimation = "idle_right";
-                }
-                else
-                {
-                    if (direction.X < 0) currentAnimation = "idle_left";
-                    else currentAnimation = "idle_right";
-                }
-            }
+            updateAnimationWhileStanding();
 
             //inputState.IsNewKeyPress(Keys.Space);
             if (inputState.IsNewKeyPress(Keys.Space)) Attack();
@@ -260,6 +243,11 @@ namespace wizard_game
                     meeleExtraDamage++;
                     lp--;
                 }
+                else
+                {
+                    inventorySound.Play();
+                    EquipWeapon(Weapon.WeaponName.ROLE);
+                }
             }
 
             if (inputState.IsNewKeyPress(Keys.R))
@@ -281,10 +269,39 @@ namespace wizard_game
 
 
 
+
+        public void updateAnimationWhileStanding()
+        {
+            if (currentSpeed == 0)
+            {
+                if (direction.Y < 0)
+                {
+                    currentAnimation = "idle_up";
+                    if (direction.X < 0) currentAnimation = "idle_left";
+                    else if (direction.X > 0) currentAnimation = "idle_right";
+                }
+                else if (direction.Y > 0)
+                {
+                    currentAnimation = "idle_down";
+                    if (direction.X > 0) currentAnimation = "idle_right";
+                }
+                else
+                {
+                    if (direction.X < 0) currentAnimation = "idle_left";
+                    else currentAnimation = "idle_right";
+                }
+            }
+        }
+
+
         // returns the direction vector
         private Vector2 WalkUp()
         {
-            if (equippedWeapon != null) equippedWeapon.sprite.layerDepth = 0.6f;
+            if (equippedWeapon != null)
+            {
+                equippedWeapon.sprite.layerDepth = sprite.layerDepth + 0.01f;
+                if (equippedWeapon.sprite.layerDepth < 0) equippedWeapon.sprite.layerDepth = 0;
+            }
             damageOffset.X = 0;
             damageOffset.Y = -damageDistance;
             currentSpeed = speed;
@@ -298,7 +315,11 @@ namespace wizard_game
 
         private Vector2 WalkDown()
         {
-            if (equippedWeapon != null) equippedWeapon.sprite.layerDepth = 0.4f;
+            if (equippedWeapon != null)
+            {
+                equippedWeapon.sprite.layerDepth = sprite.layerDepth - 0.01f;
+                if (equippedWeapon.sprite.layerDepth < 0) equippedWeapon.sprite.layerDepth = 0;
+            }
             damageOffset.X = 0;
             damageOffset.Y = damageDistance;
             currentSpeed = speed;
@@ -311,7 +332,11 @@ namespace wizard_game
 
         private Vector2 WalkLeft()
         {
-            if (equippedWeapon != null) equippedWeapon.sprite.layerDepth = 0.6f;
+            if (equippedWeapon != null)
+            {
+                equippedWeapon.sprite.layerDepth = sprite.layerDepth + 0.01f;
+                if (equippedWeapon.sprite.layerDepth < 0) equippedWeapon.sprite.layerDepth = 0;
+            }
             damageOffset.X = -damageDistance;
             damageOffset.Y = 0;
             currentSpeed = speed;
@@ -324,7 +349,11 @@ namespace wizard_game
 
         private Vector2 WalkRight()
         {
-            if (equippedWeapon != null) equippedWeapon.sprite.layerDepth = 0.4f;
+            if (equippedWeapon != null)
+            {
+                equippedWeapon.sprite.layerDepth = sprite.layerDepth - 0.01f;
+                if (equippedWeapon.sprite.layerDepth < 0) equippedWeapon.sprite.layerDepth = 0;
+            }
             damageOffset.X = damageDistance;
             damageOffset.Y = 0;
             currentSpeed = speed;

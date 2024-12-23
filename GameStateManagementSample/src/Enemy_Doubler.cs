@@ -8,6 +8,18 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using GameStateManagement;
+using Manager;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 using GameStateManagement;
 using System.Runtime.CompilerServices;
@@ -21,11 +33,35 @@ namespace wizard_game
 
         int doubling;
         public string currentAnimation;
+        ParticleSystem particleSystem;
+
+        int cordXInGamestate;
+        int cordYInGamestate;
+        Gamestate[,] currentView;
+        List<Vector2> path = new List<Vector2>();
+        NodeA startNode = null;
+        NodeA solutionNode = null;
+
+        Timer attackTimer;
+        float attackRange;
+        bool aStarThreadIsRunning = false;
+        bool isAttacking;
+        bool canAttack;
 
         public Enemy_Doubler(int x, int y, Map map, EnemyType type, Room room, int doubling) : base(x, y, map, type, "doubler", room)
         {
+            particleSystem = new ParticleSystem(40);
             this.doubling = doubling;
             health = doubling;
+            particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 20, Color.Coral);
+            this.map = map;
+            direction = new Vector2(1, 0);
+            attackTimer = new Timer(1.5f, this);
+            isAttacking = false;
+            canAttack = true;
+            speed = 2f;
+            attackRange = 40;
+            currentAnimation = "idle_left";
         }
 
 
@@ -38,8 +74,8 @@ namespace wizard_game
             if (doubling > 0)
             {
                 doubling--;
-                int rX = GameplayScreen.rand.Next(-50, 50);
-                int rY = GameplayScreen.rand.Next(-50, 50);
+                int rX = GameplayScreen.rand.Next(-40, 40)*2;
+                int rY = GameplayScreen.rand.Next(-40, 40)*2;
                 GameplayScreen.acteurs.Add(new Enemy_Doubler((int)position.X + rX, (int)position.Y + rY, map, EnemyType.DOUBLER, map.GetActiveRoom(), doubling));
             }
             base.takeDamage(damage);   
@@ -56,8 +92,83 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Move();
+            particleSystem.Update(gameTime);
+            currentSpeed = 0;
+            if (isDying) return;
+            attackTimer.Update(gameTime);
+            if (path.Count ==0 && !aStarThreadIsRunning)
+            {                
+                aStarThreadIsRunning = true;
+                Task.Run(()=>
+                {
+                    cordXInGamestate = (int)(position.X + width/2) / 10;
+                    cordYInGamestate = (int)(position.Y + height/2) / 10;
+                    currentView = room.gamestate;
+                    startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
+                    solutionNode = AStar(startNode);  
+                    while(solutionNode != null)
+                    {
+                        path.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
+                        solutionNode = solutionNode.GetParent();
+                    }
+                    aStarThreadIsRunning = false;                  
+                });
 
+            }
+            if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
+            
+
+
+            
+
+
+
+            if ((Player.Get().GetMidPos() - GetMidPos()).Length() < attackRange) Attack();
+
+            if (isAttacking)
+            {
+                Vector2 o = new Vector2(width/2, height/2);
+                sprite.origin = o;
+                float endRotation = 1;
+                rotation = MathHelper.Lerp(rotation, endRotation, 0.4f);
+                if (rotation <= endRotation + 0.05 && rotation >= endRotation - 0.05)
+                {
+                    rotation = 0;
+                    isAttacking = false;
+                    if ((Player.Get().GetMidPos() - GetMidPos()).Length() < attackRange) Player.Get().takeDamage(1);
+                }
+            }
+
+
+            UpdateAnimation();
+            sprite.setAnimation(currentAnimation);
+        }
+
+
+
+
+        public override void Attack()
+        {
+            base.Attack();
+            if (!isAttacking && canAttack)
+            {
+                isAttacking = true;
+                canAttack = false;
+                attackTimer.start();
+            }
+
+        }
+
+
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            particleSystem.Draw();
+            foreach(Vector2 v in path)
+            {
+                drawPoint(v);
+            }
         }
 
         //Bewegung des Gegners: wenn kein Objekt auf dem Weg zu Spieler gibt, dann verfolgt er spieler
@@ -88,47 +199,52 @@ namespace wizard_game
             }
         }
 
-        //bewegen sich  nach der Richtung des Players
-        public void MoveToPlayer()
+        
 
+
+        public void UpdateAnimation()
         {
-
-            float deltaX = Player.Get().position.X - position.X;
-            float deltaY = Player.Get().position.Y - position.Y;
-
-            // Bestimme, ob Bewegung entlang X oder Y priorisiert wird
-            if (Math.Abs(deltaX) > Math.Abs(deltaY)) // Bewegung entlang der X-Achse
+            
+            if (currentSpeed == 0 && path.Count == 0)
             {
-                if (deltaX > 0)
+                if (direction.Y < 0)
                 {
-                    direction.X = 1; // nach rechts
-                    sprite.setAnimation("right");
+                    currentAnimation = "idle_up";
+                    if (direction.X < 0) currentAnimation = "idle_left";
+                    else if (direction.X > 0) currentAnimation = "idle_right";
+                }
+                else if (direction.Y > 0)
+                {
+                    currentAnimation = "idle_down";
+                    if (direction.X > 0) currentAnimation = "idle_right";
                 }
                 else
                 {
-                    direction.X = -1; // nach links
-                    sprite.setAnimation("left");
+                    if (direction.X < 0) currentAnimation = "idle_left";
+                    else currentAnimation = "idle_right";
                 }
-                direction.Y = 0; // Nur entlang der X-Achse bewegen
             }
-            else // Bewegung entlang der Y-Achse
+
+            if (currentSpeed > 0)
             {
-                if (deltaY > 0)
+                if (direction.Y < 0)
                 {
-                    direction.Y = 1; // nach unten
-                    sprite.setAnimation("down");
+                    currentAnimation = "up";
+                    if (direction.X < 0) currentAnimation = "left";
+                    else if (direction.X > 0) currentAnimation = "right";
+                }
+                else if (direction.Y > 0)
+                {
+                    currentAnimation = "down";
+                    if (direction.X > 0) currentAnimation = "right";
                 }
                 else
                 {
-                    direction.Y = -1; // nach oben
-                    sprite.setAnimation("up");
+                    if (direction.X < 0) currentAnimation = "left";
+                    else currentAnimation = "right";
                 }
-                direction.X = 0; // Nur entlang der Y-Achse bewegen
             }
-
-            //Debug.WriteLine(direction + " direction");
         }
-
 
 
 
@@ -237,7 +353,11 @@ namespace wizard_game
 
 
 
-
+        public override void TimerCallback(Timer timer)
+        {
+            base.TimerCallback(timer);
+            if (timer == attackTimer) canAttack = true;
+        }
 
 
     }
