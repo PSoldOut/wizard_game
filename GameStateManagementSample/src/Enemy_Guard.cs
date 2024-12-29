@@ -33,7 +33,7 @@ namespace wizard_game
             float distance = caculateDistance();
             if (distance <= 350)
             {
-                //Attack();
+                Attack();
             }
             else
             {

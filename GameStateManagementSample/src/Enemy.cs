@@ -187,8 +187,8 @@ namespace wizard_game
         //rechnen Abstand zwischen Player und Gegner
         public float caculateDistance()
         {
-            float distanceX = position.X - Player.Get().position.X;
-            float distanceY = position.Y - Player.Get().position.Y;
+            float distanceX = position.X + width/2 - Player.Get().position.X - Player.Get().width/2;
+            float distanceY = position.Y +height/2 - Player.Get().position.Y - Player.Get().height/2;
             return (float)Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
         }
 

@@ -37,7 +37,9 @@ namespace wizard_game
             player = Player.Get();
             timer.Update(gameTime);
             timer.start();
-
+            if(caculateDistance()<20){
+                player.takeDamage(1);
+            }
 
             for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
             {
@@ -72,7 +74,12 @@ namespace wizard_game
          }
 
 
-
+    public float caculateDistance()
+        {
+            float distanceX = position.X + width/2 - Player.Get().position.X - Player.Get().width/2;
+            float distanceY = position.Y +height/2 - Player.Get().position.Y - Player.Get().height/2;
+            return (float)Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
+        }
 
         public void SetAttackstate(bool isAttacking)
         {
