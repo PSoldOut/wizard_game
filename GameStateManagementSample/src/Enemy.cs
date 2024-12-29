@@ -159,6 +159,9 @@ namespace wizard_game
                 case EnemyType.DOUBLER:
                     speed = 0.9f;
                     break;
+                case EnemyType.KNIGHT:
+                    speed = 3f;
+                    break;
                 default:
                     speed = 0.7f;
                     break;
@@ -273,7 +276,7 @@ namespace wizard_game
         {
             base.Die();
             Player.Get().PickupExp(expDrop);
-            
+
         }
 
 
