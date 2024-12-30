@@ -22,6 +22,7 @@ namespace wizard_game{
         SKELETON,
         PRISONER,
         KNIGHT,
-        DOUBLER
+        DOUBLER,
+        MAGIE
     }
 }

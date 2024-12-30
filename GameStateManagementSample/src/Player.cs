@@ -63,7 +63,7 @@ namespace wizard_game
 
             lp = 20;
             speed = 0.24f;
-            
+
         }
 
 
@@ -448,6 +448,9 @@ namespace wizard_game
                 if (item.state == Item.State.ON_FLOOR && item.area.Intersects(hitBox))
                 {
                     item.Effect();
+                    if(item is Gold gold){
+                        coins++;
+                    }
                     map.GetActiveRoom().setGamestateElement(item.position, Gamestate.EMPTY);
                     break;
                 }

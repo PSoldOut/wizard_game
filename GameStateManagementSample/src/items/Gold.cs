@@ -29,7 +29,7 @@ namespace  wizard_game
         public override void Effect()
         {
            effectSound.Play();
-           Player.Get().coins++;
+          // Player.Get().coins++;
            GameplayScreen.items.Remove(this);
         }
 
