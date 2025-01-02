@@ -134,7 +134,7 @@ namespace wizard_game
         }
 
 
-        protected bool DetacteCollison()
+        public bool DetacteCollison()
         {
             Door spawnDoor = GameplayScreen.map.DetacteCollisonDoor(hitBox);
             if (spawnDoor != null)

@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Threading;
 using wizard_game;
 using Microsoft.Xna.Framework.Media;
+using Manager;
 
 #endregion Using Statements
 
@@ -78,29 +79,56 @@ namespace GameStateManagement
             for (int i = 0; i < goldCount; i++)
             {
                 Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
+                SpawnItem(g);
                 room.setGamestateElement(g.position, Gamestate.GOLD);
-                items.Add(g);
             }
-            items.Add(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
-            items.Add(new Sword(300, 100));
-            items.Add(new Bow(200, 100));
-            items.Add(new Shoes(150,150));
-            items.Add(new Role(200,200));
+            SpawnItem(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+            SpawnItem(new Sword(300, 100));
+            SpawnItem(new Shoes(150,150));
+            SpawnItem(new Role(200,200));
             //---------------------------------------
 
 
 
 
             //map.Initialize();
-
-            acteurs.Add(new Enemy_Guard(100, 100, map, EnemyType.GUARD, map.GetActiveRoom()));
-            acteurs.Add(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
-            acteurs.Add(new Enemy_Doubler(400,300, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
-            acteurs.Add(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
-            acteurs.Add(Player.Get());
+            SpawnActeur(new Enemy_Guard(100, 100, map, EnemyType.GUARD, map.GetActiveRoom()));
+            SpawnActeur(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
+            SpawnActeur(new Enemy_Doubler(400,300, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
+            SpawnActeur(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
+            SpawnActeur(Player.Get());
 
         }
 
+
+        public void SpawnActeur(Acteur acteur)
+        {
+            acteurs.Add(acteur);
+            Rectangle oldRect = acteur.hitBox;
+            acteur.hitBox = new Rectangle((int)acteur.position.X-10, (int)acteur.position.Y-10, acteur.width+20, acteur.height+20);
+            while(acteur.DetacteCollison())
+            {
+                acteur.position = new Vector2(rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
+                acteur.hitBox.X = (int)acteur.position.X-10;
+                acteur.hitBox.Y = (int)acteur.position.Y-10;
+            }
+            acteur.hitBox = oldRect;
+        }
+
+
+        public void SpawnItem(Item item)
+        {
+            items.Add(item);
+            Rectangle oldRect = item.hitBox;
+            item.hitBox = new Rectangle((int)item.position.X-10, (int)item.position.Y-10, item.width+20, item.height+20);
+            while(item.DetacteCollison())
+            {
+                item.position = new Vector2(rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
+                item.hitBox.X = (int)item.position.X-10;
+                item.hitBox.Y = (int)item.position.Y-10;
+            }
+            item.hitBox = oldRect;
+        }
 
 
         public override void LoadContent()
