@@ -15,17 +15,13 @@ namespace wizard_game
 {
     class Enemy_prisoner : Enemy
     {
-        NodeA startNode = null;
-        NodeA solutionNode = null;
-        List<Vector2> path = new List<Vector2>();
-        int cordXInGamestate;
-        int cordYInGamestate;
         Gamestate[,] currentView;
 
         Timer attackTimer;
         bool aStarThreadIsRunning = false;
         bool isAttacking;
         bool canAttack;
+        Timer aStarTimer;
 
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
         {
@@ -37,6 +33,8 @@ namespace wizard_game
             attackTimer = new Timer(1.5f, this);
             isAttacking = false;
             canAttack = true;
+            aStarTimer = new Timer(1, this);
+            aStarTimer.start();
 
             using (StreamWriter writer = new StreamWriter("C:\\Users\\Philipp\\Desktop\\gitProjects\\wizard_game\\GameStateManagementSample\\src\\test.txt"))
             {
@@ -58,27 +56,17 @@ namespace wizard_game
         {
             base.Update(gameTime);
             if (isDying) return;
-            if(caculateDistance()< 28){
-                Player.Get().takeDamage(1);
-            }
+            aStarTimer.Update(gameTime);
             attackTimer.Update(gameTime);
             if (path.Count ==0 && !aStarThreadIsRunning)
             {
                 aStarThreadIsRunning = true;
                 Task.Run(()=>
                 {
-                    cordXInGamestate = (int)(position.X + width/2) / 10;
-                    cordYInGamestate = (int)(position.Y + height/2) / 10;
-                    currentView = room.gamestate;
-                    startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
-                    solutionNode = AStar(startNode);
-                    while(solutionNode != null)
-                    {
-                        path.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
-                        solutionNode = solutionNode.GetParent();
-                    }
-                    aStarThreadIsRunning = false;
+                    path = calculatePathToTarget(Player.Get().GetMidPos());
+                    aStarThreadIsRunning = false;                  
                 });
+                aStarTimer.start();
 
             }
             if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
@@ -101,15 +89,8 @@ namespace wizard_game
 
         }
 
+        
 
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-            foreach(Vector2 p in path)
-            {
-                drawPoint(p);
-            }
-        }
 
 
         // //bewegen sich  nach der Richtung des Players
@@ -375,6 +356,16 @@ namespace wizard_game
         {
             base.TimerCallback(timer);
             if (timer == attackTimer) canAttack = true;
+            else if (timer == aStarTimer && !aStarThreadIsRunning)
+            {                
+                aStarThreadIsRunning = true;
+                Task.Run(()=>
+                {
+                    path = calculatePathToTarget(Player.Get().GetMidPos());
+                    aStarThreadIsRunning = false;                  
+                });
+                aStarTimer.start();
+            }
         }
 
     }

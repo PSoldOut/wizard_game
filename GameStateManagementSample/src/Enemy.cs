@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
+
 namespace wizard_game
 {
     class Enemy : Acteur
@@ -27,6 +28,7 @@ namespace wizard_game
         private Color hitboxColor = Color.Purple;
         public Room room;
         public float currentSpeed;
+        protected List<Vector2> path = new List<Vector2>();
 
         // private Rectangle rect { get; set; }
         protected Map map;
@@ -137,6 +139,13 @@ namespace wizard_game
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
+            if (GameStateManagementGame.mode == GameMode.DEBUG)
+            {
+                foreach(Vector2 v in path)
+                {
+                    drawPoint(v);
+                }
+            }
         }
 
         // Je nach EnemyType wird doe Geschwindigkeit gesetzt
@@ -184,6 +193,25 @@ namespace wizard_game
         }
 
 
+        //target is in pixel
+        public List<Vector2> calculatePathToTarget(Vector2 target)
+        {
+            List<Vector2> p = new List<Vector2>();
+            target /= 10;
+            int cordXInGamestate = (int)(position.X + width/2) / 10;
+            int cordYInGamestate = (int)(position.Y + height/2) / 10;
+            Gamestate[,] currentView = room.gamestate;
+            NodeA startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
+            NodeA solutionNode = AStar(startNode, target);  
+            while(solutionNode != null)
+            {
+                p.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
+                solutionNode = solutionNode.GetParent();
+            }
+            return p;
+        }
+
+
         //rechnen Abstand zwischen Player und Gegner
         public float caculateDistance()
         {
@@ -224,12 +252,11 @@ namespace wizard_game
 
 
 
-        public NodeA AStar(NodeA startNode)
+        public NodeA AStar(NodeA startNode, Vector2 target)
         {
             List<NodeA> closedList = new List<NodeA>();
             List<NodeA> openList = [startNode];
 
-            Vector2 target = Player.Get().GetMidPos()/10;
             while (openList.Count > 0)
             {
             //    Console.WriteLine(openList.Count);
@@ -276,6 +303,7 @@ namespace wizard_game
         {
             base.Die();
             Player.Get().PickupExp(expDrop);
+            particleSystem.AddExpEffect(GetMidPos(), Color.Wheat, expDrop.ToString());
 
         }
 

@@ -1,14 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
-using System.Diagnostics;
 using GameStateManagement;
 using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace wizard_game
@@ -264,7 +259,35 @@ namespace wizard_game
             {
                 UI.Get().toggleTabmenu();
             }
+            if (inputState.CurrentKeyboardStates[0].IsKeyDown(Keys.Q))
+            {
+                for (int i = 0; i < GameplayScreen.projectiles.Count; i++)
+                {
+                    if (GameplayScreen.projectiles[i] is Fireball && GameplayScreen.projectiles[i].attacker == this)
+                    {
+                        Fireball ball = (Fireball)GameplayScreen.projectiles[i];
+                        double angle = Math.Atan2(ball.GetDirection().Y, ball.GetDirection().X);
+                        angle -= 0.03;
+                        ball.SetDirection(new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)));
+                    }
+                }
+            }
+            if (inputState.CurrentKeyboardStates[0].IsKeyDown(Keys.E))
+            {
+                for (int i = 0; i < GameplayScreen.projectiles.Count; i++)
+                {
+                    if (GameplayScreen.projectiles[i] is Fireball && GameplayScreen.projectiles[i].attacker == this)
+                    {
+                        Fireball ball = (Fireball)GameplayScreen.projectiles[i];
+                        double angle = Math.Atan2(ball.GetDirection().Y, ball.GetDirection().X);
+                        angle += 0.03;
+                        ball.SetDirection(new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)));
+                    }
+                }
+            }
         }
+
+
 
 
 
@@ -424,12 +447,14 @@ namespace wizard_game
         {
             base.Draw(gameTime);
             if (equippedWeapon != null) equippedWeapon.Draw(gameTime);
-            //GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
-            //GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, damageArea.Width + lineWidth, lineWidth), hitboxColor);
-            //GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X + damageArea.Width, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
-            //GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y + damageArea.Height, damageArea.Width + lineWidth, lineWidth), hitboxColor);
-
-
+            if (GameStateManagementGame.mode == GameMode.DEBUG)
+            {
+                GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
+                GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y, damageArea.Width + lineWidth, lineWidth), hitboxColor);
+                GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X + damageArea.Width, damageArea.Y, lineWidth, damageArea.Height + lineWidth), hitboxColor);
+                GameStateManagementGame._spriteBatch.Draw(image_hitbox, new Rectangle(damageArea.X, damageArea.Y + damageArea.Height, damageArea.Width + lineWidth, lineWidth), hitboxColor);
+            }
+            
         }
 
 

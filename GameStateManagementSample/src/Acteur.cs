@@ -25,7 +25,7 @@ namespace wizard_game
         protected Timer dieTimer;
         protected bool isDying;
         protected bool isTakingDamage;
-        ParticleSystem particleSystem;
+        protected ParticleSystem particleSystem;
         public float speed = 0.24f;
 
         public int rangedExtraDamage = 0;

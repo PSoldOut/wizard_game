@@ -52,6 +52,7 @@ namespace wizard_game
             position += direction * speed;
         }
 
+
         //wählen eine andere Richtung wenn Kollision auftritt
         public void chooseADirection()
         {
@@ -119,6 +120,7 @@ namespace wizard_game
             // Erstelle den Fireball
             Fireball fireball = new Fireball(posX, posY, this);
             fireball.SetDirection(fireballDirection);
+            fireball.SetTarget(Player.Get());
             fireball.SetAttackstate(true);
             GameplayScreen.projectiles.Add(fireball);
         }

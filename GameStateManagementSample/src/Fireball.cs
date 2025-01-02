@@ -15,10 +15,17 @@ namespace wizard_game
 
         bool isAttacking;
         SoundEffect shootSound;
-        Player player;
         Timer timer;
         public static int FIREBALL_WIDTH = 30;
         public static int FIREBALL_HEIGHT = 30;
+
+
+        Vector2 acceleration;
+        Vector2 velocity;
+        float maxForce = 128f;
+        Acteur target;
+        bool hasTarget = false;
+
         public Fireball(float x, float y, Acteur attacker) : base(new Vector2(x, y), FIREBALL_WIDTH, FIREBALL_HEIGHT, "fireball", false, attacker)
         {
             shootSound = AssetManager.GetSound("fire");
@@ -26,20 +33,20 @@ namespace wizard_game
             sprite.offset = new Vector2(FIREBALL_WIDTH/2.0f, FIREBALL_HEIGHT/2.0f);
             sprite.origin = new Vector2(60/0.03f/2.0f, 60/0.03f/2.0f);          //die 60 ist ein bischen gefuscht
             damage = 2;
-            timer = new Timer(3, this);
+            timer = new Timer(3.5, this);
             isAttacking = false;
             speed = 250f;
+            acceleration = new Vector2(0,0);
+            velocity = new Vector2(0,0);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            player = Player.Get();
             timer.Update(gameTime);
             timer.start();
-            if(caculateDistance()<20){
-                player.takeDamage(1);
-            }
+            
+
 
             for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
             {
@@ -61,20 +68,48 @@ namespace wizard_game
             }
 
 
-
-            position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (hasTarget)
+            {
+                Vector2 desired = target.GetMidPos() - position;
+                desired.Normalize();
+                desired = desired * speed;
+                Vector2 steer = desired - velocity;
+                steer.Normalize();
+                if (steer.Length() > maxForce)
+                {  
+                    steer.Normalize();
+                    steer*=maxForce;
+                }
+                velocity += steer * 8;
+                if (velocity.Length() > speed)
+                {
+                    velocity.Normalize();
+                    velocity*=speed;
+                }
+                position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            } else
+            {
+                position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             //Console.WriteLine("direction: " + direction);
 
 
-            float opposite = direction.X;
-            float adjecent = direction.Y;
+            float opposite = velocity.X;
+            float adjecent = velocity.Y;
             float alpha = (float)Math.Atan2(opposite,adjecent);
             rotation = -alpha;
 
-         }
+        }
 
 
-    public float caculateDistance()
+        public void SetTarget(Acteur target)
+        {
+            this.target = target;
+            hasTarget = true;
+        }
+
+
+        public float caculateDistance()
         {
             float distanceX = position.X + width/2 - Player.Get().position.X - Player.Get().width/2;
             float distanceY = position.Y +height/2 - Player.Get().position.Y - Player.Get().height/2;
@@ -113,7 +148,9 @@ namespace wizard_game
             //    tmp.Y = 1;
             //}else tmp.Y = -1;
             // direction = tmp;
+            fireballDirection.Normalize();
             this.direction = fireballDirection;
+            this.velocity = fireballDirection * speed;
         }
 
 

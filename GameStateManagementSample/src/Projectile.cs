@@ -19,7 +19,7 @@ namespace wizard_game
         public static int DEFAULT_DAMAGE = 1;
         protected float speed;
         protected int damage;
-        protected Acteur attacker;
+        public Acteur attacker;
         protected Vector2 startPos;
 
         protected SoundEffectInstance hitSound;

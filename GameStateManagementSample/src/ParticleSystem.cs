@@ -34,6 +34,29 @@ public class Particle
         texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
         texture.SetData(new Color[] { Color.White });
     }
+
+    public virtual void Draw()
+    {
+        GameStateManagementGame._spriteBatch.Draw(Particle.texture, Position, null, Color, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.0f);
+    }
+}
+
+
+public class FontParticle : Particle
+{
+    public static SpriteFont spriteFont;
+    public String text;
+
+    public FontParticle(Vector2 position, Vector2 velocity, Vector2 acceleration, float timeToLive, Color color, String text) : base(position, velocity, acceleration, timeToLive, color)
+    {
+        spriteFont = AssetManager.GetFont("Arial");
+        this.text = text;
+    }
+
+    public override void Draw()
+    {
+        GameStateManagementGame._spriteBatch.DrawString(spriteFont, text, Position, Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
+    }
 }
 
 public class ParticleSystem
@@ -83,6 +106,20 @@ public class ParticleSystem
         }
     }
 
+
+    public void AddExpEffect(Vector2 position, Color clr, String text)
+    {
+        if (particles.Count >= maxParticle) return;
+            Vector2 velocity = new Vector2(
+                (float)(random.NextDouble() * 2 - 1), -5 + ((float)(random.NextDouble() * 2 - 1))) * 20f; // Geschwindigkeit skalieren
+
+            Vector2 acceleration = new Vector2(0, -0.5f);
+
+            float timeToLive = (float)(random.NextDouble()*0.3 + 0.3);
+            Vector2 nPosition = new Vector2((float)(position.X + random.NextDouble() * 40 -20), (float)(position.Y + random.NextDouble() * 10 -5));
+            particles.Add(new FontParticle(nPosition, velocity, acceleration, timeToLive, clr, text));
+    }
+
     public void Update(GameTime gameTime)
     {
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -103,7 +140,7 @@ public class ParticleSystem
     {
         foreach (var particle in particles)
         {
-            GameStateManagementGame._spriteBatch.Draw(Particle.texture, particle.Position, null, particle.Color, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.0f);
+            particle.Draw();
         }
     }
 }

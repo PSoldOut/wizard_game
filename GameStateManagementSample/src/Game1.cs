@@ -35,6 +35,7 @@ namespace GameStateManagement
         public static int musicVolume = 0;
         public static int soundVolume = 3;
         public static int masterVolume = 3;
+        public static GameMode mode = GameMode.DEBUG;
 
         Song mainMenuSong;
         public struct InputState

@@ -27,7 +27,7 @@ namespace wizard_game
         protected string spritename;
         bool hasCollision;
 
-        private bool drawHitBox = false;
+        private bool drawHitBox;
         public int lineWidth = 2;
         public Color hitboxColor = Color.Purple;
         public Texture2D image_hitbox;
@@ -41,7 +41,8 @@ namespace wizard_game
 
         public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
         {
-
+            if (GameStateManagementGame.mode == GameMode.DEBUG) drawHitBox = true;
+            else drawHitBox = false;
             openGateSound = AssetManager.GetSoundInstance("Horror_Sound_Library/Gate_Open_00");
             openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
 

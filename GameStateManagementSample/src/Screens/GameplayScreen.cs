@@ -52,7 +52,7 @@ namespace GameStateManagement
 
         private float pauseAlpha;
 
-        static int goldCount = 5;
+        static int goldCount = 7;
 
         public static List<Acteur> acteurs;
         public static List<Item> items;

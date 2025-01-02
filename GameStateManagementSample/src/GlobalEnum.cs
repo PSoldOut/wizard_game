@@ -25,4 +25,11 @@ namespace wizard_game{
         DOUBLER,
         MAGIE
     }
+
+    public enum GameMode{
+        DEBUG,
+        TUTORIAL,
+        DEFAULT
+
+    }
 }

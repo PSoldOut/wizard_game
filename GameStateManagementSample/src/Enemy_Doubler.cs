@@ -34,19 +34,12 @@ namespace wizard_game
         int doubling;
         public string currentAnimation;
         ParticleSystem particleSystem;
-
-        int cordXInGamestate;
-        int cordYInGamestate;
-        Gamestate[,] currentView;
-        List<Vector2> path = new List<Vector2>();
-        NodeA startNode = null;
-        NodeA solutionNode = null;
-
         Timer attackTimer;
         float attackRange;
         bool aStarThreadIsRunning = false;
         bool isAttacking;
         bool canAttack;
+        Timer aStarTimer;
 
         public Enemy_Doubler(int x, int y, Map map, EnemyType type, Room room, int doubling) : base(x, y, map, type, "doubler", room)
         {
@@ -62,6 +55,8 @@ namespace wizard_game
             speed = 2f;
             attackRange = 40;
             currentAnimation = "idle_left";
+            aStarTimer = new Timer(1, this);
+            aStarTimer.start();
         }
 
 
@@ -94,6 +89,7 @@ namespace wizard_game
             base.Update(gameTime);
             particleSystem.Update(gameTime);
             currentSpeed = 0;
+            aStarTimer.Update(gameTime);
             if (isDying) return;
             attackTimer.Update(gameTime);
             if (path.Count ==0 && !aStarThreadIsRunning)
@@ -101,18 +97,10 @@ namespace wizard_game
                 aStarThreadIsRunning = true;
                 Task.Run(()=>
                 {
-                    cordXInGamestate = (int)(position.X + width/2) / 10;
-                    cordYInGamestate = (int)(position.Y + height/2) / 10;
-                    currentView = room.gamestate;
-                    startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
-                    solutionNode = AStar(startNode);  
-                    while(solutionNode != null)
-                    {
-                        path.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
-                        solutionNode = solutionNode.GetParent();
-                    }
+                    path = calculatePathToTarget(Player.Get().GetMidPos());
                     aStarThreadIsRunning = false;                  
                 });
+                aStarTimer.start();
 
             }
             if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
@@ -165,10 +153,6 @@ namespace wizard_game
         {
             base.Draw(gameTime);
             particleSystem.Draw();
-            foreach(Vector2 v in path)
-            {
-                drawPoint(v);
-            }
         }
 
         //Bewegung des Gegners: wenn kein Objekt auf dem Weg zu Spieler gibt, dann verfolgt er spieler
@@ -357,6 +341,17 @@ namespace wizard_game
         {
             base.TimerCallback(timer);
             if (timer == attackTimer) canAttack = true;
+            else if (timer == aStarTimer && !aStarThreadIsRunning)
+            {                
+                aStarThreadIsRunning = true;
+                Task.Run(()=>
+                {
+                    path = calculatePathToTarget(Player.Get().GetMidPos());
+                    aStarThreadIsRunning = false;                  
+                });
+                aStarTimer.start();
+
+            }
         }
 
 

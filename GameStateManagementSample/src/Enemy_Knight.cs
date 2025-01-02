@@ -13,7 +13,6 @@ namespace wizard_game
         int prop = 10;
         Gold gold = null;
         private NodeA solutionNode;
-        private List<Vector2> pathToGold = new List<Vector2>();
         private NodeA startNode;
         Gamestate[,] currentView;
         bool aStarThreadIsRunning = false;
@@ -30,7 +29,7 @@ namespace wizard_game
         {
             base.Update(gameTime);
             if (isDying) return;
-            if (pathToGold.Count == 0 && !aStarThreadIsRunning)
+            if (path.Count == 0 && !aStarThreadIsRunning)
             {
                 aStarThreadIsRunning = true;
                 Task.Run(() =>
@@ -43,7 +42,7 @@ namespace wizard_game
                     //Wenn es noch Gold gibt
                     while (solutionNode != null)
                     {
-                        pathToGold.Add(new Vector2(solutionNode.GetX() * 10, solutionNode.GetY() * 10));
+                        path.Add(new Vector2(solutionNode.GetX() * 10, solutionNode.GetY() * 10));
                         solutionNode = solutionNode.GetParent();
                     }
                     aStarThreadIsRunning = false;
@@ -51,10 +50,10 @@ namespace wizard_game
 
             }
 
-            if (pathToGold.Count >= 1 && moveToTarget(pathToGold[^1]))
+            if (path.Count >= 1 && moveToTarget(path[^1]))
             {
-                pathToGold.RemoveAt(pathToGold.Count - 1);
-                if (pathToGold.Count > 0)
+                path.RemoveAt(path.Count - 1);
+                if (path.Count > 0)
                 {
                 }
                 else
@@ -70,8 +69,9 @@ namespace wizard_game
             List<NodeA> closedList = new List<NodeA>();
             List<NodeA> openList = [startNode];
             Vector2 target = new Vector2(0, 0);
-            foreach (Item item in GameplayScreen.items)
+            for (int i = 0; i < GameplayScreen.items.Count; i++)
             {
+                Item item = GameplayScreen.items[i];
                 if (item is Gold gold && currentView[(int)item.position.X/10, (int)item.position.Y/10]!= Gamestate.WALL)
                 {
                     target =  new Vector2(gold.position.X + gold.width/2, gold.position.Y + gold.height/2)/10;
@@ -112,10 +112,7 @@ namespace wizard_game
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            foreach (Vector2 p in pathToGold)
-            {
-                drawPoint(p);
-            }
+            
         }
     }
 }
