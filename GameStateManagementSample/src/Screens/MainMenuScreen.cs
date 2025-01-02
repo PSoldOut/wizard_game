@@ -11,6 +11,7 @@
 
 #region Using Statements
 
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 #endregion Using Statements
@@ -32,16 +33,22 @@ namespace GameStateManagement
         {
             // Create our menu entries.
             MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
+            MenuEntry playTutorialMenuEntry = new MenuEntry("Play Tutorial");
+            MenuEntry DebugMenuEntry = new MenuEntry("Debug");
             MenuEntry optionsMenuEntry = new MenuEntry("Options");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
+            playTutorialMenuEntry.Selected += PlayTutorialMenuEntrySelected;
+            DebugMenuEntry.Selected += DebugMenuEntrySelected;
             optionsMenuEntry.Selected += OptionsMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(playGameMenuEntry);
+            MenuEntries.Add(playTutorialMenuEntry);
+            MenuEntries.Add(DebugMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
@@ -55,6 +62,22 @@ namespace GameStateManagement
         /// </summary>
         private void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
+            GameStateManagementGame.mode = wizard_game.GameMode.DEFAULT;
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
+                               new GameplayScreen());
+        }
+
+        private void DebugMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            GameStateManagementGame.mode = wizard_game.GameMode.DEBUG;
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
+                               new GameplayScreen());
+        }
+
+
+        private void PlayTutorialMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            GameStateManagementGame.mode = wizard_game.GameMode.TUTORIAL;
             LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
                                new GameplayScreen());
         }

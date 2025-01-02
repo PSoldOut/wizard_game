@@ -100,7 +100,7 @@ namespace wizard_game
         {
             equipedOffset = equipedOffsetDown;
             sprite.setFlippedY(false);
-            sprite.scale = 0.03f;
+            sprite.SetScale(0.03f);
         }
 
 
@@ -108,7 +108,7 @@ namespace wizard_game
         {
             equipedOffset = equipedOffsetLeft;
             sprite.setFlippedY(true);
-            sprite.scale = 0.03f;
+            sprite.SetScale(0.03f);
         }
 
 
@@ -116,7 +116,7 @@ namespace wizard_game
         {
             equipedOffset = equipedOffsetRight;
             sprite.setFlippedY(false);
-            sprite.scale = 0.03f;
+            sprite.SetScale(0.03f);
         }
 
 
@@ -124,7 +124,7 @@ namespace wizard_game
         {
             equipedOffset = equipedOffsetUp;
             sprite.setFlippedY(true);
-            sprite.scale = 0.03f;
+            sprite.SetScale(0.03f);
         }
 
     }

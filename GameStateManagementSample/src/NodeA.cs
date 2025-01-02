@@ -117,9 +117,19 @@ class NodeA
             IsInBounds(newX-1, newY) && view[newX-1, newY] != Gamestate.WALL &&
             IsInBounds(newX-1, newY-1) && view[newX-1, newY-1] != Gamestate.WALL &&
             IsInBounds(newX, newY+2) && view[newX, newY+2] != Gamestate.WALL &&
+            IsInBounds(newX+1, newY+2) && view[newX+1, newY+2] != Gamestate.WALL &&
+            IsInBounds(newX-1, newY+2) && view[newX-1, newY+2] != Gamestate.WALL &&
             IsInBounds(newX, newY-2) && view[newX, newY-2] != Gamestate.WALL &&
+            IsInBounds(newX+1, newY-2) && view[newX+1, newY-2] != Gamestate.WALL &&
+            IsInBounds(newX-1, newY-2) && view[newX-1, newY-2] != Gamestate.WALL &&
             IsInBounds(newX, newY+3) && view[newX, newY+3] != Gamestate.WALL &&
-            IsInBounds(newX, newY-3) && view[newX, newY-3] != Gamestate.WALL)
+            IsInBounds(newX-2, newY+3) && view[newX-2, newY+3] != Gamestate.WALL &&
+            IsInBounds(newX+2, newY+3) && view[newX+2, newY+3] != Gamestate.WALL &&
+            IsInBounds(newX, newY-3) && view[newX, newY-3] != Gamestate.WALL &&
+            IsInBounds(newX-2, newY-3) && view[newX-2, newY-3] != Gamestate.WALL &&
+            IsInBounds(newX+2, newY-3) && view[newX+2, newY-3] != Gamestate.WALL)
+
+            
 
         {
             Gamestate[,] copiedView = CopyView(view);

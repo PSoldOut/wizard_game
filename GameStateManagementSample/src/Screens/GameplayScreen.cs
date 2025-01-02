@@ -59,6 +59,7 @@ namespace GameStateManagement
         public static List<Item> items;
         public static List<Projectile> projectiles;
         public Texture2D background;
+        Tutorial tutorial;
 
         UI ui;
 
@@ -76,32 +77,41 @@ namespace GameStateManagement
             projectiles = new List<Projectile>();
             map = new Map();
             Room room = map.GetActiveRoom();
-            for (int i = 0; i < goldCount; i++)
+
+            if (GameStateManagementGame.mode != GameMode.TUTORIAL)
             {
-                Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
-                SpawnItem(g);
-                room.setGamestateElement(g.position, Gamestate.GOLD);
+                for (int i = 0; i < goldCount; i++)
+                {
+                    Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
+                    SpawnItem(g);
+                    room.setGamestateElement(g.position, Gamestate.GOLD);
+                }
+                SpawnItem(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                SpawnItem(new Sword(300, 100));
+                SpawnItem(new Bow(100,100));
+                SpawnItem(new Shoes(150,150));
+                SpawnItem(new Role(200,200));
             }
-            SpawnItem(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
-            SpawnItem(new Sword(300, 100));
-            SpawnItem(new Shoes(150,150));
-            SpawnItem(new Role(200,200));
             //---------------------------------------
 
 
 
 
             //map.Initialize();
-            SpawnActeur(new Enemy_Guard(100, 100, map, EnemyType.GUARD, map.GetActiveRoom()));
-            SpawnActeur(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
-            SpawnActeur(new Enemy_Doubler(400,300, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
-            SpawnActeur(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
+            if (GameStateManagementGame.mode != GameMode.TUTORIAL)
+            {
+                SpawnActeur(new Enemy_Guard(100, 100, map, EnemyType.GUARD, map.GetActiveRoom()));
+                SpawnActeur(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
+                SpawnActeur(new Enemy_Doubler(400,300, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
+                SpawnActeur(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
+                SpawnActeur(new Enemy_Magie(100, 400, map, EnemyType.MAGIE, map.GetActiveRoom()));
+            }
             SpawnActeur(Player.Get());
 
         }
 
 
-        public void SpawnActeur(Acteur acteur)
+        public static void SpawnActeur(Acteur acteur)
         {
             acteurs.Add(acteur);
             Rectangle oldRect = acteur.hitBox;
@@ -116,7 +126,7 @@ namespace GameStateManagement
         }
 
 
-        public void SpawnItem(Item item)
+        public static void SpawnItem(Item item)
         {
             items.Add(item);
             Rectangle oldRect = item.hitBox;
@@ -189,7 +199,7 @@ namespace GameStateManagement
                 for (int i = 0; i < projectiles.Count; i++) projectiles[i].Update(gameTime);
                 for (int i = 0; i < acteurs.Count; i++) acteurs[i].Update(gameTime);
 
-
+                if (GameStateManagementGame.mode == GameMode.TUTORIAL) Tutorial.Get().Update(gameTime);
             }
 
         }
@@ -245,6 +255,8 @@ namespace GameStateManagement
             for (int i = 0; i < acteurs.Count; i++) acteurs[i].Draw(gameTime);
             map.Draw(gameTime);
             ui.Draw(gameTime);
+
+            if (GameStateManagementGame.mode == GameMode.TUTORIAL) Tutorial.Get().Draw(gameTime);
         }
 
 

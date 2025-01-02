@@ -20,7 +20,8 @@ public class Sprite
 {
     public Texture2D texture;
     public float animationSpeed { get; set; }
-    public float scale;
+    public float scaleX;
+    public float scaleY;
 
 
     double currentTime;
@@ -46,14 +47,21 @@ public class Sprite
     public float layerDepth = 0.5f;
     public Color color;
 
-    public Sprite(Texture2D texture, int hFrames, int vFrames, float scale, bool isAnimated)
+
+    public Sprite(Texture2D texture, int hFrames, int vFrames, float scale, bool isAnimated) : this(texture, hFrames, vFrames, scale, scale, isAnimated) {}
+
+    public Sprite(Texture2D texture, int hFrames, int vFrames, float scale) : this(texture, hFrames, vFrames, scale, scale, false) {}
+
+
+    public Sprite(Texture2D texture, int hFrames, int vFrames, float scaleX, float scaleY, bool isAnimated)
     {
         this.texture = texture;
         this.hFrames = hFrames;
         this.vFrames = vFrames;
         frameWidth = texture.Width / hFrames;
         frameHeight = texture.Height / vFrames;
-        this.scale = scale;
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
         currentFrame = 0;
         animationSpeed = 200;
         animationCount = 0;
@@ -73,7 +81,6 @@ public class Sprite
         color = Color.White;
     }
 
-    public Sprite(Texture2D texture, int hFrames, int vFrames, float scale) : this(texture, hFrames, vFrames, scale, false) { }
 
 
     public void Update(GameTime gameTime)
@@ -102,7 +109,7 @@ public class Sprite
         SpriteEffects effects = SpriteEffects.None;
         if (flippedY) effects = effects | SpriteEffects.FlipHorizontally;
         if (flippedX) effects = effects | SpriteEffects.FlipVertically;
-        GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)(x+offset.X), (int)(y+offset.Y), (int)(frameWidth * scale), (int)(frameHeight * scale)),
+        GameStateManagementGame._spriteBatch.Draw(texture, new Rectangle((int)(x+offset.X), (int)(y+offset.Y), (int)(frameWidth * scaleX), (int)(frameHeight * scaleY)),
             new Rectangle((currentFrame * frameWidth) % texture.Width, ((currentFrame * frameWidth) / texture.Width) * frameHeight, frameWidth, frameHeight), color, rotation, origin, effects, layerDepth);
     }
 
@@ -182,7 +189,8 @@ public class Sprite
 
     public void SetScale(float scale)
     {
-        this.scale = scale;
+        this.scaleX = scale;
+        this.scaleY = scale;
     }
     public Color[] GetCurrentColorData()
     {

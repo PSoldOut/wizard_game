@@ -21,9 +21,9 @@ namespace wizard_game
         public string currentAnimation;
         public int id;
         private Vector2 destination;
-        private Map map;
-        private List<Weapon> weapons;
-        private Weapon equippedWeapon;
+        public Map map;
+        public List<Weapon> weapons;
+        public Weapon equippedWeapon;
         public int coins;
         float stepsSpeed = 0.1f;
         Timer stepsTimer;
@@ -292,7 +292,8 @@ namespace wizard_game
 
         public override void takeDamage(int damage)
         {
-            
+            if (GameStateManagementGame.mode == GameMode.TUTORIAL) return;
+            base.takeDamage(damage); 
         }
 
 
@@ -513,6 +514,7 @@ namespace wizard_game
             meeleExtraDamage = 0;
             rangedExtraDamage = 0;
             rangedExtraVelocity = 0;
+            Tutorial.reset();
         }
 
 
