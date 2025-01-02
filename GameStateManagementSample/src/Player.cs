@@ -292,7 +292,7 @@ namespace wizard_game
 
         public override void takeDamage(int damage)
         {
-            if (GameStateManagementGame.mode == GameMode.TUTORIAL) return;
+            if (GameStateManagementGame.mode == GameMode.TUTORIAL || GameStateManagementGame.mode == GameMode.DEBUG) return;
             base.takeDamage(damage); 
         }
 

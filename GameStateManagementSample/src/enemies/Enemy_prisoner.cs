@@ -22,6 +22,8 @@ namespace wizard_game
         bool isAttacking;
         bool canAttack;
         Timer aStarTimer;
+        public string currentAnimation;
+        float attackRange;
 
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
         {
@@ -35,6 +37,7 @@ namespace wizard_game
             canAttack = true;
             aStarTimer = new Timer(1, this);
             aStarTimer.start();
+            attackRange = 40;
 
             using (StreamWriter writer = new StreamWriter("C:\\Users\\Philipp\\Desktop\\gitProjects\\wizard_game\\GameStateManagementSample\\src\\test.txt"))
             {
@@ -55,6 +58,7 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            currentSpeed = 0;
             if (isDying) return;
             aStarTimer.Update(gameTime);
             attackTimer.Update(gameTime);
@@ -74,6 +78,8 @@ namespace wizard_game
 
 
 
+            if ((Player.Get().GetMidPos() - GetMidPos()).Length() < attackRange) Attack();
+
             if (isAttacking)
             {
                 Vector2 o = new Vector2(width/2, height/2);
@@ -84,9 +90,64 @@ namespace wizard_game
                 {
                     rotation = 0;
                     isAttacking = false;
+                    if ((Player.Get().GetMidPos() - GetMidPos()).Length() < attackRange) Player.Get().takeDamage(1);
                 }
             }
 
+
+            UpdateAnimation();
+            sprite.setAnimation(currentAnimation);
+
+        }
+
+
+
+
+
+
+
+        public void UpdateAnimation()
+        {
+            
+            if (currentSpeed == 0 && path.Count == 0)
+            {
+                if (direction.Y < 0)
+                {
+                    currentAnimation = "idle_up";
+                    if (direction.X < 0) currentAnimation = "idle_left";
+                    else if (direction.X > 0) currentAnimation = "idle_right";
+                }
+                else if (direction.Y > 0)
+                {
+                    currentAnimation = "idle_down";
+                    if (direction.X > 0) currentAnimation = "idle_right";
+                }
+                else
+                {
+                    if (direction.X < 0) currentAnimation = "idle_left";
+                    else currentAnimation = "idle_right";
+                }
+            }
+
+            if (currentSpeed > 0)
+            {
+                if (direction.Y < 0)
+                {
+                    currentAnimation = "up";
+                    if (direction.X < 0) currentAnimation = "left";
+                    else if (direction.X > 0) currentAnimation = "right";
+                }
+                else if (direction.Y > 0)
+                {
+                    currentAnimation = "down";
+                    if (direction.X > 0) currentAnimation = "right";
+                }
+                else
+                {
+                    if (direction.X < 0) currentAnimation = "left";
+                    else currentAnimation = "right";
+                }
+            }
         }
 
         
