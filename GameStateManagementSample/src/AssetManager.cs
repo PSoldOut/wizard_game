@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Manager
 {
@@ -60,6 +61,11 @@ namespace Manager
             return (SpriteFont)Get(path);
             
             
+        }
+
+        public static Song GetSong(String path)
+        {
+            return (Song)Get(path);
         }
 
 

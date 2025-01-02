@@ -125,6 +125,7 @@ namespace wizard_game
                 rank++;
                 CalcCurrentRankExp();
                 lp++;
+                particleSystem.AddExpEffect(GetMidPos(), Color.Wheat, "Level Up");
             }
         }
 
@@ -289,7 +290,10 @@ namespace wizard_game
 
 
 
-
+        public override void takeDamage(int damage)
+        {
+            
+        }
 
 
 

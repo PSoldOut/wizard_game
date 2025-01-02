@@ -78,11 +78,11 @@ namespace GameStateManagement
             Room room = map.GetActiveRoom();
             for (int i = 0; i < goldCount; i++)
             {
-                Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
+                Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
                 SpawnItem(g);
                 room.setGamestateElement(g.position, Gamestate.GOLD);
             }
-            SpawnItem(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+            SpawnItem(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
             SpawnItem(new Sword(300, 100));
             SpawnItem(new Shoes(150,150));
             SpawnItem(new Role(200,200));
@@ -137,11 +137,11 @@ namespace GameStateManagement
             {
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
             }
-            level1Song = content.Load<Song>("level1Music");
-            gameFont = content.Load<SpriteFont>("gamefont");
-            goldTexture = content.Load<Texture2D>("gold");
-            spriteFont = content.Load<SpriteFont>("Arial");
-            background = content.Load<Texture2D>("Floors/Brickwall5");
+            level1Song = AssetManager.GetSong("level1Music");
+            gameFont = AssetManager.GetFont("gamefont");
+            goldTexture = AssetManager.GetTexture("gold");
+            spriteFont = AssetManager.GetFont("Arial");
+            background = AssetManager.GetTexture("Floors/Brickwall5");
 
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that

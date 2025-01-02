@@ -71,6 +71,7 @@ namespace wizard_game
 
         public void Draw(GameTime gameTime)
         {
+            float layerDepth = Player.Get().sprite.layerDepth+0.01f;
             GameStateManagementGame gsmg = GameStateManagementGame.Get();
             for (int i = 0; i < Player.Get().health; i++)
             {

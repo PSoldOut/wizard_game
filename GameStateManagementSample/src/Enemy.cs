@@ -29,9 +29,11 @@ namespace wizard_game
         public Room room;
         public float currentSpeed;
         protected List<Vector2> path = new List<Vector2>();
-
+        protected float playerViewDistance;
         // private Rectangle rect { get; set; }
         protected Map map;
+        Vector2 patroulliePoint1;
+        Vector2 patroulliePoint2;
         public Enemy(int x, int y, Map _map, EnemyType type, string spriteName, Room room) : base(new Vector2(x, y), 27, 45, spriteName, true)
         {
             direction = new Vector2(0, -1);
@@ -52,8 +54,17 @@ namespace wizard_game
             //hitBox = getNextRect(position);
             expDrop = 100;
             currentSpeed = 0;
+            playerViewDistance = 300;
+            patroulliePoint1 = position;
+            patroulliePoint2 = CalculatePatroulliePoint2();
         }
 
+
+        protected Vector2 GetNextPatroulliePoint()
+        {
+            if (Math.Abs((GetMidPos() - patroulliePoint1).Length()) < Math.Abs((GetMidPos() - patroulliePoint2).Length())) return patroulliePoint2;
+            return patroulliePoint1;
+        }
 
 
         // Animation setzen
@@ -250,6 +261,26 @@ namespace wizard_game
         }
 
 
+        protected Vector2 CalculatePatroulliePoint2()
+        {
+            //calculating pattroulliePoint2
+            Rectangle oldRect = hitBox;
+            Vector2 oldPosition = position;
+            Vector2 result;
+            position = new Vector2(GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
+            hitBox.X = (int)position.X-10;
+            hitBox.Y = (int)position.Y-10;
+            while(DetacteCollison())
+            {
+                position = new Vector2(GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
+                hitBox.X = (int)position.X-10;
+                hitBox.Y = (int)position.Y-10;
+            }
+            result = position;
+            position = oldPosition;
+            hitBox = oldRect;
+            return result;
+        }
 
 
         public NodeA AStar(NodeA startNode, Vector2 target)

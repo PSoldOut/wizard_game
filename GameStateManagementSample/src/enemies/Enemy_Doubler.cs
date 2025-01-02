@@ -92,15 +92,28 @@ namespace wizard_game
             aStarTimer.Update(gameTime);
             if (isDying) return;
             attackTimer.Update(gameTime);
-            if (path.Count ==0 && !aStarThreadIsRunning)
+            if (path.Count == 0 && !aStarThreadIsRunning)
             {                
-                aStarThreadIsRunning = true;
-                Task.Run(()=>
+                if (Math.Abs((GetMidPos() - Player.Get().GetMidPos()).Length()) <= playerViewDistance)
                 {
-                    path = calculatePathToTarget(Player.Get().GetMidPos());
-                    aStarThreadIsRunning = false;                  
-                });
-                aStarTimer.start();
+                    aStarThreadIsRunning = true;
+                    Task.Run(()=>
+                    {
+                        path = calculatePathToTarget(Player.Get().GetMidPos());
+                        aStarThreadIsRunning = false;                  
+                    });
+                    aStarTimer.start();
+                }
+                else
+                {
+                    aStarThreadIsRunning = true;
+                    Task.Run(()=>
+                    {
+                        path = calculatePathToTarget(GetNextPatroulliePoint());
+                        aStarThreadIsRunning = false;                  
+                    });
+                    aStarTimer.start();
+                }
 
             }
             if (path.Count >=1 && moveToTarget(path[path.Count-1])) path.RemoveAt(path.Count-1);
@@ -342,13 +355,16 @@ namespace wizard_game
             base.TimerCallback(timer);
             if (timer == attackTimer) canAttack = true;
             else if (timer == aStarTimer && !aStarThreadIsRunning)
-            {                
-                aStarThreadIsRunning = true;
-                Task.Run(()=>
-                {
-                    path = calculatePathToTarget(Player.Get().GetMidPos());
-                    aStarThreadIsRunning = false;                  
-                });
+            {
+                if (Math.Abs((GetMidPos() - Player.Get().GetMidPos()).Length()) <= playerViewDistance)
+                {               
+                    aStarThreadIsRunning = true;
+                    Task.Run(()=>
+                    {
+                        path = calculatePathToTarget(Player.Get().GetMidPos());
+                        aStarThreadIsRunning = false;                  
+                    });
+                }
                 aStarTimer.start();
 
             }

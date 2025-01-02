@@ -18,7 +18,7 @@ namespace wizard_game
     public abstract class Acteur : GameEntity
     {
         public static int DEFAULT_MAX_HEALTH = 4;
-        public static float NEXT_LAYER_DEPTH = 0.01f;
+        public static float NEXT_LAYER_DEPTH = 0.51f;
         public int health;
         protected SoundEffectInstance dieSound;
         protected SoundEffectInstance damageSound;
