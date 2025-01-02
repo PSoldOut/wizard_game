@@ -43,6 +43,15 @@ namespace wizard_game
             Right = 3,
 
         }
+        enum Collison : int
+        {
+            None = 0,
+            Border = 1,
+            Side = 2,
+            Front = 3,
+
+
+        }
         public Room(int i)
         {
             initGamestate();
@@ -51,7 +60,7 @@ namespace wizard_game
             W_Height = gameInstance.GraphicsDevice.Viewport.Height;
             SideWalls();
             BuildWalls();
-           // Debug.WriteLine("build walls");
+            // Debug.WriteLine("build walls");
         }
         private void SideWalls()
         {
@@ -115,7 +124,7 @@ namespace wizard_game
             for (int c = 0; c < 5; c++)
             {
 
-               // Debug.WriteLine("new wall #######");
+                // Debug.WriteLine("new wall #######");
                 int XLength = fields.GetLength(0);
                 int YLength = fields.GetLength(1);
                 int x = rnd.Next(XLength / 4, XLength / 4 * 3);
@@ -143,7 +152,7 @@ namespace wizard_game
                         break;
 
                 }
-             //   Debug.WriteLine("start dir " + dir + " x" + x + " y:" + y);
+                //   Debug.WriteLine("start dir " + dir + " x" + x + " y:" + y);
 
 
                 DirEnum dirOld = dir;
@@ -155,7 +164,7 @@ namespace wizard_game
                 for (int i = 0; i < iteraions; i++)
                 {
                     //Debug.WriteLine((x, y));
-                    if (changeDir|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))//|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges)
+                    if (changeDir || rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))//|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges)
                     {
                         //Debug.WriteLine("change dir");
 
@@ -195,113 +204,58 @@ namespace wizard_game
                         break;
                     }
 
-                    int res;
+                    Collison res;
                     switch (dir)
                     {
                         case DirEnum.Right:
                             x += 2;
-                            res = CheckNeighbors(x, y, dir);
-                            if (res == 1)
-                            {
-                                i = iteraions;
-                                continue;
-                            }
-                            if (res == 2)
-                            {
-                                continue;
-                            }
-                            if (res == 3)
-                            {
-
-                                x += 8;
-                                if (CheckBorder(x, y, dir))
-                                {
-                                    i = iteraions;
-
-                                }
-                                continue;
-                            }
-
-
                             break;
                         case DirEnum.Left:
                             x -= 2;
-
-                            res = CheckNeighbors(x, y, dir);
-                            if (res == 1)
-                            {
-                                i = iteraions;
-                                continue;
-                            }
-                            if (res == 2)
-                            {
-                                continue;
-                            }
-                            if (res == 3)
-                            {
-
-                                x -= 8;
-                                if (CheckBorder(x, y, dir))
-                                {
-                                    i = iteraions;
-
-                                }
-                                continue;
-                            }
                             break;
                         case DirEnum.Top:
                             y -= 2;
-
-
-                            res = CheckNeighbors(x, y, dir);
-                            if (res == 1)
-                            {
-                                i = iteraions;
-                                continue;
-                            }
-                            if (res == 2)
-                            {
-                                continue;
-                            }
-                            if (res == 3)
-                            {
-
-                                y -= 8;
-                                if (CheckBorder(x, y, dir))
-                                {
-                                    i = iteraions;
-
-                                }
-                                continue;
-                            }
                             break;
                         case DirEnum.Bottom:
                             y += 2;
-                            res = CheckNeighbors(x, y, dir);
-                            if (res == 1)
-                            {
-                                i = iteraions;
-                                continue;
-                            }
-                            if (res == 2)
-                            {
-                                continue;
-                            }
-                            if (res == 3)
-                            {
-
-                                y += 8;
-                                if (CheckBorder(x, y, dir))
-                                {
-                                    i = iteraions;
-
-                                }
-                                continue;
-                            }
-
                             break;
 
 
+                    }
+                    res = CheckNeighbors(x, y, dir);
+                    if (res == Collison.Border)
+                    {
+                        i = iteraions;
+                        continue;
+                    }
+                    if (res == Collison.Side)
+                    {
+                        continue;
+                    }
+                    if (res == Collison.Front)
+                    {
+                        switch (dir)
+                        {
+                            case DirEnum.Right:
+                                x += 8;
+                                break;
+                            case DirEnum.Left:
+                                x -= 8;
+                                break;
+                            case DirEnum.Top:
+                                y -= 8;
+                                break;
+                            case DirEnum.Bottom:
+                                y += 8;
+                                break;
+
+                        }
+                        if (CheckBorder(x, y, dir))
+                        {
+                            i = iteraions;
+
+                        }
+                        continue;
                     }
                     //Debug.WriteLine(("create wall att ", new Point(x * 10, y * 10)));
                     wallBuilder(new Point(x * 10, y * 10), new Point(20, 20));
@@ -334,12 +288,12 @@ namespace wizard_game
             }
             return false;
         }
-        private int CheckNeighbors(int x, int y, DirEnum dir)
+        private Collison CheckNeighbors(int x, int y, DirEnum dir)
         {
 
             if (CheckBorder(x, y, dir))
             {
-                return 1;
+                return Collison.Side;
             }
             x *= 10;
             y *= 10;
@@ -349,11 +303,11 @@ namespace wizard_game
                     if (WallOverlap(new Point(x, y - 40), 40, 100))
                     {
 
-                        return 2;
+                        return Collison.Side;
                     }
                     if (WallOverlap(new Point(x, y), 60, 20)) //in front
                     {
-                        return 3;
+                        return Collison.Front;
                     }
 
 
@@ -362,11 +316,11 @@ namespace wizard_game
                     if (WallOverlap(new Point(x - 40, y - 40), 40, 100))
                     {
 
-                        return 2;
+                        return Collison.Side;
                     }
                     if (WallOverlap(new Point(x - 40, y), 60, 20)) //in front
                     {
-                        return 3;
+                        return Collison.Front;
                     }
                     break;
 
@@ -374,11 +328,11 @@ namespace wizard_game
                     if (WallOverlap(new Point(x - 40, y - 40), 100, 40))
                     {
 
-                        return 2;
+                        return Collison.Side;
                     }
                     if (WallOverlap(new Point(x, y - 40), 20, 60)) //in front
                     {
-                        return 3;
+                        return Collison.Front;
                     }
                     break;
 
@@ -387,19 +341,18 @@ namespace wizard_game
                     if (WallOverlap(new Point(x - 40, y), 100, 40))
                     {
 
-                        return 2;
+                        return Collison.Side;
                     }
                     if (WallOverlap(new Point(x, y), 20, 60)) //in front
                     {
-                        return 3;
+                        return Collison.Front;
                     }
-                    break;
                     break;
 
             }
 
             //Debug.WriteLine("neibor not overlap");
-            return 0;
+            return Collison.None;
         }
 
         public bool WallOverlap(Point position, int width, int height)
@@ -537,17 +490,17 @@ namespace wizard_game
         }
         public void PrintView()
         {
-             for (int i = 0; i < gamestate.GetLength(0); i++)
+            for (int i = 0; i < gamestate.GetLength(0); i++)
             {
                 for (int j = 0; j < gamestate.GetLength(1); j++)
                 {
-                    if(gamestate[i, j] == Gamestate.PLAYER || gamestate[i, j] == Gamestate.GOLD  ){}
-                 //   Console.Write(gamestate[i, j] + " ");
+                    if (gamestate[i, j] == Gamestate.PLAYER || gamestate[i, j] == Gamestate.GOLD) { }
+                    //   Console.Write(gamestate[i, j] + " ");
                 }
                 //Console.WriteLine();
             }
         }
-         public void InitGamestate()
+        public void InitGamestate()
         {
             for (int i = 0; i < gamestate.GetLength(0); i++)
             {
