@@ -18,28 +18,29 @@ namespace wizard_game
     {
         private static Tutorial instance;
         Sprite backgroundSprite;
-        float backgroundSpriteScaleX = 4;
-        float backgroundSpriteScaleY = 1.4f;
+        float backgroundSpriteScaleX = 4.1f;
+        float backgroundSpriteScaleY = 2.5f;
         string[] quests = new string[6];
         int currentQuest = 0;
-        Vector2 fontOffset = new Vector2(18,15);
+        Vector2 fontOffset = new Vector2(23,15);
         int currenWeaponCount = 0;
         Enemy spawnedEnemy;
         int currentEnemyHealth=0;
         Timer endTimer = new Timer(5);
-        int curretActeurCount = 0;
+        int curretActeurCount = 4;
 
 
         private Tutorial()
         {
             backgroundSprite = new Sprite(AssetManager.GetTexture("panel_brown"), 1, 1, backgroundSpriteScaleX, backgroundSpriteScaleY, false);
             backgroundSprite.layerDepth = 0.01f;
-            quests[0] = "Benutze die Tasten W, A, S, D\num dich zu bewegen.\nprobier es aus!";
-            quests[1] = "Sehr gut! jetzt oeffne mit TAB\ndas Skillmenu. Druecke 1, 2 oder 3\num die jeweilige Fertigkeit zu verbessern\nbedenke dass das Lernpunkte kostet";
-            quests[2] = "Genau so! jetzt Sammle eine rumliegenden Waffen\nein indem du ueber die Waffe laeufst";
-            quests[3] = "Super! jetzt waehle die Waffe mit 1 oder 2\naus und greife einen Gegner an. Benutze dazu die Leertaste";
-            quests[4] = "Meisterhaft! Jetzt Sammle die Schriftrolle ein und waehle\nsie mit 3 aus. dann feuer mit der Leertaste einen Feuerball\nab und toete damit einen Gegner. Mit Q und R kannst du Feuerbaelle lenken.";
-            quests[5] = "Hervorragend! Du hast das Tutorial erfolgreich beendet";
+            backgroundSprite.color = new Color(255,255,255,100);
+            quests[0] = "Benutze  die  Tasten  W,  A,  S,  D\num  dich  zu  bewegen.\nProbiere  es  aus!";
+            quests[1] = "Sehr  gut!  Jetzt  oeffne  mit  TAB\ndas  Skillmenu.  Druecke  1,  2  oder  3\num  je  eine  Fertigkeit  zu  verbessern.\nBedenke,  dass  das  Lernpunkte  kostet.";
+            quests[2] = "Genau  so!  Jetzt  sammle  eine\nrumliegende  Waffen  ein,  indem  du\nueber  die  Waffe  laeufst.";
+            quests[3] = "Super!  Jetzt  waehle  die  Waffe  mit  1\noder  2  aus  und  greife  einen  Gegner  an.\nBenutze  dazu  die  Leertaste.";
+            quests[4] = "Meisterhaft!  Jetzt  sammle  die  Schriftrolle\n  ein  und  waehle  sie  mit  3  aus.\nDann  schiesse  mit  der  Leertaste\n  einen  Feuerball  ab  und  toete\ndamit  einen  Gegner.\nMit  Q  und  E  kannst  du\nFeuerbaelle  lenken.";
+            quests[5] = "Hervorragend!\nDu  hast  das  Tutorial  erfolgreich  beendet.";
         }
 
         public static Tutorial Get()
@@ -114,7 +115,7 @@ namespace wizard_game
         public void Draw(GameTime gameTime)
         {
             GameStateManagementGame gsmg = GameStateManagementGame.Get();
-            Vector2 posPanel = new Vector2(GameStateManagementGame.Get().graphics.PreferredBackBufferWidth/2-(int)(backgroundSprite.texture.Width*backgroundSpriteScaleX/2), gsmg.graphics.PreferredBackBufferHeight-170);
+            Vector2 posPanel = new Vector2(GameStateManagementGame.Get().graphics.PreferredBackBufferWidth/2-(int)(backgroundSprite.texture.Width*backgroundSpriteScaleX/2), gsmg.graphics.PreferredBackBufferHeight-260);
             backgroundSprite.Draw((int)posPanel.X, (int)posPanel.Y);
             GameStateManagementGame._spriteBatch.DrawString(AssetManager.GetFont("Arial"), quests[currentQuest], posPanel+fontOffset, Color.Wheat, 0, new Vector2(0,0), 1, SpriteEffects.None, 0.0f);
         }

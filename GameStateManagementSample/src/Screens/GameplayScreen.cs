@@ -151,7 +151,7 @@ namespace GameStateManagement
             gameFont = AssetManager.GetFont("gamefont");
             goldTexture = AssetManager.GetTexture("gold");
             spriteFont = AssetManager.GetFont("Arial");
-            background = AssetManager.GetTexture("Floors/Brickwall5");
+            background = AssetManager.GetTexture("bgd1");
 
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
