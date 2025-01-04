@@ -11,15 +11,12 @@ namespace wizard_game
         Timer attackTimer;
 
         bool canAttack = true;
-        static int idEnemy;
-        int blut = 10;
 
         public Enemy_Guard(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Guard", room)
         {
             setSpeed();
             direction = new Vector2(1, 0);
             sprite.setAnimation("idle_right");
-            idEnemy++;
             attackTimer = new Timer(1, this);
         }
 
@@ -46,7 +43,6 @@ namespace wizard_game
         //Bewegung des Gegners
         public new void Move()
         {
-            //  if(hitBox.X < 1240 && hitBox.X >= 0 && hitBox.Y >= 0 && hitBox.Y < 1000){
             chooseADirection();
             direction.Normalize();
             position += direction * speed;
@@ -59,8 +55,8 @@ namespace wizard_game
             Random random = new Random();
 
             string anim = "idle_down";
-            Vector2 tmp = position + direction * speed;
-            while (DetacteCollison(tmp))
+            Vector2 tmp = position + GetMidPos() + direction * speed;
+            while (DetacteCollison(tmp) || DetacteCollison(tmp-GetMidPos())|| DetacteCollison(tmp+GetMidPos()))
             {
                 int randomNumber = random.Next(1, 101);
                 if (randomNumber % 4 == 0)

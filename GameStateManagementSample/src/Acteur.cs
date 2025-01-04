@@ -54,10 +54,6 @@ namespace wizard_game
 
         public abstract void Attack();
 
-
-
-
-
         public Vector2 GetMidPos()      //gibt die mitte vom Acteur, nicht den oberen linken rand
         {
             return new Vector2(position.X + width/2, position.Y + height/2);

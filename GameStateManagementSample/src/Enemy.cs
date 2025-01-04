@@ -30,12 +30,12 @@ namespace wizard_game
         public float currentSpeed;
         protected List<Vector2> path = new List<Vector2>();
         protected float playerViewDistance;
-        // private Rectangle rect { get; set; }
         protected Map map;
         Vector2 patroulliePoint1;
         Vector2 patroulliePoint2;
         public Enemy(int x, int y, Map _map, EnemyType type, string spriteName, Room room) : base(new Vector2(x, y), 27, 45, spriteName, true)
         {
+
             direction = new Vector2(0, -1);
             map = _map;
             e_type = type;
@@ -44,19 +44,20 @@ namespace wizard_game
 
             //hab das in konstruktor verschoben weil es loadContent nicht mehr gibt. wir haben ja DrawableGameComponent rausgenommen
             //Load Content: Texture für Enemy
-            LoadSprite(4,4,1,true);
-            sprite.offset = new Vector2(width/2, height/2);
-            sprite.origin = new Vector2(width/2, height/2);
+            LoadSprite(4, 4, 1, true);
+            sprite.offset = new Vector2(width / 2, height / 2);
+            sprite.origin = new Vector2(width / 2, height / 2);
             sprite.layerDepth = NEXT_LAYER_DEPTH;
             InitAnimations();
             enemy_texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             enemy_texture.SetData(new Color[] { Color.Black });
-            //hitBox = getNextRect(position);
             expDrop = 100;
             currentSpeed = 0;
             playerViewDistance = 300;
             patroulliePoint1 = position;
             patroulliePoint2 = CalculatePatroulliePoint2();
+            Vector2 startPos = GenerateRandomPosition();
+            SetPosition(startPos);
         }
 
 
@@ -111,6 +112,44 @@ namespace wizard_game
             return IsObjectInFields(newPos);
         }
 
+        public bool detectCollisionWithRec(Rectangle rec)
+        {
+            if (map == null)
+            {
+                throw new InvalidOperationException("Map is not initialized.");
+            }
+
+            return map.DetacteCollison(rec, null, false);
+        }
+
+        public Vector2 GenerateRandomPosition()
+        {
+            Random random = new Random();
+            Vector2 randomPosition;
+
+            do
+            {
+                // Generiere eine zufällige Position innerhalb des Bildschirms
+                int randomX = random.Next(0, GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width - width);
+                int randomY = random.Next(0, GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height - height);
+
+                // Die linke obere Ecke des Gegners
+                randomPosition = new Vector2(randomX, randomY);
+
+                // Erstelle ein Rechteck, das den Gegner darstellt
+                Rectangle rec = new Rectangle(randomX, randomY, width, height );
+
+                // Prüfe, ob das Rechteck keine Kollision hat
+                if (!detectCollisionWithRec(rec))
+                {
+                    // Wenn keine Kollision, dann verlasse die Schleife
+                    break;
+                }
+
+            } while (true);
+
+            return randomPosition;
+        }
         public bool DetacteCollison()
         {
             Color[] data = sprite.GetCurrentColorData();
@@ -152,7 +191,7 @@ namespace wizard_game
             base.Draw(gameTime);
             if (GameStateManagementGame.mode == GameMode.DEBUG)
             {
-                foreach(Vector2 v in path)
+                foreach (Vector2 v in path)
                 {
                     drawPoint(v);
                 }
@@ -209,14 +248,14 @@ namespace wizard_game
         {
             List<Vector2> p = new List<Vector2>();
             target /= 10;
-            int cordXInGamestate = (int)(position.X + width/2) / 10;
-            int cordYInGamestate = (int)(position.Y + height/2) / 10;
+            int cordXInGamestate = (int)(position.X + width / 2) / 10;
+            int cordYInGamestate = (int)(position.Y + height / 2) / 10;
             Gamestate[,] currentView = room.gamestate;
             NodeA startNode = new NodeA(currentView, cordXInGamestate, cordYInGamestate, null, EnemyAction.NONE, 0);
-            NodeA solutionNode = AStar(startNode, target);  
-            while(solutionNode != null)
+            NodeA solutionNode = AStar(startNode, target);
+            while (solutionNode != null)
             {
-                p.Add(new Vector2(solutionNode.GetX()*10, solutionNode.GetY()*10));
+                p.Add(new Vector2(solutionNode.GetX() * 10, solutionNode.GetY() * 10));
                 solutionNode = solutionNode.GetParent();
             }
             return p;
@@ -226,8 +265,8 @@ namespace wizard_game
         //rechnen Abstand zwischen Player und Gegner
         public float caculateDistance()
         {
-            float distanceX = position.X + width/2 - Player.Get().position.X - Player.Get().width/2;
-            float distanceY = position.Y +height/2 - Player.Get().position.Y - Player.Get().height/2;
+            float distanceX = position.X + width / 2 - Player.Get().position.X - Player.Get().width / 2;
+            float distanceY = position.Y + height / 2 - Player.Get().position.Y - Player.Get().height / 2;
             return (float)Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
         }
 
@@ -268,13 +307,13 @@ namespace wizard_game
             Vector2 oldPosition = position;
             Vector2 result;
             position = new Vector2(GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
-            hitBox.X = (int)position.X-10;
-            hitBox.Y = (int)position.Y-10;
-            while(DetacteCollison())
+            hitBox.X = (int)position.X - 10;
+            hitBox.Y = (int)position.Y - 10;
+            while (DetacteCollison())
             {
                 position = new Vector2(GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
-                hitBox.X = (int)position.X-10;
-                hitBox.Y = (int)position.Y-10;
+                hitBox.X = (int)position.X - 10;
+                hitBox.Y = (int)position.Y - 10;
             }
             result = position;
             position = oldPosition;
@@ -290,15 +329,15 @@ namespace wizard_game
 
             while (openList.Count > 0)
             {
-            //    Console.WriteLine(openList.Count);
-                openList.Sort((n1,n2) => (n1.GetCost() + Math.Abs((int)target.X - n1.GetX()) + Math.Abs((int)target.Y - n1.GetY())).CompareTo(
+                //    Console.WriteLine(openList.Count);
+                openList.Sort((n1, n2) => (n1.GetCost() + Math.Abs((int)target.X - n1.GetX()) + Math.Abs((int)target.Y - n1.GetY())).CompareTo(
                                           n2.GetCost() + Math.Abs((int)target.X - n2.GetX()) + Math.Abs((int)target.Y - n2.GetY())));
                 NodeA currentNode = openList[0];
                 openList.RemoveAt(0);
 
                 if (Math.Abs(currentNode.GetX() - (int)target.X) < 2 && Math.Abs(currentNode.GetY() - (int)target.Y) < 2)
                 {
-                  //  Console.WriteLine("found solution!");
+                    //  Console.WriteLine("found solution!");
                     return currentNode;
                 }
 
@@ -311,8 +350,10 @@ namespace wizard_game
 
                     // Expandieren der Nachfolgerknoten
                     var successors = currentNode.Expand();
-                    foreach (var successor in successors){
-                        if(!openList.Contains(successor)){
+                    foreach (var successor in successors)
+                    {
+                        if (!openList.Contains(successor))
+                        {
                             openList.Add(successor);
                         }
                     }
@@ -320,7 +361,7 @@ namespace wizard_game
                 }
             }
 
-        //    Console.WriteLine("No solution found.");
+            //    Console.WriteLine("No solution found.");
             return null;
         }
 

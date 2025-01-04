@@ -56,11 +56,11 @@ namespace wizard_game
             hitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             image_hitbox = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             image_hitbox.SetData(new Color[] { Color.Red });
-            
+
 
             damageOffset = new Vector2(damageDistance, 0);
             damageArea = new Rectangle((int)(position.X+damageOffset.X), (int)(position.Y+damageOffset.Y), 27, 45);
-            
+
         }
         public void LoadSprite(int hFrames=1, int vFrames=1, float scale=1,bool isAnimated=false)
         {
@@ -122,7 +122,9 @@ namespace wizard_game
             this.direction = direciton;
         }
 
-
+        public void SetPosition(Vector2 pos){
+            position = pos;
+        }
 
 
         public void drawPoint(Vector2 pos)
@@ -130,14 +132,14 @@ namespace wizard_game
             Texture2D texture = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             texture.SetData(new Color[] {Color.Red});
             GameStateManagementGame._spriteBatch.Draw(texture, pos, null, Color.Red, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.0f);
-            
+
         }
 
 
         public bool DetacteCollison()
         {
             Door spawnDoor = null;
-            if (this is Player) spawnDoor = GameplayScreen.map.DetacteCollisonDoor(hitBox); 
+            if (this is Player) spawnDoor = GameplayScreen.map.DetacteCollisonDoor(hitBox);
             if (spawnDoor != null)
             {
                 position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);

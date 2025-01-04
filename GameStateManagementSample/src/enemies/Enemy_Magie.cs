@@ -19,6 +19,9 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if(caculateDistance() < 20){
+                Player.Get().takeDamage(1);
+            }
             visibilityTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (isVisible && visibilityTimer >= visibleTime)

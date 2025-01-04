@@ -134,23 +134,23 @@ namespace wizard_game
         {
             int xCount = activeRoom.fields.GetLength(0);
             int yCount = activeRoom.fields.GetLength(1);
-            Console.WriteLine(string.Format(" Rows:{0} Cols: {1}", xCount, yCount));
+         //   Console.WriteLine(string.Format(" Rows:{0} Cols: {1}", xCount, yCount));
             for (int col = 0; col < yCount; col++)
             {
                 int trueCount = 0;
                 int falseCount = 0;
-                Console.Write(string.Format("Col: {0}\t", col));
+              //  Console.Write(string.Format("Col: {0}\t", col));
                 for (int row = 0; row < xCount; row++)
                 {
                     if (activeRoom.fields[row, col])
                     {
                         trueCount++;
-                        Console.Write(string.Format("{0}", 1));
+                    //    Console.Write(string.Format("{0}", 1));
                     }
                     else
                     {
                         falseCount++;
-                        Console.Write(string.Format("{0}", 0));
+                      //  Console.Write(string.Format("{0}", 0));
                     }
 
 

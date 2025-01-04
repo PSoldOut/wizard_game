@@ -82,7 +82,9 @@ namespace GameStateManagement
             {
                 for (int i = 0; i < goldCount; i++)
                 {
-                    Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
+                    Gold g = new Gold(0,0);
+                    g.SetPos(map);
+                    // Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
                     SpawnItem(g);
                     room.setGamestateElement(g.position, Gamestate.GOLD);
                 }
@@ -100,16 +102,15 @@ namespace GameStateManagement
             //map.Initialize();
             if (GameStateManagementGame.mode != GameMode.TUTORIAL)
             {
-                SpawnActeur(new Enemy_Guard(100, 100, map, EnemyType.GUARD, map.GetActiveRoom()));
-                SpawnActeur(new Enemy_Knight(500,500, map, EnemyType.KNIGHT, map.GetActiveRoom()));
-                SpawnActeur(new Enemy_Doubler(400,300, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
-                SpawnActeur(new Enemy_prisoner(400, 400, map, EnemyType.PRISONER, map.GetActiveRoom()));
-                SpawnActeur(new Enemy_Magie(100, 400, map, EnemyType.MAGIE, map.GetActiveRoom()));
+               // SpawnActeur(new Enemy_Guard(0, 0, map, EnemyType.GUARD, map.GetActiveRoom()));
+                SpawnActeur(new Enemy_Knight(0,0, map, EnemyType.KNIGHT, map.GetActiveRoom()));
+               // SpawnActeur(new Enemy_Doubler(0,0, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
+               // SpawnActeur(new Enemy_prisoner(0, 0, map, EnemyType.PRISONER, map.GetActiveRoom()));
+               // SpawnActeur(new Enemy_Magie(0, 0, map, EnemyType.MAGIE, map.GetActiveRoom()));
             }
             SpawnActeur(Player.Get());
 
         }
-
 
         public static void SpawnActeur(Acteur acteur)
         {

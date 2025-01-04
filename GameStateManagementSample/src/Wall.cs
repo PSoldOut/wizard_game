@@ -125,7 +125,7 @@ namespace wizard_game
             }
             return false;
         }
-        
+
 
 
         public bool DetacteCollison(Rectangle otherHitbox)
@@ -137,7 +137,7 @@ namespace wizard_game
             }
             return false;
         }
-        
+
         public override void Draw(GameTime gameTime)
         {
             //Debug.WriteLine("Call Override");
