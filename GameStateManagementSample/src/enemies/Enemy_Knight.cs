@@ -27,6 +27,9 @@ namespace wizard_game
             direction = new Vector2(0, 0);
         }
 
+
+        
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -78,9 +81,9 @@ namespace wizard_game
 
         public void SearchForGold()
         {
-            for (int i = 0; i < GameplayScreen.items.Count; i++)
+            for (int i = 0; i < GameplayScreen.map.GetActiveRoom().items.Count; i++)
             {
-                Item item = GameplayScreen.items[i];
+                Item item = GameplayScreen.map.GetActiveRoom().items[i];
                 Rectangle rec = new Rectangle((int)item.position.X, (int)item.position.Y, item.width, item.height);
 
                 if (item is Gold gold && !checkedGold.Contains(gold))

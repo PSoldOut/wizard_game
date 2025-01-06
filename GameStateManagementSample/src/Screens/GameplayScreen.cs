@@ -53,11 +53,9 @@ namespace GameStateManagement
 
         private float pauseAlpha;
 
-        static int goldCount = 7;
+        
 
-        public static List<Acteur> acteurs;
-        public static List<Item> items;
-        public static List<Projectile> projectiles;
+        
         public Texture2D background;
         Tutorial tutorial;
 
@@ -66,80 +64,21 @@ namespace GameStateManagement
 
         public GameplayScreen()
         {
-            TransitionOnTime = TimeSpan.FromSeconds(1.5);
-            TransitionOffTime = TimeSpan.FromSeconds(0.5);
             rand = new Random();
-
-            ui = UI.Get();
-
-            items = new List<Item>();
-            acteurs = new List<Acteur>();
-            projectiles = new List<Projectile>();
             map = new Map();
             Room room = map.GetActiveRoom();
+            TransitionOnTime = TimeSpan.FromSeconds(1.5);
+            TransitionOffTime = TimeSpan.FromSeconds(0.5);
+            ui = UI.Get();
 
-            if (GameStateManagementGame.mode != GameMode.TUTORIAL)
-            {
-                for (int i = 0; i < goldCount; i++)
-                {
-                    Gold g = new Gold(0,0);
-                    g.SetPos(map);
-                    // Gold g = new Gold(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
-                    SpawnItem(g);
-                    room.setGamestateElement(g.position, Gamestate.GOLD);
-                }
-                SpawnItem(new HealthPotion(rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
-                SpawnItem(new Sword(300, 100));
-                SpawnItem(new Bow(100,100));
-                SpawnItem(new Shoes(150,150));
-                SpawnItem(new Role(200,200));
-            }
-            //---------------------------------------
-
-
-
+        
 
             //map.Initialize();
-            if (GameStateManagementGame.mode != GameMode.TUTORIAL)
-            {
-               // SpawnActeur(new Enemy_Guard(0, 0, map, EnemyType.GUARD, map.GetActiveRoom()));
-                SpawnActeur(new Enemy_Knight(0,0, map, EnemyType.KNIGHT, map.GetActiveRoom()));
-               // SpawnActeur(new Enemy_Doubler(0,0, map, EnemyType.DOUBLER, map.GetActiveRoom(), 4));
-               // SpawnActeur(new Enemy_prisoner(0, 0, map, EnemyType.PRISONER, map.GetActiveRoom()));
-               // SpawnActeur(new Enemy_Magie(0, 0, map, EnemyType.MAGIE, map.GetActiveRoom()));
-            }
-            SpawnActeur(Player.Get());
+            
 
         }
 
-        public static void SpawnActeur(Acteur acteur)
-        {
-            acteurs.Add(acteur);
-            Rectangle oldRect = acteur.hitBox;
-            acteur.hitBox = new Rectangle((int)acteur.position.X-10, (int)acteur.position.Y-10, acteur.width+20, acteur.height+20);
-            while(acteur.DetacteCollison())
-            {
-                acteur.position = new Vector2(rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
-                acteur.hitBox.X = (int)acteur.position.X-10;
-                acteur.hitBox.Y = (int)acteur.position.Y-10;
-            }
-            acteur.hitBox = oldRect;
-        }
-
-
-        public static void SpawnItem(Item item)
-        {
-            items.Add(item);
-            Rectangle oldRect = item.hitBox;
-            item.hitBox = new Rectangle((int)item.position.X-10, (int)item.position.Y-10, item.width+20, item.height+20);
-            while(item.DetacteCollison())
-            {
-                item.position = new Vector2(rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
-                item.hitBox.X = (int)item.position.X-10;
-                item.hitBox.Y = (int)item.position.Y-10;
-            }
-            item.hitBox = oldRect;
-        }
+        
 
 
         public override void LoadContent()
@@ -195,10 +134,8 @@ namespace GameStateManagement
 
                 }
                 ui.Update(gameTime);
-                //map.Update(gameTime);
-                for (int i = 0; i < items.Count; i++) items[i].Update(gameTime);
-                for (int i = 0; i < projectiles.Count; i++) projectiles[i].Update(gameTime);
-                for (int i = 0; i < acteurs.Count; i++) acteurs[i].Update(gameTime);
+                map.Update(gameTime);
+                if (!map.GetActiveRoom().isInitialized) map.GetActiveRoom().init();
 
                 if (GameStateManagementGame.mode == GameMode.TUTORIAL) Tutorial.Get().Update(gameTime);
             }
@@ -251,9 +188,6 @@ namespace GameStateManagement
             Rectangle screenRectangle = new Rectangle(0, 0, 1280, 720);
             GameStateManagementGame._spriteBatch.Draw(background, screenRectangle, null, Color.White, 0, new Vector2(0,0), SpriteEffects.None, 1.0f);
 
-            for (int i = 0; i < items.Count; i++) items[i].Draw(gameTime);
-            for (int i = 0; i < projectiles.Count; i++) projectiles[i].Draw(gameTime);
-            for (int i = 0; i < acteurs.Count; i++) acteurs[i].Draw(gameTime);
             map.Draw(gameTime);
             ui.Draw(gameTime);
 

@@ -138,6 +138,7 @@ namespace wizard_game
 
         public bool DetacteCollison()
         {
+            if (GameplayScreen.map == null) return false;
             Door spawnDoor = null;
             if (this is Player) spawnDoor = GameplayScreen.map.DetacteCollisonDoor(hitBox);
             if (spawnDoor != null)

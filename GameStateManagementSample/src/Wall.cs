@@ -18,6 +18,7 @@ namespace wizard_game
         private bool mousePressed;
         private bool containsMouse = false;
         private Point startPointDrag;
+        public bool visible = true;
 
 
 
@@ -141,9 +142,9 @@ namespace wizard_game
         public override void Draw(GameTime gameTime)
         {
             //Debug.WriteLine("Call Override");
-
+            if (!visible) return;
             GameStateManagementGame._spriteBatch.Draw(sprite.texture, hitBox, null, Color.White, 0.0f, new Vector2(0,0), SpriteEffects.None, 0.5f);
-            drawDebugHitBox();
+            if (GameStateManagementGame.mode == GameMode.DEBUG) drawDebugHitBox();
             //base.Draw(gameTime);
         }
 

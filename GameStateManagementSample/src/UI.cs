@@ -47,7 +47,7 @@ namespace wizard_game
             tabmenuSprite = new Sprite(AssetManager.GetTexture("panel_brown"), 1, 1, tabmenuSpriteScale, false);
             tabmenuSprite.layerDepth = 0.3f;
     
-            tabmenuSprite.color = new Color(255,255,255,100);
+            tabmenuSprite.color = new Color(255,255,255,200);
             isInTabmenu = false;
         }
 

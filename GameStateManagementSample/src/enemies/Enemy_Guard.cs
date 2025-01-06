@@ -21,6 +21,7 @@ namespace wizard_game
         }
 
 
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -53,11 +54,12 @@ namespace wizard_game
         public void chooseADirection()
         {
             Random random = new Random();
-
+            int b = 0;
             string anim = "idle_down";
-            Vector2 tmp = position + GetMidPos() + direction * speed;
-            while (DetacteCollison(tmp) || DetacteCollison(tmp-GetMidPos())|| DetacteCollison(tmp+GetMidPos()))
+            Vector2 tmp = GetMidPos() + direction * speed;
+            while ((DetacteCollison(position) || DetacteCollison(position + new Vector2(width,0)) || DetacteCollison(position + new Vector2(width, height)) || DetacteCollison(position+new Vector2(0, height))) && b < 30)
             {
+                b++;
                 int randomNumber = random.Next(1, 101);
                 if (randomNumber % 4 == 0)
                 {
@@ -84,6 +86,7 @@ namespace wizard_game
                     anim = "idle_left";
                 }
                 tmp = position + direction * speed;
+                
             }
             sprite.setAnimation(anim);
         }
@@ -118,7 +121,7 @@ namespace wizard_game
             fireball.SetDirection(fireballDirection);
             fireball.SetTarget(Player.Get());
             fireball.SetAttackstate(true);
-            GameplayScreen.projectiles.Add(fireball);
+            GameplayScreen.map.GetActiveRoom().projectiles.Add(fireball);
         }
 
         public override void TimerCallback(Timer timer)

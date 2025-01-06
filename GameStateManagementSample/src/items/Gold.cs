@@ -36,7 +36,7 @@ namespace wizard_game
         {
             effectSound.Play();
             // Player.Get().coins++;
-            GameplayScreen.items.Remove(this);
+            GameplayScreen.map.GetActiveRoom().items.Remove(this);
         }
 
 

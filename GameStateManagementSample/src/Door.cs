@@ -168,7 +168,7 @@ namespace wizard_game
             effect,
             1);
 
-            //drawDebugHitBox();
+            if (GameStateManagementGame.mode == GameMode.DEBUG) drawDebugHitBox();
             //_spriteBatch.DrawString(_spriteFont, "TO " + linkedDoor.room.index, hitBox.Center.ToVector2(), Color.Black);
             //base.Draw(gameTime);
         }

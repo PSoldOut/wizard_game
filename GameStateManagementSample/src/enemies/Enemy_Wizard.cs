@@ -15,6 +15,8 @@ namespace wizard_game
             this.map = map;
             direction = new Vector2(0, 0);
         }
+
+
          public override void Update(GameTime gameTime)
         {
 

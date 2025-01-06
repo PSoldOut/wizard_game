@@ -41,6 +41,7 @@ namespace wizard_game
         bool canAttack;
         Timer aStarTimer;
 
+
         public Enemy_Doubler(int x, int y, Map map, EnemyType type, Room room, int doubling) : base(x, y, map, type, "doubler", room)
         {
             particleSystem = new ParticleSystem(40);
@@ -71,7 +72,7 @@ namespace wizard_game
                 doubling--;
                 int rX = GameplayScreen.rand.Next(-40, 40)*2;
                 int rY = GameplayScreen.rand.Next(-40, 40)*2;
-                GameplayScreen.acteurs.Add(new Enemy_Doubler((int)position.X + rX, (int)position.Y + rY, map, EnemyType.DOUBLER, map.GetActiveRoom(), doubling));
+                GameplayScreen.map.GetActiveRoom().acteurs.Add(new Enemy_Doubler((int)position.X + rX, (int)position.Y + rY, map, EnemyType.DOUBLER, map.GetActiveRoom(), doubling));
             }
             base.takeDamage(damage);   
         }

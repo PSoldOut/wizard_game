@@ -55,7 +55,7 @@ namespace wizard_game
             shootSound.Play();
             sprite.setAnimation("shoot");
             Arrow arrow = new Arrow((int)(attacker.position.X+attacker.width/2), (int)(attacker.position.Y+attacker.height/2), attacker);
-            GameplayScreen.projectiles.Add(arrow);
+            GameplayScreen.map.GetActiveRoom().projectiles.Add(arrow);
             arrow.SetDirection(Player.Get().GetDirection());
         }
 
@@ -96,7 +96,7 @@ namespace wizard_game
             effectSound.Play();
             Player.Get().AddWeapon(this);
             this.state = State.IN_INVENTORY;
-            GameplayScreen.items.Remove(this);
+            GameplayScreen.map.GetActiveRoom().items.Remove(this);
             sprite.color = Color.White;
         }
 

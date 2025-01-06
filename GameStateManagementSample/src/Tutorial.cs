@@ -34,7 +34,7 @@ namespace wizard_game
         {
             backgroundSprite = new Sprite(AssetManager.GetTexture("panel_brown"), 1, 1, backgroundSpriteScaleX, backgroundSpriteScaleY, false);
             backgroundSprite.layerDepth = 0.01f;
-            backgroundSprite.color = new Color(255,255,255,100);
+            backgroundSprite.color = new Color(255,255,255,200);
             quests[0] = "Benutze  die  Tasten  W,  A,  S,  D\num  dich  zu  bewegen.\nProbiere  es  aus!";
             quests[1] = "Sehr  gut!  Jetzt  oeffne  mit  TAB\ndas  Skillmenu.  Druecke  1,  2  oder  3\num  je  eine  Fertigkeit  zu  verbessern.\nBedenke,  dass  das  Lernpunkte  kostet.";
             quests[2] = "Genau  so!  Jetzt  sammle  eine\nrumliegende  Waffen  ein,  indem  du\nueber  die  Waffe  laeufst.";
@@ -60,27 +60,27 @@ namespace wizard_game
             else if (currentQuest == 1 && UI.Get().isInTabmenu && (Player.Get().rangedExtraDamage > 0 || Player.Get().extraMaxHealth > 0 || Player.Get().meeleExtraDamage > 0))
                 {
                     currentQuest++;
-                    GameplayScreen.SpawnItem(new Sword(400,400));
-                    GameplayScreen.SpawnItem(new Bow(400,500));
+                    GameplayScreen.map.GetActiveRoom().SpawnItem(new Sword(400,400));
+                    GameplayScreen.map.GetActiveRoom().SpawnItem(new Bow(400,500));
                     currenWeaponCount = Player.Get().weapons.Count;
                 }
             else if (currentQuest == 2 && Player.Get().weapons.Count > currenWeaponCount)
             {
                 currentQuest++;
-                spawnedEnemy = new Enemy_prisoner(400,400, Player.Get().map, EnemyType.PRISONER, Player.Get().map.GetActiveRoom());
-                GameplayScreen.SpawnActeur(spawnedEnemy);
+                spawnedEnemy = new Enemy_prisoner(400,400, GameplayScreen.map, EnemyType.PRISONER, GameplayScreen.map.GetActiveRoom());
+                GameplayScreen.map.GetActiveRoom().SpawnActeur(spawnedEnemy);
                 currentEnemyHealth = spawnedEnemy.health;
             }
             else if (currentQuest == 3 && spawnedEnemy.health < currentEnemyHealth)
             {
                 currentQuest++;
-                spawnedEnemy = new Enemy_prisoner(400,400, Player.Get().map, EnemyType.PRISONER, Player.Get().map.GetActiveRoom());
-                GameplayScreen.SpawnActeur(spawnedEnemy);
-                curretActeurCount = GameplayScreen.acteurs.Count;
-                GameplayScreen.SpawnItem(new Role(400,600));
+                spawnedEnemy = new Enemy_prisoner(400,400, GameplayScreen.map, EnemyType.PRISONER, GameplayScreen.map.GetActiveRoom());
+                GameplayScreen.map.GetActiveRoom().SpawnActeur(spawnedEnemy);
+                curretActeurCount = GameplayScreen.map.GetActiveRoom().acteurs.Count;
+                GameplayScreen.map.GetActiveRoom().SpawnItem(new Role(400,600));
             }
 
-            else if (currentQuest == 4 && curretActeurCount > GameplayScreen.acteurs.Count)
+            else if (currentQuest == 4 && curretActeurCount > GameplayScreen.map.GetActiveRoom().acteurs.Count)
             {   
                 if (Player.Get().equippedWeapon is Role)
                 {
@@ -89,9 +89,9 @@ namespace wizard_game
                 }
                 else
                 {
-                    spawnedEnemy = new Enemy_prisoner(400,400, Player.Get().map, EnemyType.PRISONER, Player.Get().map.GetActiveRoom());
-                    GameplayScreen.SpawnActeur(spawnedEnemy);
-                    curretActeurCount = GameplayScreen.acteurs.Count;
+                    spawnedEnemy = new Enemy_prisoner(400,400, GameplayScreen.map, EnemyType.PRISONER, GameplayScreen.map.GetActiveRoom());
+                    GameplayScreen.map.GetActiveRoom().SpawnActeur(spawnedEnemy);
+                    curretActeurCount = GameplayScreen.map.GetActiveRoom().acteurs.Count;
                 }
                 
             }

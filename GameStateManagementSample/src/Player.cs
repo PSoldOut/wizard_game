@@ -141,7 +141,7 @@ namespace wizard_game
             CheckForItems();
 
             direction.Normalize();
-            Room room = map.GetActiveRoom();
+            
             Vector2 oldPos = position;
             //Zustand als Empty
            // room.setGamestateElement(position, Gamestate.EMPTY);
@@ -190,7 +190,7 @@ namespace wizard_game
             //debug
             if (inputState.IsNewKeyPress(Keys.R))
             {
-                map.ReloadWalls();
+                GameplayScreen.map.ReloadWalls();
             }
             if (nextDir.Length() != 0) direction = nextDir;
 
@@ -262,11 +262,11 @@ namespace wizard_game
             }
             if (inputState.CurrentKeyboardStates[0].IsKeyDown(Keys.Q))
             {
-                for (int i = 0; i < GameplayScreen.projectiles.Count; i++)
+                for (int i = 0; i < GameplayScreen.map.GetActiveRoom().projectiles.Count; i++)
                 {
-                    if (GameplayScreen.projectiles[i] is Fireball && GameplayScreen.projectiles[i].attacker == this)
+                    if (GameplayScreen.map.GetActiveRoom().projectiles[i] is Fireball && GameplayScreen.map.GetActiveRoom().projectiles[i].attacker == this)
                     {
-                        Fireball ball = (Fireball)GameplayScreen.projectiles[i];
+                        Fireball ball = (Fireball)GameplayScreen.map.GetActiveRoom().projectiles[i];
                         double angle = Math.Atan2(ball.GetDirection().Y, ball.GetDirection().X);
                         angle -= 0.03;
                         ball.SetDirection(new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)));
@@ -275,11 +275,11 @@ namespace wizard_game
             }
             if (inputState.CurrentKeyboardStates[0].IsKeyDown(Keys.E))
             {
-                for (int i = 0; i < GameplayScreen.projectiles.Count; i++)
+                for (int i = 0; i < GameplayScreen.map.GetActiveRoom().projectiles.Count; i++)
                 {
-                    if (GameplayScreen.projectiles[i] is Fireball && GameplayScreen.projectiles[i].attacker == this)
+                    if (GameplayScreen.map.GetActiveRoom().projectiles[i] is Fireball && GameplayScreen.map.GetActiveRoom().projectiles[i].attacker == this)
                     {
-                        Fireball ball = (Fireball)GameplayScreen.projectiles[i];
+                        Fireball ball = (Fireball)GameplayScreen.map.GetActiveRoom().projectiles[i];
                         double angle = Math.Atan2(ball.GetDirection().Y, ball.GetDirection().X);
                         angle += 0.03;
                         ball.SetDirection(new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)));
@@ -473,7 +473,7 @@ namespace wizard_game
 
         public void CheckForItems()
         {
-            foreach (Item item in GameplayScreen.items)
+            foreach (Item item in GameplayScreen.map.GetActiveRoom().items)
             {
                 if (item.state == Item.State.ON_FLOOR && item.area.Intersects(hitBox))
                 {
@@ -481,7 +481,7 @@ namespace wizard_game
                     if(item is Gold gold){
                         coins++;
                     }
-                    map.GetActiveRoom().setGamestateElement(item.position, Gamestate.EMPTY);
+                    GameplayScreen.map.GetActiveRoom().setGamestateElement(item.position, Gamestate.EMPTY);
                     break;
                 }
 

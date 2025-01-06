@@ -73,10 +73,10 @@ namespace wizard_game
                 switch(value)
                 {
                     case 0:
-                        GameplayScreen.items.Add(new HealthPotion((int)this.position.X, (int)this.position.Y));
+                        GameplayScreen.map.GetActiveRoom().items.Add(new HealthPotion((int)this.position.X, (int)this.position.Y));
                         break;
                     case 1:
-                        GameplayScreen.items.Add(new Gold((int)this.position.X, (int)this.position.Y));
+                        GameplayScreen.map.GetActiveRoom().items.Add(new Gold((int)this.position.X, (int)this.position.Y));
                         break;
                 }
             }
@@ -118,7 +118,7 @@ namespace wizard_game
             if (timer == dieTimer)
             {
                 isDying = false;
-                GameplayScreen.acteurs.Remove(this);
+                GameplayScreen.map.GetActiveRoom().acteurs.Remove(this);
             }
         }
 

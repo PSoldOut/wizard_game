@@ -42,8 +42,8 @@ namespace wizard_game
                 if (i == 0) //First room only to next room
                 {
 
-                    Room startRoom = new Room( i);
-                    Room nextRoom = new Room(i + 1);
+                    Room startRoom = new Room( i, this);
+                    Room nextRoom = new Room(i + 1, this);
 
 
                     rooms.Add(startRoom);
@@ -71,14 +71,13 @@ namespace wizard_game
 
 
                     activeRoom = rooms[0];
-
                     //backRoom = startRoom;
                     actualRoom = nextRoom;
 
                 }
                 else if (i + 1 < roomsCount)
                 {
-                    Room nextRoom = new Room(i + 1);
+                    Room nextRoom = new Room(i + 1, this);
                     rooms.Add(nextRoom);
 
                     Door doorToNext = new Door(doorSize);
@@ -117,7 +116,7 @@ namespace wizard_game
 
         public bool DetacteCollison(Rectangle hitbox, Color[] playerImage, bool deleteBots = true)
         {
-            return activeRoom.DetacteCollison(hitbox, playerImage, deleteBots);
+            return activeRoom == null ? false : activeRoom.DetacteCollison(hitbox, playerImage, deleteBots);
         }
 
         public Door DetacteCollisonDoor(Rectangle hitbox, bool deleteBots = true)
@@ -128,6 +127,7 @@ namespace wizard_game
 
                 roomIndex = rooms.IndexOf(linkedDoor.room);
                 activeRoom = rooms[roomIndex];
+                if (!activeRoom.isInitialized) activeRoom.init();
                 //DebugFieldsofRoom();
                 return linkedDoor;
             }
@@ -166,9 +166,16 @@ namespace wizard_game
         }
 
         public void Draw(GameTime gameTime)
-         {
+        {
             activeRoom.Draw(gameTime);
-         }
+            
+        }
+
+
+        public void Update(GameTime gameTime)
+        {
+            activeRoom.Update(gameTime);
+        }
 
 
         public Room GetActiveRoom()

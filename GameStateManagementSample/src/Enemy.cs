@@ -56,8 +56,7 @@ namespace wizard_game
             playerViewDistance = 300;
             patroulliePoint1 = position;
             patroulliePoint2 = CalculatePatroulliePoint2();
-            Vector2 startPos = GenerateRandomPosition();
-            SetPosition(startPos);
+            
         }
 
 
@@ -99,7 +98,7 @@ namespace wizard_game
             }
             int cordX = (int)test.X / 10;
             int cordY = (int)test.Y / 10;
-
+            
             // Gibt zurück, ob das Feld auf true gesetzt ist
             return room.fields[cordX, cordY];
 
@@ -195,6 +194,8 @@ namespace wizard_game
                 {
                     drawPoint(v);
                 }
+
+                drawPoint(patroulliePoint2);
             }
         }
 

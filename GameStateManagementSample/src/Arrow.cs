@@ -33,24 +33,24 @@ namespace wizard_game
 
             if (Math.Abs(position.X-startPos.X) > 400 || Math.Abs(position.Y - startPos.Y) > 400)
             {
-                GameplayScreen.projectiles.Remove(this);
+                GameplayScreen.map.GetActiveRoom().projectiles.Remove(this);
                 return;
             }
 
-            for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
+            for (int i = 0; i < GameplayScreen.map.GetActiveRoom().acteurs.Count; i++)
             {
-                if (hitBox.Intersects(GameplayScreen.acteurs[i].hitBox) && GameplayScreen.acteurs[i] != attacker)
+                if (hitBox.Intersects(GameplayScreen.map.GetActiveRoom().acteurs[i].hitBox) && GameplayScreen.map.GetActiveRoom().acteurs[i] != attacker)
                 {
                     hitSound.Stop();
                     hitSound.Play();
-                    GameplayScreen.acteurs[i].takeDamage(damage + attacker.rangedExtraDamage);
-                    GameplayScreen.projectiles.Remove(this);
+                    GameplayScreen.map.GetActiveRoom().acteurs[i].takeDamage(damage + attacker.rangedExtraDamage);
+                    GameplayScreen.map.GetActiveRoom().projectiles.Remove(this);
                     return;
                 }
             }
             if (DetacteCollison())
             {
-                GameplayScreen.projectiles.Remove(this);
+                GameplayScreen.map.GetActiveRoom().projectiles.Remove(this);
                 return;
             }
 
@@ -60,7 +60,7 @@ namespace wizard_game
             float alpha = (float)Math.Atan2(opposite,adjecent);
             rotation = -alpha;
 
-            if (Math.Abs(position.X-startPos.X) > 400 || Math.Abs(position.Y - startPos.Y) > 400) GameplayScreen.projectiles.Remove(this);
+            if (Math.Abs(position.X-startPos.X) > 400 || Math.Abs(position.Y - startPos.Y) > 400) GameplayScreen.map.GetActiveRoom().projectiles.Remove(this);
         }
     }
 

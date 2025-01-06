@@ -22,7 +22,7 @@ namespace wizard_game
 
         Vector2 acceleration;
         Vector2 velocity;
-        float maxForce = 128f;
+        float maxForce = 0.7f;
         Acteur target;
         bool hasTarget = false;
 
@@ -48,14 +48,14 @@ namespace wizard_game
             
 
 
-            for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
+            for (int i = 0; i < GameplayScreen.map.GetActiveRoom().acteurs.Count; i++)
             {
-                if (hitBox.Intersects(GameplayScreen.acteurs[i].hitBox) && GameplayScreen.acteurs[i] != attacker)
+                if (hitBox.Intersects(GameplayScreen.map.GetActiveRoom().acteurs[i].hitBox) && GameplayScreen.map.GetActiveRoom().acteurs[i] != attacker)
                 {
                     hitSound.Stop();
                     hitSound.Play();
-                    GameplayScreen.acteurs[i].takeDamage(damage);
-                    GameplayScreen.projectiles.Remove(this);
+                    GameplayScreen.map.GetActiveRoom().acteurs[i].takeDamage(damage);
+                    GameplayScreen.map.GetActiveRoom().projectiles.Remove(this);
                     return;
                 }
             }
@@ -63,7 +63,7 @@ namespace wizard_game
 
             if (DetacteCollison())
             {
-                GameplayScreen.projectiles.Remove(this);
+                GameplayScreen.map.GetActiveRoom().projectiles.Remove(this);
                 return;
             }
 
@@ -136,7 +136,7 @@ namespace wizard_game
         public override void TimerCallback(Timer timer)
         {
             base.TimerCallback(timer);
-            GameplayScreen.projectiles.Remove(this);
+            GameplayScreen.map.GetActiveRoom().projectiles.Remove(this);
         }
 
         public new void SetDirection(Vector2 fireballDirection){

@@ -30,7 +30,7 @@ namespace wizard_game
             if (Player.Get().health <= Player.PLAYER_MAX_HEALTH - health + Player.Get().extraMaxHealth)
                 Player.Get().health+=health;
 
-            GameplayScreen.items.Remove(this);
+            GameplayScreen.map.GetActiveRoom().items.Remove(this);
         }
     }
 

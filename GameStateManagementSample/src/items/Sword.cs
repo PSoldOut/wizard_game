@@ -56,7 +56,7 @@ namespace wizard_game
             effectSound.Play();
             Player.Get().AddWeapon(this);
             this.state = State.IN_INVENTORY;
-            GameplayScreen.items.Remove(this);
+            GameplayScreen.map.GetActiveRoom().items.Remove(this);
             sprite.color = Color.White;
         }
 
@@ -102,13 +102,13 @@ namespace wizard_game
                 swishSound.Stop();
                 swishSound.Play();
 
-                for (int i = 0; i < GameplayScreen.acteurs.Count; i++)
+                for (int i = 0; i < GameplayScreen.map.GetActiveRoom().acteurs.Count; i++)
                 {
-                    if (attacker.damageArea.Intersects(GameplayScreen.acteurs[i].hitBox) && attacker != GameplayScreen.acteurs[i])
+                    if (attacker.damageArea.Intersects(GameplayScreen.map.GetActiveRoom().acteurs[i].hitBox) && attacker != GameplayScreen.map.GetActiveRoom().acteurs[i])
                     {
                             hitSound.Stop();
                             hitSound.Play();
-                            GameplayScreen.acteurs[i].takeDamage(damage + attacker.meeleExtraDamage);
+                            GameplayScreen.map.GetActiveRoom().acteurs[i].takeDamage(damage + attacker.meeleExtraDamage);
                     }
                 }
             }
