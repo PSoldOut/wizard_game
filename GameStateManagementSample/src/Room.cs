@@ -34,8 +34,10 @@ namespace wizard_game
         bool enabled = true;
         public Gamestate[,] gamestate = new Gamestate[128, 72];
         int outerWallWidth = 70;
+        int outerWallWidthSide = 100;
+
         int outerWallWidthSide = 85;
-        
+
         public Map map;
         public List<Acteur> acteurs;
         public List<Item> items;
@@ -73,7 +75,7 @@ namespace wizard_game
             this.map = map;
             items = new List<Item>();
             acteurs = new List<Acteur>();
-            projectiles = new List<Projectile>();    
+            projectiles = new List<Projectile>();
 
         }
         private void SideWalls()
@@ -149,7 +151,7 @@ namespace wizard_game
             //---------------------------------------
         }
 
-        
+
 
         public void SpawnActeur(Acteur acteur)
         {
@@ -618,7 +620,7 @@ namespace wizard_game
 
 
 
-        
+
 
 
         public void initGamestate()
