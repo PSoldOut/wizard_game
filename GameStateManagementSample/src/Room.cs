@@ -59,7 +59,7 @@ namespace wizard_game
             W_Width = gameInstance.GraphicsDevice.Viewport.Width;
             W_Height = gameInstance.GraphicsDevice.Viewport.Height;
             SideWalls();
-            BuildWalls();
+
             // Debug.WriteLine("build walls");
         }
         private void SideWalls()
@@ -114,6 +114,7 @@ namespace wizard_game
             return door.Site;
 
         }
+
         public void BuildWalls()
         {
             //debug
@@ -121,37 +122,45 @@ namespace wizard_game
             {
                 wallBuilder(new Point(i * 20, 500), new Point(20, 20));
             }*/
-            for (int c = 0; c < 5; c++)
+
+            for (int c = 0; c < 3; c++)
             {
 
                 // Debug.WriteLine("new wall #######");
                 int XLength = fields.GetLength(0);
                 int YLength = fields.GetLength(1);
-                int x = rnd.Next(XLength / 4, XLength / 4 * 3);
-                int y = rnd.Next(YLength / 4, YLength / 4 * 3);
-
-                //x = 50;
-                //y = 50;
-                DirEnum dir = (DirEnum)rnd.Next(0, 4);
-                //DirEnum dir = DirEnum.Bottom;
-                switch (dir)
+                int x;
+                int y;
+                DirEnum dir;
+                do
                 {
-                    case DirEnum.Right:
-                        x = 0;
-                        break;
-                    case DirEnum.Left:
-                        x = XLength - outerWallWidth / 10;
+                    x = rnd.Next(XLength / 4, XLength / 4 * 3);
+                    y = rnd.Next(YLength / 4, YLength / 4 * 3);
 
-                        break;
-                    case DirEnum.Top:
-                        y = YLength - outerWallWidth / 10;
+                    //x = 50;
+                    //y = 50;
+                    dir = (DirEnum)rnd.Next(0, 4);
+                    //DirEnum dir = DirEnum.Top;
+                    switch (dir)
+                    {
+                        case DirEnum.Right:
+                            x = 0;
+                            break;
+                        case DirEnum.Left:
+                            x = XLength - outerWallWidth / 10;
 
-                        break;
-                    case DirEnum.Bottom:
-                        y = 0;
-                        break;
+                            break;
+                        case DirEnum.Top:
+                            y = YLength - outerWallWidth / 10;
 
-                }
+                            break;
+                        case DirEnum.Bottom:
+                            y = 0;
+                            break;
+
+                    }
+                } while (checkDoor(x, y));
+
                 //   Debug.WriteLine("start dir " + dir + " x" + x + " y:" + y);
 
 
@@ -185,7 +194,7 @@ namespace wizard_game
 
                             if (dir != dirOld)
                             {
-                                Debug.WriteLine("Change dir form " + dirOld + " to " + dir);
+                                //Debug.WriteLine("Change dir form " + dirOld + " to " + dir);
                                 dirOld = dir;
                                 if (!changeDir && dirChangesMax > dirChanges)
                                 {
@@ -234,19 +243,21 @@ namespace wizard_game
                     }
                     if (res == Collison.Front)
                     {
+                        //Debug.WriteLine("Collison x " + x + " y " + y + " " + dir);
+                        int blocksToSkip = 11;
                         switch (dir)
                         {
                             case DirEnum.Right:
-                                x += 8;
+                                x += blocksToSkip;
                                 break;
                             case DirEnum.Left:
-                                x -= 8;
+                                x -= blocksToSkip;
                                 break;
                             case DirEnum.Top:
-                                y -= 8;
+                                y -= blocksToSkip;
                                 break;
                             case DirEnum.Bottom:
-                                y += 8;
+                                y += blocksToSkip;
                                 break;
 
                         }
@@ -261,9 +272,6 @@ namespace wizard_game
                     wallBuilder(new Point(x * 10, y * 10), new Point(20, 20));
 
                 }
-
-
-                Debug.WriteLine(("max", XLength, YLength));
             }
         }
         private bool CheckBorder(int x, int y, DirEnum dir)
@@ -288,15 +296,34 @@ namespace wizard_game
             }
             return false;
         }
+        public bool checkDoor(int x, int y)
+        {
+            Rectangle rectangle = new Rectangle(x*10,y*10,100,100);
+            foreach (Door door in doors)
+            {
+
+                if (door.hitBox.Intersects(rectangle))
+                {
+                    Debug.WriteLine("intersect door");
+                    return true;
+                }
+            }
+            return false;
+        }
         private Collison CheckNeighbors(int x, int y, DirEnum dir)
         {
 
             if (CheckBorder(x, y, dir))
             {
-                return Collison.Side;
+                return Collison.Border;
+            }
+            if (checkDoor(x, y))
+            {
+                return Collison.Border;
             }
             x *= 10;
             y *= 10;
+            int frontBlocksCheck = 8;
             switch (dir)
             {
                 case DirEnum.Right:
@@ -305,7 +332,7 @@ namespace wizard_game
 
                         return Collison.Side;
                     }
-                    if (WallOverlap(new Point(x, y), 60, 20)) //in front
+                    if (WallOverlap(new Point(x, y), frontBlocksCheck * 10, 20)) //in front
                     {
                         return Collison.Front;
                     }
@@ -318,7 +345,7 @@ namespace wizard_game
 
                         return Collison.Side;
                     }
-                    if (WallOverlap(new Point(x - 40, y), 60, 20)) //in front
+                    if (WallOverlap(new Point(x - (frontBlocksCheck - 2) * 10, y), frontBlocksCheck * 10, 20)) //in front
                     {
                         return Collison.Front;
                     }
@@ -330,7 +357,7 @@ namespace wizard_game
 
                         return Collison.Side;
                     }
-                    if (WallOverlap(new Point(x, y - 40), 20, 60)) //in front
+                    if (WallOverlap(new Point(x, y - (frontBlocksCheck - 2) * 10), 20, frontBlocksCheck * 10)) //in front
                     {
                         return Collison.Front;
                     }
@@ -343,7 +370,7 @@ namespace wizard_game
 
                         return Collison.Side;
                     }
-                    if (WallOverlap(new Point(x, y), 20, 60)) //in front
+                    if (WallOverlap(new Point(x, y), 20, frontBlocksCheck * 10)) //in front
                     {
                         return Collison.Front;
                     }
