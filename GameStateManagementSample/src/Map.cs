@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using System.Diagnostics;
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,14 +20,18 @@ namespace wizard_game
         private Room activeRoom;
         private bool[,] activeRoomFields = new bool[128, 72];
         public int roomIndex = 0;
+        public static int level = 1;
         //private List<Bot> bots = new List<Bot>();
         // private List<Bot> botsToDelete = new List<Bot>();
         GameStateManagementGame gameInstance = GameStateManagementGame.Get();
+        public Texture2D background;
+
         public Map() {
         //    Debug.WriteLine("INIT NEW MAP############");
 
-            int roomsCount = 3;
+            int roomsCount = 7;
             generateRooms(roomsCount);
+            background = AssetManager.GetTexture("bgd1");
          }
 
 
@@ -108,6 +113,11 @@ namespace wizard_game
             }
         }
 
+        public void nextLevel()
+        {
+            level++;
+            if (level == 2) background = AssetManager.GetTexture("castleBG");
+        }
 
         public void ReloadWalls()
         {
@@ -167,6 +177,8 @@ namespace wizard_game
 
         public void Draw(GameTime gameTime)
         {
+            Rectangle screenRectangle = new Rectangle(0, 0, 1280, 720);
+            GameStateManagementGame._spriteBatch.Draw(background, screenRectangle, null, Color.White, 0, new Vector2(0,0), SpriteEffects.None, 1.0f);
             activeRoom.Draw(gameTime);
             
         }

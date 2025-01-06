@@ -34,7 +34,7 @@ namespace wizard_game
         bool enabled = true;
         public Gamestate[,] gamestate = new Gamestate[128, 72];
         int outerWallWidth = 70;
-        int outerWallWidthSide = 100;
+        int outerWallWidthSide = 85;
         
         public Map map;
         public List<Acteur> acteurs;
@@ -105,11 +105,25 @@ namespace wizard_game
         {
             if (GameStateManagementGame.mode != GameMode.TUTORIAL)
             {
-                SpawnActeur(new Enemy_Guard(100, 200, map, EnemyType.GUARD, this));
-                SpawnActeur(new Enemy_Knight(100,100, map, EnemyType.KNIGHT, this));
-                SpawnActeur(new Enemy_Doubler(200,200, map, EnemyType.DOUBLER, this, 4));
-                SpawnActeur(new Enemy_prisoner(300, 300, map, EnemyType.PRISONER, this));
-                SpawnActeur(new Enemy_Magie(150, 200, map, EnemyType.MAGIE, this));
+                Enemy current = new Enemy_Guard(100, 200, map, EnemyType.GUARD, this);
+                current.position = current.GenerateRandomPosition();
+                acteurs.Add(current);
+
+                current = new Enemy_Knight(100,100, map, EnemyType.KNIGHT, this);
+                current.position = current.GenerateRandomPosition();
+                acteurs.Add(current);
+
+                current = new Enemy_Doubler(200,200, map, EnemyType.DOUBLER, this, 4);
+                current.position = current.GenerateRandomPosition();
+                acteurs.Add(current);
+
+                current = new Enemy_prisoner(300, 300, map, EnemyType.PRISONER, this);
+                current.position = current.GenerateRandomPosition();
+                acteurs.Add(current);
+
+                current = new Enemy_Magie(150, 200, map, EnemyType.MAGIE, this);
+                current.position = current.GenerateRandomPosition();
+                acteurs.Add(current);
             }
             SpawnActeur(Player.Get());
         }
@@ -257,7 +271,7 @@ namespace wizard_game
 
                 DirEnum dirOld = dir;
                 bool changeDir = false;
-                int iteraions = 30;
+                int iteraions = 70;
                 int dirChanges = 1;
                 int dirChangesMax = 3;
 
@@ -335,7 +349,7 @@ namespace wizard_game
                     if (res == Collison.Front)
                     {
                         //Debug.WriteLine("Collison x " + x + " y " + y + " " + dir);
-                        int blocksToSkip = 11;
+                        int blocksToSkip = 80;
                         switch (dir)
                         {
                             case DirEnum.Right:
@@ -414,7 +428,7 @@ namespace wizard_game
             }
             x *= 10;
             y *= 10;
-            int frontBlocksCheck = 8;
+            int frontBlocksCheck = 18;
             switch (dir)
             {
                 case DirEnum.Right:

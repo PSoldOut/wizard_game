@@ -45,7 +45,7 @@ namespace wizard_game
         public new void Move()
         {
             chooseADirection();
-            direction.Normalize();
+            //direction.Normalize();
             position += direction * speed;
         }
 
@@ -56,8 +56,8 @@ namespace wizard_game
             Random random = new Random();
             int b = 0;
             string anim = "idle_down";
-            Vector2 tmp = GetMidPos() + direction * speed;
-            while ((DetacteCollison(position) || DetacteCollison(position + new Vector2(width,0)) || DetacteCollison(position + new Vector2(width, height)) || DetacteCollison(position+new Vector2(0, height))) && b < 30)
+            Vector2 tmp = position + direction * speed;
+            while ((DetacteCollison(tmp) || DetacteCollison(tmp + new Vector2(width,0)) || DetacteCollison(tmp + new Vector2(width, height)) || DetacteCollison(tmp+new Vector2(0, height))) && b < 30)
             {
                 b++;
                 int randomNumber = random.Next(1, 101);
@@ -88,6 +88,7 @@ namespace wizard_game
                 tmp = position + direction * speed;
                 
             }
+            if (b>= 30) direction = new Vector2(0,0);
             sprite.setAnimation(anim);
         }
 
