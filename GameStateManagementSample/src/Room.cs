@@ -10,8 +10,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 namespace wizard_game
 {
-
-
     public class Room
     {
         private List<Wall> walls = new List<Wall>();
@@ -35,7 +33,7 @@ namespace wizard_game
         public Gamestate[,] gamestate = new Gamestate[128, 72];
         int outerWallWidth = 70;
         int outerWallWidthSide = 85;
-        
+
         public Map map;
         public List<Acteur> acteurs;
         public List<Item> items;
@@ -43,6 +41,30 @@ namespace wizard_game
 
         public bool isInitialized = false;
         static int goldCount = 7;
+        private int level;
+        private Dictionary<int, List<RoomEnemyConfig>> levelRoomConfigs = new Dictionary<int, List<RoomEnemyConfig>>
+{
+    // Level 1: Nur Prisoner und Knight
+    { 1, new List<RoomEnemyConfig> {
+        new RoomEnemyConfig(EnemyType.PRISONER, 1, 2),
+        new RoomEnemyConfig(EnemyType.KNIGHT, 2, 3),
+          new RoomEnemyConfig(EnemyType.GUARD, 0,1)
+    }},
+    // Level 2: Prisoner, Knight und Guard
+    { 2, new List<RoomEnemyConfig> {
+        new RoomEnemyConfig(EnemyType.PRISONER, 1, 2),
+        new RoomEnemyConfig(EnemyType.KNIGHT, 2, 3),
+        new RoomEnemyConfig(EnemyType.GUARD, 1, 2),
+        new RoomEnemyConfig(EnemyType.DOUBLER, 0, 1),
+    }},
+    // Level 3: Doubler, Guard, Wizard und Magie
+    { 3, new List<RoomEnemyConfig> {
+        new RoomEnemyConfig(EnemyType.DOUBLER, 1, 2),
+        new RoomEnemyConfig(EnemyType.GUARD, 2, 4),
+        new RoomEnemyConfig(EnemyType.WIZARD, 1, 2),
+        new RoomEnemyConfig(EnemyType.MAGIE, 1, 3)
+    }}
+};
         enum DirEnum : int
         {
 
@@ -61,7 +83,7 @@ namespace wizard_game
 
 
         }
-        public Room(int index, Map map)
+        public Room(int index, Map map, int level)
         {
             initGamestate();
             this.index = index;
@@ -71,9 +93,10 @@ namespace wizard_game
 
             // Debug.WriteLine("build walls");
             this.map = map;
+            this.level = level;
             items = new List<Item>();
             acteurs = new List<Acteur>();
-            projectiles = new List<Projectile>();    
+            projectiles = new List<Projectile>();
 
         }
         private void SideWalls()
@@ -97,9 +120,56 @@ namespace wizard_game
         public void init()
         {
             generateItems();
-            generateEnemies();
+         //   generateEnemies();
+            generateEnemiesForRoom(level);
             isInitialized = true;
         }
+
+        public void generateEnemiesForRoom(int level)
+        {
+            if (!levelRoomConfigs.ContainsKey(level))
+            {
+                throw new ArgumentException($"Keine Konfiguration für Level {level} gefunden.");
+            }
+
+            Random random = new Random();
+            List<RoomEnemyConfig> configs = levelRoomConfigs[level];
+
+            foreach (var config in configs)
+            {
+                // Zufällige Anzahl der Gegner für diesen Typ im Raum
+                int count = random.Next(config.Min, config.Max + 1);
+
+                for (int i = 0; i < count; i++)
+                {
+                    Enemy current = createEnemyByType(config.Type);
+                    current.position = current.GenerateRandomPosition();
+                    acteurs.Add(current);
+                }
+            }
+        }
+        private Enemy createEnemyByType(EnemyType type)
+        {
+            switch (type)
+            {
+                case EnemyType.GUARD:
+                    return new Enemy_Guard(0, 0, map, EnemyType.GUARD, this);
+                case EnemyType.KNIGHT:
+                    return new Enemy_Knight(0, 0, map, EnemyType.KNIGHT, this);
+                case EnemyType.DOUBLER:
+                    return new Enemy_Doubler(0, 0, map, EnemyType.DOUBLER, this, 4);
+                case EnemyType.PRISONER:
+                    return new Enemy_prisoner(0, 0, map, EnemyType.PRISONER, this);
+                case EnemyType.MAGIE:
+                    return new Enemy_Magie(0, 0, map, EnemyType.MAGIE, this);
+                case EnemyType.WIZARD:
+                    return new Enemy_Wizard(0, 0, map, EnemyType.WIZARD, this);
+                default:
+                    throw new ArgumentException("Unbekannter EnemyType");
+            }
+        }
+
+
 
         public void generateEnemies()
         {
@@ -109,11 +179,11 @@ namespace wizard_game
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
 
-                current = new Enemy_Knight(100,100, map, EnemyType.KNIGHT, this);
+                current = new Enemy_Knight(100, 100, map, EnemyType.KNIGHT, this);
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
 
-                current = new Enemy_Doubler(200,200, map, EnemyType.DOUBLER, this, 4);
+                current = new Enemy_Doubler(200, 200, map, EnemyType.DOUBLER, this, 4);
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
 
@@ -131,15 +201,24 @@ namespace wizard_game
             }
         }
 
+        public void generateEnemiesForAllRooms(int level)
+        {
+            for (int i = 1; i <= 5; i++) // Für 5 Räume
+            {
+                Console.WriteLine($"Generiere Gegner für Raum {i} in Level {level}...");
+                generateEnemiesForRoom(level);
+            }
+        }
+
+
         public void generateItems()
         {
             if (GameStateManagementGame.mode != GameMode.TUTORIAL)
             {
                 for (int i = 0; i < goldCount; i++)
                 {
-                    Gold g = new Gold(0,0);
+                    Gold g = new Gold(0, 0);
                     g.SetPos(map);
-                    //Gold g = new Gold(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height));
                     SpawnItem(g);
                     setGamestateElement(g.position, Gamestate.GOLD);
                 }
@@ -150,7 +229,6 @@ namespace wizard_game
                 SpawnItem(new Role(200,200));
                 SpawnItem(new Trap(400,200));
             }
-            //---------------------------------------
         }
 
 
@@ -159,12 +237,12 @@ namespace wizard_game
         {
             acteurs.Add(acteur);
             Rectangle oldRect = acteur.hitBox;
-            acteur.hitBox = new Rectangle((int)acteur.position.X-10, (int)acteur.position.Y-10, acteur.width+20, acteur.height+20);
-            while(acteur.DetacteCollison())
+            acteur.hitBox = new Rectangle((int)acteur.position.X - 10, (int)acteur.position.Y - 10, acteur.width + 20, acteur.height + 20);
+            while (acteur.DetacteCollison())
             {
                 acteur.position = new Vector2(GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
-                acteur.hitBox.X = (int)acteur.position.X-10;
-                acteur.hitBox.Y = (int)acteur.position.Y-10;
+                acteur.hitBox.X = (int)acteur.position.X - 10;
+                acteur.hitBox.Y = (int)acteur.position.Y - 10;
             }
             acteur.hitBox = oldRect;
         }
@@ -174,12 +252,12 @@ namespace wizard_game
         {
             items.Add(item);
             Rectangle oldRect = item.hitBox;
-            item.hitBox = new Rectangle((int)item.position.X-10, (int)item.position.Y-10, item.width+20, item.height+20);
-            while(item.DetacteCollison())
+            item.hitBox = new Rectangle((int)item.position.X - 10, (int)item.position.Y - 10, item.width + 20, item.height + 20);
+            while (item.DetacteCollison())
             {
                 item.position = new Vector2(GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferWidth), GameplayScreen.rand.Next(0, GameStateManagementGame.Get().graphics.PreferredBackBufferHeight));
-                item.hitBox.X = (int)item.position.X-10;
-                item.hitBox.Y = (int)item.position.Y-10;
+                item.hitBox.X = (int)item.position.X - 10;
+                item.hitBox.Y = (int)item.position.Y - 10;
             }
             item.hitBox = oldRect;
         }
@@ -407,7 +485,7 @@ namespace wizard_game
         }
         public bool checkDoor(int x, int y)
         {
-            Rectangle rectangle = new Rectangle(x*10,y*10,100,100);
+            Rectangle rectangle = new Rectangle(x * 10, y * 10, 100, 100);
             foreach (Door door in doors)
             {
 

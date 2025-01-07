@@ -50,8 +50,8 @@ namespace wizard_game
                 if (i == 0) //First room only to next room
                 {
 
-                    Room startRoom = new Room( i, this);
-                    Room nextRoom = new Room(i + 1, this);
+                    Room startRoom = new Room( i, this, level);
+                    Room nextRoom = new Room(i + 1, this, level);
                     startRoom.SpawnActeur(Player.Get());
 
                     rooms.Add(startRoom);
@@ -86,7 +86,7 @@ namespace wizard_game
                 else if ((i + 1) % roomsCount == 0)
                 {
                     Console.WriteLine("lolllllllllllllllllllllllllllllllllllllllllllllllllll");
-                    Room nextRoom = new Room(i + 1, this);
+                    Room nextRoom = new Room(i + 1, this, level);
                     rooms.Add(nextRoom);
 
                     EndDoor doorToNext = new EndDoor(doorSize);
@@ -110,7 +110,7 @@ namespace wizard_game
                 }
                 else if (i + 1 < roomsCount * levelCount)
                 {
-                    Room nextRoom = new Room(i + 1, this);
+                    Room nextRoom = new Room(i + 1, this, level);
                     rooms.Add(nextRoom);
 
                     Door doorToNext = new Door(doorSize);
@@ -132,7 +132,7 @@ namespace wizard_game
 
 
                 }
-                
+
 
 
             }
@@ -161,7 +161,7 @@ namespace wizard_game
         }
 
 
-        
+
 
         public void ReloadWalls()
         {
@@ -224,7 +224,7 @@ namespace wizard_game
             Rectangle screenRectangle = new Rectangle(0, 0, 1280, 720);
             GameStateManagementGame._spriteBatch.Draw(background, screenRectangle, null, Color.White, 0, new Vector2(0,0), SpriteEffects.None, 1.0f);
             activeRoom.Draw(gameTime);
-            
+
         }
 
 
