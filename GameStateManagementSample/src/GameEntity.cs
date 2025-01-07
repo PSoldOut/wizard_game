@@ -143,13 +143,27 @@ namespace wizard_game
             if (this is Player) spawnDoor = GameplayScreen.map.DetacteCollisonDoor(hitBox);
             if (spawnDoor != null)
             {
+                if (spawnDoor is EndDoor)
+                {
+                    if (!((EndDoor)spawnDoor).front)
+                    {
+                        GameplayScreen.map.nextLevel();
+                    }
+                    else
+                    {
+                        GameplayScreen.map.previousLevel();
+                    }
+                }
                 position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);
                 hitBox.X = (int)position.X;
                 hitBox.Y = (int)position.Y;
+                openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
                 openGateSound.Play();
                 spawnDoor.linkedDoor.room.acteurs.Remove(Player.Get());
                 spawnDoor.room.acteurs.Add(Player.Get());
-                return false;
+                
+                return false; 
+                
             }
             Color[] data = sprite.GetCurrentColorData();
             return GameplayScreen.map.DetacteCollison(hitBox, data, false);

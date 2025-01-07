@@ -20,6 +20,7 @@ namespace wizard_game
         public SiteEnum _site;
         int W_Height;
         int W_Width;
+        public Color clr = Color.White; 
         public enum SiteEnum : int
         {
 
@@ -162,7 +163,7 @@ namespace wizard_game
             GameStateManagementGame._spriteBatch.Draw(sprite.texture,
             hitBox,
             source,
-            Color.White,
+            clr,
             angle,
             origin,
             effect,

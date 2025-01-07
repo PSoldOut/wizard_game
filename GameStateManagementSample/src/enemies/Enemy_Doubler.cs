@@ -32,7 +32,6 @@ namespace wizard_game
         public static int MAX_DOUBLING = 4;
 
         int doubling;
-        public string currentAnimation;
         ParticleSystem particleSystem;
         Timer attackTimer;
         float attackRange;
@@ -200,49 +199,7 @@ namespace wizard_game
         
 
 
-        public void UpdateAnimation()
-        {
-            
-            if (currentSpeed == 0 && path.Count == 0)
-            {
-                if (direction.Y < 0)
-                {
-                    currentAnimation = "idle_up";
-                    if (direction.X < 0) currentAnimation = "idle_left";
-                    else if (direction.X > 0) currentAnimation = "idle_right";
-                }
-                else if (direction.Y > 0)
-                {
-                    currentAnimation = "idle_down";
-                    if (direction.X > 0) currentAnimation = "idle_right";
-                }
-                else
-                {
-                    if (direction.X < 0) currentAnimation = "idle_left";
-                    else currentAnimation = "idle_right";
-                }
-            }
-
-            if (currentSpeed > 0)
-            {
-                if (direction.Y < 0)
-                {
-                    currentAnimation = "up";
-                    if (direction.X < 0) currentAnimation = "left";
-                    else if (direction.X > 0) currentAnimation = "right";
-                }
-                else if (direction.Y > 0)
-                {
-                    currentAnimation = "down";
-                    if (direction.X > 0) currentAnimation = "right";
-                }
-                else
-                {
-                    if (direction.X < 0) currentAnimation = "left";
-                    else currentAnimation = "right";
-                }
-            }
-        }
+        
 
 
 

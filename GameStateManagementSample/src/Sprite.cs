@@ -153,6 +153,7 @@ public class Sprite
     //set the current animation but not restartin it when it was already the current animation
     public void setAnimation(String name)
     {
+        if (name == null) return;
         isPlaying = true;
         int animationIndex = nameToIndexDic.GetValueOrDefault(name, -1);
         if (this.animationIndex == animationIndex || animationIndex == -1) return;

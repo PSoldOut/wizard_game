@@ -124,6 +124,10 @@ namespace wizard_game
                 current = new Enemy_Magie(150, 200, map, EnemyType.MAGIE, this);
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
+
+                current = new Enemy_Wizard(150, 200, map, EnemyType.MAGIE, this);
+                current.position = current.GenerateRandomPosition();
+                acteurs.Add(current);
             }
         }
 

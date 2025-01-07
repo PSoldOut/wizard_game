@@ -33,6 +33,7 @@ namespace wizard_game
         protected Map map;
         Vector2 patroulliePoint1;
         Vector2 patroulliePoint2;
+        public string currentAnimation;
         public Enemy(int x, int y, Map _map, EnemyType type, string spriteName, Room room) : base(new Vector2(x, y), 27, 45, spriteName, true)
         {
 
@@ -88,6 +89,55 @@ namespace wizard_game
             sprite.addAnimtaion(animIdleUp, "idle_up");
             sprite.setAnimation("idle_right");
         }
+
+
+
+
+        public void UpdateAnimation()
+        {
+            
+            if (currentSpeed == 0 && path.Count == 0)
+            {
+                if (direction.Y < 0)
+                {
+                    currentAnimation = "idle_up";
+                    if (direction.X < 0) currentAnimation = "idle_left";
+                    else if (direction.X > 0) currentAnimation = "idle_right";
+                }
+                else if (direction.Y > 0)
+                {
+                    currentAnimation = "idle_down";
+                    if (direction.X > 0) currentAnimation = "idle_right";
+                }
+                else
+                {
+                    if (direction.X < 0) currentAnimation = "idle_left";
+                    else currentAnimation = "idle_right";
+                }
+            }
+
+            if (currentSpeed > 0)
+            {
+                if (direction.Y < 0)
+                {
+                    currentAnimation = "up";
+                    if (direction.X < 0) currentAnimation = "left";
+                    else if (direction.X > 0) currentAnimation = "right";
+                }
+                else if (direction.Y > 0)
+                {
+                    currentAnimation = "down";
+                    if (direction.X > 0) currentAnimation = "right";
+                }
+                else
+                {
+                    if (direction.X < 0) currentAnimation = "left";
+                    else currentAnimation = "right";
+                }
+            }
+        }
+
+
 
         private bool IsObjectInFields(Vector2 test)
         {
@@ -393,12 +443,10 @@ namespace wizard_game
                 if (deltaX > 0)
                 {
                     direction.X = 1; // nach rechts
-                    sprite.setAnimation("idle_right");
                 }
                 else
                 {
                     direction.X = -1; // nach links
-                    sprite.setAnimation("idle_left");
                 }
                 direction.Y = 0; // Nur entlang der X-Achse bewegen
             }
@@ -407,12 +455,10 @@ namespace wizard_game
                 if (deltaY > 0)
                 {
                     direction.Y = 1; // nach unten
-                    sprite.setAnimation("idle_down");
                 }
                 else
                 {
                     direction.Y = -1; // nach oben
-                    sprite.setAnimation("idle_up");
                 }
                 direction.X = 0; // Nur entlang der Y-Achse bewegen
             }

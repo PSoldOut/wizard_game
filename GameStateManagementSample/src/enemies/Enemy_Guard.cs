@@ -16,7 +16,8 @@ namespace wizard_game
         {
             setSpeed();
             direction = new Vector2(1, 0);
-            sprite.setAnimation("idle_right");
+            currentAnimation = "idle_right";
+            sprite.setAnimation(currentAnimation);
             attackTimer = new Timer(1, this);
         }
 
@@ -37,8 +38,8 @@ namespace wizard_game
             {
                 SetEnemyState(EnemyState.NORMAL);
             }
-            sprite.Update(gameTime);
-
+            UpdateAnimation();
+            sprite.setAnimation(currentAnimation);
         }
 
         //Bewegung des Gegners
@@ -46,7 +47,7 @@ namespace wizard_game
         {
             chooseADirection();
             //direction.Normalize();
-            position += direction * speed;
+            position += direction * currentSpeed;
         }
 
 
@@ -55,8 +56,8 @@ namespace wizard_game
         {
             Random random = new Random();
             int b = 0;
-            string anim = "idle_down";
-            Vector2 tmp = position + direction * speed;
+            currentSpeed = speed;
+            Vector2 tmp = position + direction * currentSpeed;
             while ((DetacteCollison(tmp) || DetacteCollison(tmp + new Vector2(width,0)) || DetacteCollison(tmp + new Vector2(width, height)) || DetacteCollison(tmp+new Vector2(0, height))) && b < 30)
             {
                 b++;
@@ -65,31 +66,30 @@ namespace wizard_game
                 {
                     direction.X = 1;
                     direction.Y = 0;
-                    anim = "idle_right";
+                    
                 }
                 else if (randomNumber % 4 == 1)
                 {
                     direction.X = 0;
                     direction.Y = 1;
-                    anim = "idle_down";
+                   
                 }
                 else if (randomNumber % 4 == 2)
                 {
                     direction.X = 0;
                     direction.Y = -1;
-                    anim = "idle_up";
+                    
                 }
                 else
                 {
                     direction.X = -1;
                     direction.Y = 0;
-                    anim = "idle_left";
+                    
                 }
-                tmp = position + direction * speed;
+                tmp = position + direction * currentSpeed;
                 
             }
-            if (b>= 30) direction = new Vector2(0,0);
-            sprite.setAnimation(anim);
+            if (b>= 30) currentSpeed = 0;
         }
 
         //Wwenn der Abstand klein ist, wird gegen Spieler kämpfen

@@ -16,11 +16,13 @@ namespace wizard_game
     {
         public Texture2D image;
 
-        private List<Room> rooms = new List<Room>();
         private Room activeRoom;
+        private List<Room> rooms = new List<Room>();
         private bool[,] activeRoomFields = new bool[128, 72];
         public int roomIndex = 0;
         public static int level = 1;
+        public int levelCount = 3;
+        public int roomsCount = 3;
         //private List<Bot> bots = new List<Bot>();
         // private List<Bot> botsToDelete = new List<Bot>();
         GameStateManagementGame gameInstance = GameStateManagementGame.Get();
@@ -29,10 +31,11 @@ namespace wizard_game
         public Map() {
         //    Debug.WriteLine("INIT NEW MAP############");
 
-            int roomsCount = 7;
             generateRooms(roomsCount);
             background = AssetManager.GetTexture("bgd1");
          }
+
+
 
 
         public void generateRooms(int roomsCount)
@@ -41,7 +44,7 @@ namespace wizard_game
             Room backRoom;
             Room actualRoom = null;
             Point doorSize=new Point(80,95);
-            for (int i = 0; i < roomsCount; i++)
+            for (int i = 0; i < roomsCount * levelCount; i++)
             {
 
                 if (i == 0) //First room only to next room
@@ -80,7 +83,32 @@ namespace wizard_game
                     actualRoom = nextRoom;
 
                 }
-                else if (i + 1 < roomsCount)
+                else if ((i + 1) % roomsCount == 0)
+                {
+                    Console.WriteLine("lolllllllllllllllllllllllllllllllllllllllllllllllllll");
+                    Room nextRoom = new Room(i + 1, this);
+                    rooms.Add(nextRoom);
+
+                    EndDoor doorToNext = new EndDoor(doorSize);
+                    EndDoor doorBackFromNext = new EndDoor(doorSize);
+                    doorToNext.SetFront(true);
+
+                    doorToNext.SetRoom(actualRoom);
+                    doorBackFromNext.SetRoom(nextRoom);
+
+                    doorToNext.SetLinkedDoor(doorBackFromNext);
+                    doorBackFromNext.SetLinkedDoor(doorToNext);
+
+
+                    actualRoom.SetDoor(doorToNext);
+
+                    nextRoom.SetDoor(doorBackFromNext, doorToNext.GetOppositeSite());
+                    //backRoom = actualRoom;
+                    actualRoom = nextRoom;
+
+
+                }
+                else if (i + 1 < roomsCount * levelCount)
                 {
                     Room nextRoom = new Room(i + 1, this);
                     rooms.Add(nextRoom);
@@ -104,6 +132,7 @@ namespace wizard_game
 
 
                 }
+                
 
 
             }
@@ -116,8 +145,23 @@ namespace wizard_game
         public void nextLevel()
         {
             level++;
+            if (level == 1) background = AssetManager.GetTexture("bgd1");
             if (level == 2) background = AssetManager.GetTexture("castleBG");
+            if (level == 3) background = AssetManager.GetTexture("towerBGKopie");
+            if (level == 4) background = AssetManager.GetTexture("towerBGKopie");
         }
+
+        public void previousLevel()
+        {
+            level--;
+            if (level == 1) background = AssetManager.GetTexture("bgd1");
+            if (level == 2) background = AssetManager.GetTexture("castleBG");
+            if (level == 3) background = AssetManager.GetTexture("towerBGKopie");
+            if (level == 4) background = AssetManager.GetTexture("towerBGKopie");
+        }
+
+
+        
 
         public void ReloadWalls()
         {
@@ -136,7 +180,7 @@ namespace wizard_game
             {
 
                 roomIndex = rooms.IndexOf(linkedDoor.room);
-                activeRoom = rooms[roomIndex];
+                activeRoom = linkedDoor.room;
                 if (!activeRoom.isInitialized) activeRoom.init();
                 //DebugFieldsofRoom();
                 return linkedDoor;

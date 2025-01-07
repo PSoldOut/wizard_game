@@ -22,7 +22,6 @@ namespace wizard_game
         bool isAttacking;
         bool canAttack;
         Timer aStarTimer;
-        public string currentAnimation;
         float attackRange;
 
         public Enemy_prisoner(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Prisoner", room)
@@ -104,53 +103,6 @@ namespace wizard_game
 
 
 
-
-
-
-
-        public void UpdateAnimation()
-        {
-            
-            if (currentSpeed == 0 && path.Count == 0)
-            {
-                if (direction.Y < 0)
-                {
-                    currentAnimation = "idle_up";
-                    if (direction.X < 0) currentAnimation = "idle_left";
-                    else if (direction.X > 0) currentAnimation = "idle_right";
-                }
-                else if (direction.Y > 0)
-                {
-                    currentAnimation = "idle_down";
-                    if (direction.X > 0) currentAnimation = "idle_right";
-                }
-                else
-                {
-                    if (direction.X < 0) currentAnimation = "idle_left";
-                    else currentAnimation = "idle_right";
-                }
-            }
-
-            if (currentSpeed > 0)
-            {
-                if (direction.Y < 0)
-                {
-                    currentAnimation = "up";
-                    if (direction.X < 0) currentAnimation = "left";
-                    else if (direction.X > 0) currentAnimation = "right";
-                }
-                else if (direction.Y > 0)
-                {
-                    currentAnimation = "down";
-                    if (direction.X > 0) currentAnimation = "right";
-                }
-                else
-                {
-                    if (direction.X < 0) currentAnimation = "left";
-                    else currentAnimation = "right";
-                }
-            }
-        }
 
         
 

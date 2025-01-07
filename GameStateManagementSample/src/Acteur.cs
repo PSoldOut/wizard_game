@@ -63,6 +63,7 @@ namespace wizard_game
 
         public virtual void Die()
         {
+            dieSound.Volume = GameStateManagementGame.GetSoundVolume();
             dieSound.Play();
             rotation = (float)(Math.PI/2);
             dieTimer.start();
@@ -125,6 +126,7 @@ namespace wizard_game
 
         public virtual void takeDamage(int damage)
         {
+            damageSound.Volume = GameStateManagementGame.GetSoundVolume();
             damageSound.Play();
             particleSystem.AddBloodEffect(new Vector2(position.X+width/2, position.Y+height/2), 20);
             isTakingDamage = true;
