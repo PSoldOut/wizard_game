@@ -147,6 +147,8 @@ namespace wizard_game
                 hitBox.X = (int)position.X;
                 hitBox.Y = (int)position.Y;
                 openGateSound.Play();
+                spawnDoor.linkedDoor.room.acteurs.Remove(Player.Get());
+                spawnDoor.room.acteurs.Add(Player.Get());
                 return false;
             }
             Color[] data = sprite.GetCurrentColorData();

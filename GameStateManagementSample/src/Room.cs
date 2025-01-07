@@ -34,7 +34,7 @@ namespace wizard_game
         bool enabled = true;
         public Gamestate[,] gamestate = new Gamestate[128, 72];
         int outerWallWidth = 70;
-        int outerWallWidthSide = 100;
+        int outerWallWidthSide = 85;
         
         public Map map;
         public List<Acteur> acteurs;
@@ -97,11 +97,11 @@ namespace wizard_game
         public void init()
         {
             generateItems();
-            generateActeurs();
+            generateEnemies();
             isInitialized = true;
         }
 
-        public void generateActeurs()
+        public void generateEnemies()
         {
             if (GameStateManagementGame.mode != GameMode.TUTORIAL)
             {
@@ -125,7 +125,6 @@ namespace wizard_game
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
             }
-            SpawnActeur(Player.Get());
         }
 
         public void generateItems()

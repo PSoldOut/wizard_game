@@ -49,7 +49,7 @@ namespace wizard_game
 
                     Room startRoom = new Room( i, this);
                     Room nextRoom = new Room(i + 1, this);
-
+                    startRoom.SpawnActeur(Player.Get());
 
                     rooms.Add(startRoom);
                     rooms.Add(nextRoom);
