@@ -37,7 +37,7 @@ public class Particle
 
     public virtual void Draw()
     {
-        GameStateManagementGame._spriteBatch.Draw(Particle.texture, Position, null, Color, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.0f);
+        GameStateManagementGame._spriteBatch.Draw(Particle.texture, Position, null, Color, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.6f);
     }
 }
 
@@ -55,7 +55,7 @@ public class FontParticle : Particle
 
     public override void Draw()
     {
-        GameStateManagementGame._spriteBatch.DrawString(spriteFont, text, Position, Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
+        GameStateManagementGame._spriteBatch.DrawString(spriteFont, text, Position, Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.6f);
     }
 }
 

@@ -38,7 +38,9 @@ namespace wizard_game
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
             stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
+            stepsSound.Volume = GameStateManagementGame.GetSoundVolume();
             inventorySound = AssetManager.GetSoundInstance("inventory_sound_effects/cloth-inventory");
+            inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
 
             LoadSprite(4, 4, 1, true);
             sprite.offset = new Vector2(width/2, height/2);
@@ -55,8 +57,6 @@ namespace wizard_game
             rank = 1;
             exp = 0;
             lp = 0;
-
-            lp = 20;
             speed = 0.24f;
 
         }
@@ -509,11 +509,17 @@ namespace wizard_game
             health = 2;
             coins = 0;
             rotation = 0;
-            lp = 20;
             extraMaxHealth = 0;
             meeleExtraDamage = 0;
             rangedExtraDamage = 0;
             rangedExtraVelocity = 0;
+            inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
+            rank = 1;
+            exp = 0;
+            lp = 0;
+            speed = 0.24f;
+            inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
+            stepsSound.Volume = GameStateManagementGame.GetSoundVolume();
             Tutorial.reset();
         }
 

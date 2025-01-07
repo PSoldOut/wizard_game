@@ -28,6 +28,7 @@ namespace wizard_game
         public Item(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
         {
             effectSound = AssetManager.GetSoundInstance("inventory_sound_effects/leather_inventory");
+            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
             this.area = new Rectangle((int)position.X, (int)position.Y, 50, 50);
             state = State.ON_FLOOR;
         }
