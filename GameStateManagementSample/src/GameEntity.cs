@@ -196,6 +196,7 @@ namespace wizard_game
 
 
         public virtual void TimerCallback(Timer timer){}
+        
     }
 
 }

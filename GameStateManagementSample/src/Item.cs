@@ -24,6 +24,7 @@ namespace wizard_game
         public State state;
         protected SoundEffectInstance effectSound;
         private float blink = 0f;
+        public bool blinkEffect;
 
         public Item(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
         {
@@ -31,6 +32,7 @@ namespace wizard_game
             effectSound.Volume = GameStateManagementGame.GetSoundVolume();
             this.area = new Rectangle((int)position.X, (int)position.Y, 50, 50);
             state = State.ON_FLOOR;
+            blinkEffect = true;
         }
 
 
@@ -42,7 +44,7 @@ namespace wizard_game
             area.X = (int)position.X;
             area.Y = (int)position.Y;
 
-            if (this.state == State.ON_FLOOR)
+            if (this.state == State.ON_FLOOR && blinkEffect)
             {
                 if (blink >= 1000*Math.PI) blink = 0;
                 blink += 0.05f;

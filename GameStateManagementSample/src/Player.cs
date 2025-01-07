@@ -57,6 +57,7 @@ namespace wizard_game
             rank = 1;
             exp = 0;
             lp = 0;
+            if (GameStateManagementGame.mode == GameMode.TUTORIAL) lp = 2;
             speed = 0.24f;
 
         }

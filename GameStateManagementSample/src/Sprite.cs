@@ -46,7 +46,7 @@ public class Sprite
     public Vector2 offset;
     public float layerDepth = 0.5f;
     public Color color;
-
+    public List<int> nextAnimations;
 
     public Sprite(Texture2D texture, int hFrames, int vFrames, float scale, bool isAnimated) : this(texture, hFrames, vFrames, scale, scale, isAnimated) {}
 
@@ -79,6 +79,7 @@ public class Sprite
         this.isPlaying = false;
         offset = new Vector2(0,0);
         color = Color.White;
+        nextAnimations = new List<int>();
     }
 
 
@@ -98,9 +99,28 @@ public class Sprite
                 currentFrame = frameAnimations[animationIndex][animationFrameIndex];
             }
         }
+        else if (!isPlaying && nextAnimations.Count > 0)
+        {
+            setAnimation(nextAnimations[0]);
+            nextAnimations.RemoveAt(0);
+        }
 
     }
 
+
+    public void pushAnimation(string name)
+    {
+        if (name == null) return;
+        int animationIndex = nameToIndexDic.GetValueOrDefault(name, -1);
+        if (animationIndex == -1) return;
+        pushAnimation(animationIndex);
+    }
+
+
+    public void pushAnimation(int animationIndex)
+    {
+        nextAnimations.Add(animationIndex);
+    }
 
 
 

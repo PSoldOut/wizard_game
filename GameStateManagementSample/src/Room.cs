@@ -148,6 +148,7 @@ namespace wizard_game
                 SpawnItem(new Bow(100,100));
                 SpawnItem(new Shoes(150,150));
                 SpawnItem(new Role(200,200));
+                SpawnItem(new Trap(400,200));
             }
             //---------------------------------------
         }
