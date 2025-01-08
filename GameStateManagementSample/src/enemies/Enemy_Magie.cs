@@ -5,7 +5,9 @@ namespace wizard_game
     class Enemy_Magie : Enemy
     {
         private double visibilityTimer = 0;
+        Timer attackTimer;
         private bool isVisible = true;
+         private  bool canAttack = true;
         private const double visibleTime = 1000;
         private const double invisibleTime = 2000;
 
@@ -14,6 +16,7 @@ namespace wizard_game
         {
             setSpeed();
             this.map = map;
+             attackTimer = new Timer(1, this);
         }
 
 
@@ -21,8 +24,9 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            attackTimer.Update(gameTime);
             if(caculateDistance() < 20){
-                Player.Get().takeDamage(1);
+                Attack();
             }
             visibilityTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -50,6 +54,28 @@ namespace wizard_game
             {
                 base.Draw(gameTime);
             }
+        }
+
+        public new void Attack(){
+             if (canAttack)
+            {
+                Player.Get().takeDamage(1);
+            }
+
+            SetEnemyState(EnemyState.ATTACKING);
+            canAttack = false;
+            attackTimer.start();
+
+        }
+
+         public override void TimerCallback(Timer timer)
+        {
+            base.TimerCallback(timer);
+            if (timer == attackTimer)
+            {
+                canAttack = true;
+            }
+
         }
     }
 }

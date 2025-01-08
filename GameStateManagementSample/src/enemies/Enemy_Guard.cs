@@ -21,8 +21,6 @@ namespace wizard_game
             attackTimer = new Timer(1, this);
         }
 
-
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -66,28 +64,28 @@ namespace wizard_game
                 {
                     direction.X = 1;
                     direction.Y = 0;
-                    
+
                 }
                 else if (randomNumber % 4 == 1)
                 {
                     direction.X = 0;
                     direction.Y = 1;
-                   
+
                 }
                 else if (randomNumber % 4 == 2)
                 {
                     direction.X = 0;
                     direction.Y = -1;
-                    
+
                 }
                 else
                 {
                     direction.X = -1;
                     direction.Y = 0;
-                    
+
                 }
                 tmp = position + direction * currentSpeed;
-                
+
             }
             if (b>= 30) currentSpeed = 0;
         }
