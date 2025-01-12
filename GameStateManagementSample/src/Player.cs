@@ -35,7 +35,7 @@ namespace wizard_game
 
         SoundEffectInstance inventorySound;
         SoundEffectInstance stepsSound;
-        private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
+        private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer")
         {
             GameStateManagementGame.testTimer.addListener(this);
             stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
@@ -501,7 +501,6 @@ namespace wizard_game
             if (hitBox.Contains(destination))
             {
                 Console.WriteLine("dest reached");
-                //destinationSet = false;
 
             }
         }

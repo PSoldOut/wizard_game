@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Diagnostics;
-using System.Linq;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 namespace wizard_game
 {
     public class Room
@@ -16,8 +12,6 @@ namespace wizard_game
         private List<Door> doors = new List<Door>();
         private List<Tile> tiles = new List<Tile>();
         private List<Tile> obstacles = new List<Tile>();
-        //private List<Bot> bots = new List<Bot>();
-        // private List<Bot> botsToDelete = new List<Bot>();
         public Texture2D image;
 
         public int index;
@@ -29,7 +23,6 @@ namespace wizard_game
         public bool[,] fields = new bool[128, 72];
         public bool[,] fields_Walls = new bool[128, 72];
         GameStateManagementGame gameInstance = GameStateManagementGame.Get();
-        bool enabled = true;
         public Gamestate[,] gamestate = new Gamestate[128, 72];
         int outerWallWidth = 70;
         int outerWallWidthSide = 85;
@@ -91,7 +84,6 @@ namespace wizard_game
             W_Height = gameInstance.GraphicsDevice.Viewport.Height;
             SideWalls();
 
-            // Debug.WriteLine("build walls");
             this.map = map;
             this.level = level;
             items = new List<Item>();
@@ -108,7 +100,6 @@ namespace wizard_game
         }
         private Wall wallBuilder(Point pos, Point size, String id = null)
         {
-            //Debug.WriteLine(string.Format("Build wall with POS {0} and Size {1}", pos, size));
             Wall wall = new Wall(this, pos, size, "Floors/Brickwall5");
             walls.Add(wall);
             setGamestateElement(new Vector2(pos.X, pos.Y), Gamestate.WALL);
@@ -120,7 +111,6 @@ namespace wizard_game
         public void init()
         {
             generateItems();
-         //   generateEnemies();
             generateEnemiesForRoom(level);
             isInitialized = true;
         }
@@ -348,7 +338,6 @@ namespace wizard_game
                     }
                 } while (checkDoor(x, y));
 
-                //   Debug.WriteLine("start dir " + dir + " x" + x + " y:" + y);
 
 
                 DirEnum dirOld = dir;
@@ -359,10 +348,8 @@ namespace wizard_game
 
                 for (int i = 0; i < iteraions; i++)
                 {
-                    //Debug.WriteLine((x, y));
                     if (changeDir || rnd.Next(i) > iteraions / (dirChangesMax / dirChanges))//|| rnd.Next(i) > iteraions / (dirChangesMax / dirChanges)
                     {
-                        //Debug.WriteLine("change dir");
 
                         if (changeDir)
                         {
@@ -381,7 +368,6 @@ namespace wizard_game
 
                             if (dir != dirOld)
                             {
-                                //Debug.WriteLine("Change dir form " + dirOld + " to " + dir);
                                 dirOld = dir;
                                 if (!changeDir && dirChangesMax > dirChanges)
                                 {
@@ -430,7 +416,6 @@ namespace wizard_game
                     }
                     if (res == Collison.Front)
                     {
-                        //Debug.WriteLine("Collison x " + x + " y " + y + " " + dir);
                         int blocksToSkip = 80;
                         switch (dir)
                         {
@@ -455,7 +440,6 @@ namespace wizard_game
                         }
                         continue;
                     }
-                    //Debug.WriteLine(("create wall att ", new Point(x * 10, y * 10)));
                     wallBuilder(new Point(x * 10, y * 10), new Point(20, 20));
 
                 }
@@ -565,7 +549,6 @@ namespace wizard_game
 
             }
 
-            //Debug.WriteLine("neibor not overlap");
             return Collison.None;
         }
 
@@ -581,7 +564,6 @@ namespace wizard_game
                     if (cordY >= fields.GetLength(1) || cordY < 0) return true;
                     if (fields[cordX, cordY])
                     {
-                        //Debug.WriteLine("inersect at" + position);
                         return true;
                     }
 
@@ -597,7 +579,6 @@ namespace wizard_game
             {
                 foreach (Wall wall in obstacle.walls)
                 {
-                    //TODO größe flexile
                     Rectangle hitBox = new Rectangle(pos, new Point(50, 50));
                     if (wall.hitBox.Intersects(hitBox))
                     {
@@ -656,10 +637,6 @@ namespace wizard_game
             {
                 if (door.DetacteCollison(hitbox))
                 {
-                    // Debug.WriteLine("rl index");
-                    // Debug.WriteLine(door.linkedDoor.room.index);
-                    // Debug.WriteLine("r index");
-                    // Debug.WriteLine(door.room.index);
                     return door.linkedDoor;
 
                 }
@@ -720,9 +697,7 @@ namespace wizard_game
                 for (int j = 0; j < gamestate.GetLength(1); j++)
                 {
                     if (gamestate[i, j] == Gamestate.PLAYER || gamestate[i, j] == Gamestate.GOLD) { }
-                    //   Console.Write(gamestate[i, j] + " ");
                 }
-                //Console.WriteLine();
             }
         }
         public void InitGamestate()

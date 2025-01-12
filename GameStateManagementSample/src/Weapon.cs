@@ -1,13 +1,6 @@
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+
 
 namespace wizard_game
 {
@@ -30,8 +23,8 @@ namespace wizard_game
         public int damage;
 
 
-        public Weapon(Vector2 position, int width, int height, string spriteName, bool hasCollision, WeaponName weaponName) :
-            base(position, width, height, spriteName, hasCollision)
+        public Weapon(Vector2 position, int width, int height, string spriteName, WeaponName weaponName) :
+            base(position, width, height, spriteName)
         {
             this.name = weaponName;
             equipedOffset = new Vector2(0,0);
@@ -43,10 +36,7 @@ namespace wizard_game
         }
 
 
-
         public abstract void Attack(Acteur attacker);
-
-
         public abstract void SetEquippedLeft();
         public abstract void SetEquippedRight();
         public abstract void SetEquippedUp();

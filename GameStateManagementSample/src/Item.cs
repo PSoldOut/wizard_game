@@ -1,11 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using GameStateManagement;
 using Manager;
@@ -26,7 +20,7 @@ namespace wizard_game
         private float blink = 0f;
         public bool blinkEffect;
 
-        public Item(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
+        public Item(Vector2 position, int width, int height, string spriteName) : base(position, width, height, spriteName)
         {
             effectSound = AssetManager.GetSoundInstance("inventory_sound_effects/leather_inventory");
             effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
@@ -10,7 +8,6 @@ namespace wizard_game
 {
     class Enemy_Knight : Enemy
     {
-        int prop = 10;
         Gold gold = null;
         private NodeA solutionNode;
         private NodeA startNode;

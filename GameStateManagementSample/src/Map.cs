@@ -1,14 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
-using System.Diagnostics;
 using GameStateManagement;
 using Manager;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace wizard_game
 {
@@ -23,8 +18,6 @@ namespace wizard_game
         public static int level = 1;
         public int levelCount = 3;
         public int roomsCount = 3;
-        //private List<Bot> bots = new List<Bot>();
-        // private List<Bot> botsToDelete = new List<Bot>();
         GameStateManagementGame gameInstance = GameStateManagementGame.Get();
         public Texture2D background;
 
@@ -72,8 +65,6 @@ namespace wizard_game
 
 
                     startRoom.SetDoor(doorToNext);
-               //     Debug.WriteLine("set room to " + doorToNext.room.index);
-              //      Debug.WriteLine("get dor s " +doorToNext.GetOppositeSite());
 
                     nextRoom.SetDoor(doorBackFromNext, doorToNext.GetOppositeSite());
 
@@ -85,7 +76,6 @@ namespace wizard_game
                 }
                 else if ((i + 1) % roomsCount == 0)
                 {
-                    Console.WriteLine("lolllllllllllllllllllllllllllllllllllllllllllllllllll");
                     Room nextRoom = new Room(i + 1, this, level);
                     rooms.Add(nextRoom);
 
@@ -103,7 +93,6 @@ namespace wizard_game
                     actualRoom.SetDoor(doorToNext);
 
                     nextRoom.SetDoor(doorBackFromNext, doorToNext.GetOppositeSite());
-                    //backRoom = actualRoom;
                     actualRoom = nextRoom;
 
 
@@ -127,7 +116,6 @@ namespace wizard_game
                     actualRoom.SetDoor(doorToNext);
 
                     nextRoom.SetDoor(doorBackFromNext, doorToNext.GetOppositeSite());
-                    //backRoom = actualRoom;
                     actualRoom = nextRoom;
 
 
@@ -182,7 +170,6 @@ namespace wizard_game
                 roomIndex = rooms.IndexOf(linkedDoor.room);
                 activeRoom = linkedDoor.room;
                 if (!activeRoom.isInitialized) activeRoom.init();
-                //DebugFieldsofRoom();
                 return linkedDoor;
             }
             return null;
@@ -192,23 +179,19 @@ namespace wizard_game
         {
             int xCount = activeRoom.fields.GetLength(0);
             int yCount = activeRoom.fields.GetLength(1);
-         //   Console.WriteLine(string.Format(" Rows:{0} Cols: {1}", xCount, yCount));
             for (int col = 0; col < yCount; col++)
             {
                 int trueCount = 0;
                 int falseCount = 0;
-              //  Console.Write(string.Format("Col: {0}\t", col));
                 for (int row = 0; row < xCount; row++)
                 {
                     if (activeRoom.fields[row, col])
                     {
                         trueCount++;
-                    //    Console.Write(string.Format("{0}", 1));
                     }
                     else
                     {
                         falseCount++;
-                      //  Console.Write(string.Format("{0}", 0));
                     }
 
 

@@ -27,7 +27,7 @@ namespace wizard_game
         float animationRotation;
         ParticleSystem particleSystem;
 
-        public Sword(int x, int y) : base(new Vector2(x, y), 20, 20, "sword", false, WeaponName.SWORD)
+        public Sword(int x, int y) : base(new Vector2(x, y), 20, 20, "sword", WeaponName.SWORD)
         {
             hitSound = AssetManager.GetSoundInstance("hits/hit02.mp3");
             hitSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();

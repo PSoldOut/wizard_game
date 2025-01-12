@@ -1,7 +1,7 @@
-using System;
+
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using wizard_game;
+
 
 namespace wizard_game{
 class NodeA
@@ -9,7 +9,6 @@ class NodeA
     private int x;
     private int y;
     private int cost;
-    private int goldCount;
     private NodeA parent;
     private EnemyAction nextAction;
     private float currentValue;
@@ -68,7 +67,6 @@ class NodeA
     // Nachfolger erstellen
     public LinkedList<NodeA> Expand()
     {
-   //     Console.WriteLine("expand");
         LinkedList<NodeA> successors = new LinkedList<NodeA>();
 
         // Prüfen und Hinzufügen der möglichen Nachbarn (Bewegungsrichtungen)
@@ -76,10 +74,6 @@ class NodeA
         AddSuccessor2(successors, x - 1, y, EnemyAction.GO_NORTH);
         AddSuccessor2(successors, x, y + 1, EnemyAction.GO_EAST);
         AddSuccessor2(successors, x, y - 1, EnemyAction.GO_WEST);
-        // foreach(NodeA n in successors)   {
-        //     Console.WriteLine(n.GetX()+"+++++---"+n.GetY());
-        // }
-        // Console.WriteLine("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
         return successors;
     }
 
@@ -89,7 +83,6 @@ class NodeA
 
     private void AddSuccessor(LinkedList<NodeA> successors, int newX, int newY, EnemyAction action)
     {
-    //    Console.WriteLine(view[newX, newY]+ "-x-"+newX+"-y-"+newY);
         if (IsInBounds(newX, newY) && view[newX, newY] != Gamestate.WALL)
         {
             Gamestate[,] copiedView = CopyView(view);
@@ -97,7 +90,6 @@ class NodeA
             copiedView[newX, newY] = Gamestate.ENEMY;
 
             NodeA successor = new NodeA(copiedView, newX, newY, this, action, cost + 1);
-        //  Console.WriteLine(successor.GetX() + "-" + successor.GetY() + "-"+ successor.GetCost());
             successors.AddLast(successor);
         }
     }
@@ -137,7 +129,6 @@ class NodeA
             copiedView[newX, newY] = Gamestate.ENEMY;
 
             NodeA successor = new NodeA(copiedView, newX, newY, this, action, cost + 1);
-        //  Console.WriteLine(successor.GetX() + "-" + successor.GetY() + "-"+ successor.GetCost());
             successors.AddLast(successor);
         }
     }
@@ -168,21 +159,16 @@ class NodeA
         return copiedView;
     }
 
-    public void setGoldCount(int count){
-        goldCount = count;
-    }
 
     public int getGoldCount(){
         int goldCount = 0;
 		for (int i = 0; i < view.GetLength(0); i++) {
 			for(int j = 0; j < view.GetLength(1); j++) {
 				if(view[i, j] == Gamestate.GOLD) {
-                  //  Console.WriteLine("Gold "+i + "-"+j);
 					goldCount++;
 				}
 			}
 		}
-      //  Console.WriteLine("---------------------------------------------");
 		return goldCount;
     }
 

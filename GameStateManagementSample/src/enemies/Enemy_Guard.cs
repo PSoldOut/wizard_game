@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace wizard_game
 {

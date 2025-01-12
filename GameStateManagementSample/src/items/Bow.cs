@@ -1,16 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
-using System.Diagnostics;
 using GameStateManagement;
 using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace wizard_game
 {
@@ -23,7 +15,7 @@ namespace wizard_game
         Timer attackTimer;
         float attackSpeed = 1.0f;
         ParticleSystem particleSystem;
-        public Bow(int x, int y) : base(new Vector2(x, y), 20, 45, "bow", false, WeaponName.BOW)
+        public Bow(int x, int y) : base(new Vector2(x, y), 20, 45, "bow", WeaponName.BOW)
         {
             shootSound = AssetManager.GetSound("battle_sound_effects/Bow").CreateInstance();
             shootSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();

@@ -26,7 +26,7 @@ namespace wizard_game
         Acteur target;
         bool hasTarget = false;
 
-        public Fireball(float x, float y, Acteur attacker) : base(new Vector2(x, y), FIREBALL_WIDTH, FIREBALL_HEIGHT, "fireball", false, attacker)
+        public Fireball(float x, float y, Acteur attacker) : base(new Vector2(x, y), FIREBALL_WIDTH, FIREBALL_HEIGHT, "fireball", attacker)
         {
             shootSound = AssetManager.GetSound("fire").CreateInstance();
             shootSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();

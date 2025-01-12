@@ -23,9 +23,6 @@ namespace wizard_game
         private EnemyType e_type;
         private EnemyState e_state;
         public int expDrop;
-        private bool drawHitBox = true;
-        private int lineWidth = 2;
-        private Color hitboxColor = Color.Purple;
         public Room room;
         public float currentSpeed;
         protected List<Vector2> path = new List<Vector2>();
@@ -34,7 +31,7 @@ namespace wizard_game
         Vector2 patroulliePoint1;
         Vector2 patroulliePoint2;
         public string currentAnimation;
-        public Enemy(int x, int y, Map _map, EnemyType type, string spriteName, Room room) : base(new Vector2(x, y), 27, 45, spriteName, true)
+        public Enemy(int x, int y, Map _map, EnemyType type, string spriteName, Room room) : base(new Vector2(x, y), 27, 45, spriteName)
         {
 
             direction = new Vector2(0, -1);
@@ -205,29 +202,8 @@ namespace wizard_game
             return map.DetacteCollison(hitBox, data, false);
         }
 
-        //wenn Kollision kommt, dann bleibe
-        public void DetacteCollisonX(Vector2 posOld)
-        {
+        
 
-            hitBox.X = (int)position.X;
-            if (DetacteCollison(posOld))
-            {
-                position.X = posOld.X;
-            }
-            hitBox.X = (int)position.X;
-
-        }
-        public void DetacteCollisonY(Vector2 posOld)
-        {
-            hitBox.Y = (int)position.Y;
-            if (DetacteCollison(posOld))
-            {
-                position.Y = posOld.Y;
-            }
-            hitBox.Y = (int)position.Y;
-        }
-
-        //TODO: move()
         public override void Update(GameTime gameTime)
         {
 
@@ -351,7 +327,6 @@ namespace wizard_game
             if ((target - GetMidPos()).Length() < 20) return true;
             direction = target - GetMidPos();
             direction.Normalize();
-            //Console.WriteLine("direction:" + direction);
             position += direction * speed;
             currentSpeed = speed;
             return false;
@@ -387,7 +362,6 @@ namespace wizard_game
 
             while (openList.Count > 0)
             {
-                //    Console.WriteLine(openList.Count);
                 openList.Sort((n1, n2) => (n1.GetCost() + Math.Abs((int)target.X - n1.GetX()) + Math.Abs((int)target.Y - n1.GetY())).CompareTo(
                                           n2.GetCost() + Math.Abs((int)target.X - n2.GetX()) + Math.Abs((int)target.Y - n2.GetY())));
                 NodeA currentNode = openList[0];
@@ -395,7 +369,6 @@ namespace wizard_game
 
                 if (Math.Abs(currentNode.GetX() - (int)target.X) < 2 && Math.Abs(currentNode.GetY() - (int)target.Y) < 2)
                 {
-                    //  Console.WriteLine("found solution!");
                     return currentNode;
                 }
 
@@ -422,8 +395,6 @@ namespace wizard_game
             //    Console.WriteLine("No solution found.");
             return null;
         }
-
-
 
 
 
@@ -470,7 +441,6 @@ namespace wizard_game
                 direction.X = 0; // Nur entlang der Y-Achse bewegen
             }
 
-            //Debug.WriteLine(direction + " direction");
         }
 
     }

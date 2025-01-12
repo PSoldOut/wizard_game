@@ -1,15 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Diagnostics;
 using GameStateManagement;
 using Manager;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using wizard_game;
 
 namespace wizard_game
 {
@@ -19,7 +11,7 @@ namespace wizard_game
 
         public bool used;
 
-        public Trap(int x, int y) : base(new Vector2(x, y), 32, 32, "trap", false)
+        public Trap(int x, int y) : base(new Vector2(x, y), 32, 32, "trap")
         {
             effectSound = AssetManager.GetSoundInstance("hits/hit06.mp3");
             effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();

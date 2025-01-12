@@ -1,16 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
-
 using GameStateManagement;
-using System.Runtime.CompilerServices;
 using Manager;
 
 namespace wizard_game
@@ -33,7 +24,7 @@ namespace wizard_game
         public int meeleExtraDamage = 0;
         public int extraMaxHealth = 0;
 
-        public Acteur(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
+        public Acteur(Vector2 position, int width, int height, string spriteName) : base(position, width, height, spriteName)
         {
             health = DEFAULT_MAX_HEALTH;
             dieSound = ((SoundEffect) AssetManager.Get("monster_sfx_pack/monster-6")).CreateInstance();
@@ -130,7 +121,6 @@ namespace wizard_game
             damageSound.Play();
             particleSystem.AddBloodEffect(new Vector2(position.X+width/2, position.Y+height/2), 20);
             isTakingDamage = true;
-            //particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 20);
             if (isDying) return;
             health-=damage;
             if (health <= 0) Die();

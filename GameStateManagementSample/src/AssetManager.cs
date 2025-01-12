@@ -1,15 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
 using System.Diagnostics;
-using System.IO;
 using GameStateManagement;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace Manager
@@ -32,7 +26,6 @@ namespace Manager
         {
             Create();
             try{
-                //Debug.WriteLine("Get Asset form "+path);
                 return instance.data[path];
             }
             catch (KeyNotFoundException)
@@ -42,7 +35,6 @@ namespace Manager
                 return asset;
             }
             
-            //return new Texture2D();
         }
         public static SoundEffect GetSound(string path)
         {

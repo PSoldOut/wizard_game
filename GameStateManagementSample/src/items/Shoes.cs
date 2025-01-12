@@ -17,7 +17,7 @@ namespace wizard_game
         float speed = 0.07f;
         ParticleSystem particleSystem;
 
-        public Shoes(int x, int y) : base(new Vector2(x, y), 35, 30, "shoes", false)
+        public Shoes(int x, int y) : base(new Vector2(x, y), 35, 30, "shoes")
         {
             effectSound = AssetManager.GetSoundInstance("liveSound");
             effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();

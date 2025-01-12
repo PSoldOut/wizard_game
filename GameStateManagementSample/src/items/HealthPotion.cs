@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Diagnostics;
+
 using GameStateManagement;
 using Manager;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace wizard_game
 {
@@ -16,7 +9,7 @@ namespace wizard_game
     {
         int health = 1;
 
-        public HealthPotion(int x, int y) : base(new Vector2(x, y), 25, 30, "healthPotion", false)
+        public HealthPotion(int x, int y) : base(new Vector2(x, y), 25, 30, "healthPotion")
         {
             effectSound = AssetManager.GetSoundInstance("liveSound");
             effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();

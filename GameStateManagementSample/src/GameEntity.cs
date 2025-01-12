@@ -1,12 +1,5 @@
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Audio;
 using Manager;
@@ -25,7 +18,6 @@ namespace wizard_game
         public int height;
         public Rectangle hitBox;
         protected string spritename;
-        bool hasCollision;
 
         private bool drawHitBox;
         public int lineWidth = 2;
@@ -39,7 +31,7 @@ namespace wizard_game
         SoundEffectInstance openGateSound;
 
 
-        public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
+        public GameEntity(Vector2 position, int width, int height, string spritename = null)
         {
             GameStateManagementGame.soundSettings.AddListener(this);
             if (GameStateManagementGame.mode == GameMode.DEBUG) drawHitBox = true;
@@ -53,7 +45,6 @@ namespace wizard_game
             this.height = height;
             this.spritename = spritename;
 
-            this.hasCollision = hasCollision;
             hitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             image_hitbox = new Texture2D(GameStateManagementGame.Get().GraphicsDevice, 1, 1);
             image_hitbox.SetData(new Color[] { Color.Red });
@@ -181,6 +172,9 @@ namespace wizard_game
             }
             hitBox.X = (int)position.X;
         }
+
+
+        
 
 
 

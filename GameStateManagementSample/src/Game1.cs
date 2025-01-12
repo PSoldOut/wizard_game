@@ -12,7 +12,6 @@
 #region Using Statements
 
 using Microsoft.Xna.Framework;
-using System;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using wizard_game;
@@ -23,12 +22,7 @@ using System.Collections.Generic;
 
 namespace GameStateManagement
 {
-    /// <summary>
-    /// Sample showing how to manage different game states, with transitions
-    /// between menu screens, a loading screen, the game itself, and a pause
-    /// menu. This main game class is extremely simple: all the interesting
-    /// stuff happens in the ScreenManager component.
-    /// </summary>
+    
     public class GameStateManagementGame : Game
     {
 
@@ -65,6 +59,10 @@ namespace GameStateManagement
             public void SetSoundVolume(int v)
             {
                 soundVolume = v;
+                foreach (GameEntity l in listeners)
+                {
+                    l.RefreshVolume(GetVolumeForSound(), GetVolumeForMusic());
+                }
             }
             public int GetSoundVolume()
             {
@@ -73,6 +71,10 @@ namespace GameStateManagement
             public void SetMasterVolume(int v)
             {
                 masterVolume = v;
+                foreach (GameEntity l in listeners)
+                {
+                    l.RefreshVolume(GetVolumeForSound(), GetVolumeForMusic());
+                }
             }
             public int GetMasterVolume()
             {
@@ -112,8 +114,6 @@ namespace GameStateManagement
 
         private static GameStateManagementGame instance;
         public static SpriteBatch _spriteBatch;
-        private Texture2D image;
-        private Rectangle screenRectangle;
 
         // By preloading any assets used by UI rendering, we avoid framerate glitches
         // when they suddenly need to be loaded in the middle of a menu transition.
@@ -201,10 +201,6 @@ namespace GameStateManagement
 
 
 
-
-    /// <summary>
-    /// The main entry point for the application.
-    /// </summary>
     internal static class Program
     {
         private static void Main()

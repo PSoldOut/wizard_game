@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using GameStateManagement;
 using Manager;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 
 namespace wizard_game
 {
@@ -105,49 +99,6 @@ namespace wizard_game
 
 
         
-
-
-
-        // //bewegen sich  nach der Richtung des Players
-        // public new void MoveToPlayer()
-
-        // {
-
-        //     float deltaX = Player.Get().position.X - position.X;
-        //     float deltaY = Player.Get().position.Y - position.Y;
-
-        //     // Bestimme, ob Bewegung entlang X oder Y priorisiert wird
-        //     if (Math.Abs(deltaX) > Math.Abs(deltaY)) // Bewegung entlang der X-Achse
-        //     {
-        //         if (deltaX > 0)
-        //         {
-        //             direction.X = 1; // nach rechts
-        //             sprite.setAnimation("right");
-        //         }
-        //         else
-        //         {
-        //             direction.X = -1; // nach links
-        //             sprite.setAnimation("left");
-        //         }
-        //         //  direction.Y = 0; // Nur entlang der X-Achse bewegen
-        //     }
-        //     else // Bewegung entlang der Y-Achse
-        //     {
-        //         if (deltaY > 0)
-        //         {
-        //             direction.Y = 1; // nach unten
-        //             sprite.setAnimation("down");
-        //         }
-        //         else
-        //         {
-        //             direction.Y = -1; // nach oben
-        //             sprite.setAnimation("up");
-        //         }
-        //         //  direction.X = 0; // Nur entlang der Y-Achse bewegen
-        //     }
-
-        //     //Debug.WriteLine(direction + " direction");
-        // }
 
 
         public override void Attack()

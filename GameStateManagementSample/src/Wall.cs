@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
 using GameStateManagement;
-using Manager;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -21,16 +16,12 @@ namespace wizard_game
         public bool visible = true;
 
 
-
-
-        String idx;
         Room room; //Der raum in dem die wall ist
 
         public Wall(Room _room, Point _pos, Point _size, string spritename = null, string _id = "") :
-        base(_pos.ToVector2(), _size.X, _size.Y, spritename, true)
+        base(_pos.ToVector2(), _size.X, _size.Y, spritename)
         {
 
-            idx = _id;
             room = _room;
             if (spritename == null)
             {
@@ -46,8 +37,6 @@ namespace wizard_game
         }
         private void setFields()
         {
-            //todo kann viel schneller laufen man kennt ja alle kordinaten
-            //Debug.WriteLine("set fields" + width +" h" + height);
             for (int x = 0; x < width / 10; x++)
             {
                 for (int y = 0; y < height / 10; y++)
@@ -56,7 +45,6 @@ namespace wizard_game
                     int cordY = (int)position.Y / 10 + y;
                     room.fields[cordX, cordY] = true;
                     room.gamestate[cordX, cordY] = Gamestate.WALL;
-                    //Debug.WriteLine("set x "+cordX +" Y" +cordY);
                 }
 
             }
@@ -66,7 +54,6 @@ namespace wizard_game
 
         public override void Update(GameTime gameTime)
         {
-            // Debug.WriteLineIf(idx.Contains("Tile"), "id " + idx);
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && !mousePressed)
             {
                 if (hitBox.Contains(Mouse.GetState().Position))
@@ -141,11 +128,9 @@ namespace wizard_game
 
         public override void Draw(GameTime gameTime)
         {
-            //Debug.WriteLine("Call Override");
             if (!visible) return;
             GameStateManagementGame._spriteBatch.Draw(sprite.texture, hitBox, null, Color.White, 0.0f, new Vector2(0,0), SpriteEffects.None, 0.5f);
             if (GameStateManagementGame.mode == GameMode.DEBUG) drawDebugHitBox();
-            //base.Draw(gameTime);
         }
 
 
