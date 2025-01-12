@@ -41,10 +41,11 @@ namespace wizard_game
 
         public GameEntity(Vector2 position, int width, int height, string spritename = null, bool hasCollision = true)
         {
+            GameStateManagementGame.soundSettings.AddListener(this);
             if (GameStateManagementGame.mode == GameMode.DEBUG) drawHitBox = true;
             else drawHitBox = false;
             openGateSound = AssetManager.GetSoundInstance("Horror_Sound_Library/Gate_Open_00");
-            openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
+            openGateSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
 
             //Debug.WriteLine("init new game entity" + position.ToString() + " w" +width + " h "+height+" name"+spritename);
             this.position = position;
@@ -157,7 +158,7 @@ namespace wizard_game
                 position = new Vector2(spawnDoor.GetSpawnPoint().X, spawnDoor.GetSpawnPoint().Y);
                 hitBox.X = (int)position.X;
                 hitBox.Y = (int)position.Y;
-                openGateSound.Volume = GameStateManagementGame.GetSoundVolume();
+                openGateSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
                 openGateSound.Play();
                 spawnDoor.linkedDoor.room.acteurs.Remove(Player.Get());
                 spawnDoor.room.acteurs.Add(Player.Get());
@@ -194,7 +195,7 @@ namespace wizard_game
         }
 
 
-
+        public virtual void RefreshVolume(float volumeForSound, float volumeForMusic){}
         public virtual void TimerCallback(Timer timer){}
         
     }

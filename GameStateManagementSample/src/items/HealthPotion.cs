@@ -19,7 +19,7 @@ namespace wizard_game
         public HealthPotion(int x, int y) : base(new Vector2(x, y), 25, 30, "healthPotion", false)
         {
             effectSound = AssetManager.GetSoundInstance("liveSound");
-            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
+            effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             LoadSprite(1,1,0.1f);
 
         }

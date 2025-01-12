@@ -21,7 +21,7 @@ namespace wizard_game
         public Enemy_Wizard(int x, int y, Map map, EnemyType type, Room room) : base(x, y, map, type, "spriteSheetEnemy_Wizard", room)
         {
              dieSound = AssetManager.GetSoundInstance("monster_sfx_pack/monster-6");     //sterbesound
-            dieSound.Volume = GameStateManagementGame.GetSoundVolume();
+            dieSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             setSpeed();
             this.map = map;
             direction = new Vector2(1, 0);

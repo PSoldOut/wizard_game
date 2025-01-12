@@ -92,7 +92,7 @@ namespace GameStateManagement
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
             MediaPlayer.Play(level1Song);
-            MediaPlayer.Volume = GameStateManagementGame.GetMusicVolume();
+            MediaPlayer.Volume = GameStateManagementGame.soundSettings.GetVolumeForMusic();
             ScreenManager.Game.ResetElapsedTime();
         }
 

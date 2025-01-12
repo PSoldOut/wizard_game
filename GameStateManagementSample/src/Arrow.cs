@@ -26,6 +26,13 @@ namespace wizard_game
         }
 
 
+        public override void RefreshVolume(float volumeForSound, float volumeForMusic)
+        {
+            base.RefreshVolume(volumeForSound, volumeForMusic);
+            hitSound.Volume = volumeForSound;
+        }
+
+
 
         public override void Update(GameTime gameTime)
         {

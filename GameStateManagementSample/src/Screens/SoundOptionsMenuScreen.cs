@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GameStateManagement
 {
+    
     /// <summary>
     /// The options screen is brought up over the top of the main menu
     /// screen, and gives the user a chance to configure the game
@@ -65,9 +66,9 @@ namespace GameStateManagement
         /// </summary>
         private void SetMenuEntryText()
         {
-            soundVolumeEntry.Text = "Sound  Volume:  " + GameStateManagementGame.soundVolume;
-            musicVolumeEntry.Text = "Music  Volume:  " + GameStateManagementGame.musicVolume;
-            masterVolumeEntry.Text = "Master  Volume:  " + GameStateManagementGame.masterVolume;
+            soundVolumeEntry.Text = "Sound  Volume:  " + GameStateManagementGame.soundSettings.GetSoundVolume();
+            musicVolumeEntry.Text = "Music  Volume:  " + GameStateManagementGame.soundSettings.GetMusicVolume();
+            masterVolumeEntry.Text = "Master  Volume:  " + GameStateManagementGame.soundSettings.GetMasterVolume();
         }
 
         #endregion Initialization
@@ -86,23 +87,23 @@ namespace GameStateManagement
 
         private void musicVolumeMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            GameStateManagementGame.musicVolume = (GameStateManagementGame.musicVolume + 1) % 4;
-            if (GameStateManagementGame.musicVolume == 0 || GameStateManagementGame.masterVolume == 0) MediaPlayer.Volume = 0;
-            else MediaPlayer.Volume = GameStateManagementGame.musicVolume/8.0f + GameStateManagementGame.masterVolume/8.0f;
+            GameStateManagementGame.soundSettings.SetMusicVolume((GameStateManagementGame.soundSettings.GetMusicVolume()+1)  % 4);
+            if (GameStateManagementGame.soundSettings.GetMusicVolume() == 0 || GameStateManagementGame.soundSettings.GetMasterVolume() == 0) MediaPlayer.Volume = 0;
+            else MediaPlayer.Volume = GameStateManagementGame.soundSettings.GetMusicVolume()/8.0f + GameStateManagementGame.soundSettings.GetMasterVolume()/8.0f;
             SetMenuEntryText();
         }
 
         private void soundVolumeMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            GameStateManagementGame.soundVolume = (GameStateManagementGame.soundVolume + 1) % 4;
+            GameStateManagementGame.soundSettings.SetSoundVolume((GameStateManagementGame.soundSettings.GetSoundVolume() + 1) % 4);
             SetMenuEntryText();
         }
 
         private void masterVolumeMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            GameStateManagementGame.masterVolume = (GameStateManagementGame.masterVolume+1) % 4;
-            if (GameStateManagementGame.musicVolume == 0 || GameStateManagementGame.masterVolume == 0) MediaPlayer.Volume = 0;
-            else MediaPlayer.Volume = GameStateManagementGame.musicVolume/8.0f + GameStateManagementGame.masterVolume/8.0f;
+            GameStateManagementGame.soundSettings.SetMasterVolume((GameStateManagementGame.soundSettings.GetMasterVolume()+1) % 4);
+            if (GameStateManagementGame.soundSettings.GetMusicVolume() == 0 || GameStateManagementGame.soundSettings.GetMasterVolume() == 0) MediaPlayer.Volume = 0;
+            else MediaPlayer.Volume = GameStateManagementGame.soundSettings.GetMusicVolume()/8.0f + GameStateManagementGame.soundSettings.GetMasterVolume()/8.0f;
             SetMenuEntryText();
         }
 

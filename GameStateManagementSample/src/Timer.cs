@@ -16,21 +16,33 @@ namespace wizard_game
         double secondsRemaining;
         double seconds;
         public bool isRunning;
-        GameEntity master;
+        public List<GameEntity> listeners;
+
+        
 
         public Timer(double seconds)
         {
+            listeners = new List<GameEntity>();
             this.seconds = seconds;
             this.secondsRemaining = seconds;
             isRunning = false;
+            
         }
 
-        public Timer(double seconds, GameEntity master)
+        public Timer(double seconds, GameEntity listener)
         {
+            listeners = new List<GameEntity>();
+            listeners.Add(listener);
             this.seconds = seconds;
             this.secondsRemaining = seconds;
             isRunning = false;
-            this.master = master;
+            
+        }
+
+
+        public void addListener(GameEntity l)
+        {
+            listeners.Add(l);
         }
 
         public void start()
@@ -47,7 +59,11 @@ namespace wizard_game
         {
             isRunning = false;
             secondsRemaining = seconds;
-            if (master != null) master.TimerCallback(this);
+            foreach(GameEntity g in listeners)
+            {
+                if (g!= null) g.TimerCallback(this);
+            }
+            
         }
 
         public double getSecondsRemaining()

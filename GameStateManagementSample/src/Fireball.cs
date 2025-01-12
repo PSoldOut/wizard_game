@@ -29,7 +29,7 @@ namespace wizard_game
         public Fireball(float x, float y, Acteur attacker) : base(new Vector2(x, y), FIREBALL_WIDTH, FIREBALL_HEIGHT, "fireball", false, attacker)
         {
             shootSound = AssetManager.GetSound("fire").CreateInstance();
-            shootSound.Volume = GameStateManagementGame.GetSoundVolume();
+            shootSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             sprite = new Sprite(GameStateManagementGame.Get().Content.Load<Texture2D>(spritename), 1, 1, 0.03f);
             sprite.offset = new Vector2(FIREBALL_WIDTH/2.0f, FIREBALL_HEIGHT/2.0f);
             sprite.origin = new Vector2(60/0.03f/2.0f, 60/0.03f/2.0f);          //die 60 ist ein bischen gefuscht
@@ -39,6 +39,14 @@ namespace wizard_game
             speed = 250f;
             acceleration = new Vector2(0,0);
             velocity = new Vector2(0,0);
+        }
+
+
+        public override void RefreshVolume(float volumeForSound, float volumeForMusic)
+        {
+            base.RefreshVolume(volumeForSound, volumeForMusic);
+            hitSound.Volume = volumeForSound;
+            shootSound.Volume = volumeForSound;
         }
 
         public override void Update(GameTime gameTime)

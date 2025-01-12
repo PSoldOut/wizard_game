@@ -37,9 +37,9 @@ namespace wizard_game
         {
             health = DEFAULT_MAX_HEALTH;
             dieSound = ((SoundEffect) AssetManager.Get("monster_sfx_pack/monster-6")).CreateInstance();
-            dieSound.Volume = GameStateManagementGame.GetSoundVolume();
+            dieSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             damageSound = ((SoundEffect) AssetManager.Get("monster_sfx_pack/monster-5")).CreateInstance();
-            damageSound.Volume = GameStateManagementGame.GetSoundVolume();
+            damageSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             dieTimer = new Timer(1, this);
             isDying = false;
             isTakingDamage = false;
@@ -63,7 +63,7 @@ namespace wizard_game
 
         public virtual void Die()
         {
-            dieSound.Volume = GameStateManagementGame.GetSoundVolume();
+            dieSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             dieSound.Play();
             rotation = (float)(Math.PI/2);
             dieTimer.start();
@@ -126,7 +126,7 @@ namespace wizard_game
 
         public virtual void takeDamage(int damage)
         {
-            damageSound.Volume = GameStateManagementGame.GetSoundVolume();
+            damageSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             damageSound.Play();
             particleSystem.AddBloodEffect(new Vector2(position.X+width/2, position.Y+height/2), 20);
             isTakingDamage = true;

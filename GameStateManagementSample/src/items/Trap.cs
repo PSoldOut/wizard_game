@@ -22,7 +22,7 @@ namespace wizard_game
         public Trap(int x, int y) : base(new Vector2(x, y), 32, 32, "trap", false)
         {
             effectSound = AssetManager.GetSoundInstance("hits/hit06.mp3");
-            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
+            effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             LoadSprite(4, 2, 0.4f, true);
             sprite.animationSpeed = 70;
             width = sprite.frameWidth;
@@ -49,12 +49,12 @@ namespace wizard_game
         {
             if (used) return;
             used = true;
-            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
+            effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             effectSound.Play();
             sprite.setAnimation("snap");
             sprite.pushAnimation("used");
             
-            Player.Get().health--;
+            Player.Get().takeDamage(1);
             //GameplayScreen.map.GetActiveRoom().items.Remove(this);
         }
 

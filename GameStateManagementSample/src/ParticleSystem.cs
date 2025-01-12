@@ -23,7 +23,7 @@ public class Particle
     public float TimeToLive; // Lebenszeit in Sekunden
     public Color Color;
     public static Texture2D texture;
-
+    public float layerDepth = 0.5f;
     public Particle(Vector2 position, Vector2 velocity, Vector2 acceleration, float timeToLive, Color color)
     {
         this.Position = position;
@@ -37,7 +37,7 @@ public class Particle
 
     public virtual void Draw()
     {
-        GameStateManagementGame._spriteBatch.Draw(Particle.texture, Position, null, Color, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.6f);
+        GameStateManagementGame._spriteBatch.Draw(Particle.texture, Position, null, Color, 0f, Vector2.Zero, 2f, SpriteEffects.None, layerDepth);
     }
 }
 
@@ -55,12 +55,13 @@ public class FontParticle : Particle
 
     public override void Draw()
     {
-        GameStateManagementGame._spriteBatch.DrawString(spriteFont, text, Position, Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.6f);
+        GameStateManagementGame._spriteBatch.DrawString(spriteFont, text, Position, Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, layerDepth);
     }
 }
 
 public class ParticleSystem
 {
+    
     private List<Particle> particles = new List<Particle>();
     private Random random = GameplayScreen.rand;
     public int maxParticle = 100;
@@ -86,11 +87,14 @@ public class ParticleSystem
             Vector2 acceleration = new Vector2(0, 5);
 
             float timeToLive = (float)(random.NextDouble()*0.125 + 0.125); // Lebenszeit: 0.5 - 1 Sekunde
-            particles.Add(new Particle(position, velocity, acceleration, timeToLive, Color.Red));
+            Particle p = new Particle(position, velocity, acceleration, timeToLive, Color.Red);
+            p.layerDepth = 0.4f;
+            particles.Add(p);
         }
+        
     }
 
-    public void AddMagicEffect(Vector2 position, int amount, Color clr)
+    public void AddMagicEffect(Vector2 position, int amount, Color clr, float layerDepth)
     {
         for (int i = 0; i < amount; i++)
         {
@@ -102,7 +106,9 @@ public class ParticleSystem
 
             float timeToLive = (float)(random.NextDouble()*0.3 + 0.3);
             Vector2 nPosition = new Vector2((float)(position.X + random.NextDouble() * 40 -20), (float)(position.Y + random.NextDouble() * 10 -5));
-            particles.Add(new Particle(nPosition, velocity, acceleration, timeToLive, clr));
+            Particle p = new Particle(nPosition, velocity, acceleration, timeToLive, clr);
+            p.layerDepth = layerDepth;
+            particles.Add(p);
         }
     }
 
@@ -117,7 +123,9 @@ public class ParticleSystem
 
             float timeToLive = (float)(random.NextDouble()*0.3 + 0.3);
             Vector2 nPosition = new Vector2((float)(position.X + random.NextDouble() * 40 -20), (float)(position.Y + random.NextDouble() * 10 -5));
-            particles.Add(new FontParticle(nPosition, velocity, acceleration, timeToLive, clr, text));
+            Particle p = new FontParticle(nPosition, velocity, acceleration, timeToLive, clr, text);
+            p.layerDepth = 0.4f;
+            particles.Add(p);
     }
 
     public void Update(GameTime gameTime)

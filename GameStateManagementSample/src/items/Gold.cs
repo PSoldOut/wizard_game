@@ -20,7 +20,7 @@ namespace wizard_game
         public Gold(int x, int y) : base(new Vector2(x, y), 27, 27, "gold", false)
         {
             effectSound = AssetManager.GetSoundInstance("inventory_sound_effects/ring_inventory");
-            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
+            effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             LoadSprite(1, 1, 0.4f);
             width = sprite.frameWidth;
             height = sprite.frameHeight;

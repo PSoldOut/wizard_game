@@ -70,7 +70,7 @@ namespace wizard_game
             }
             if (this.state == State.ON_FLOOR)
             {
-                particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 1, Color.AliceBlue);
+                particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 1, Color.AliceBlue, 0.6f);
                 particleSystem.Update(gameTime);
             }
         }

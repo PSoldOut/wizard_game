@@ -20,7 +20,7 @@ namespace wizard_game
         public Shoes(int x, int y) : base(new Vector2(x, y), 35, 30, "shoes", false)
         {
             effectSound = AssetManager.GetSoundInstance("liveSound");
-            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
+            effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             particleSystem = new ParticleSystem(40);
             LoadSprite(1,1,0.05f);
         }
@@ -29,7 +29,7 @@ namespace wizard_game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 1, Color.AliceBlue);
+            particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 1, Color.AliceBlue, 0.6f);
             particleSystem.Update(gameTime);
         }
 

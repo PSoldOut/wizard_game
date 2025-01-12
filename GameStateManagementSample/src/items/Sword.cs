@@ -30,10 +30,10 @@ namespace wizard_game
         public Sword(int x, int y) : base(new Vector2(x, y), 20, 20, "sword", false, WeaponName.SWORD)
         {
             hitSound = AssetManager.GetSoundInstance("hits/hit02.mp3");
-            hitSound.Volume = GameStateManagementGame.GetSoundVolume();
+            hitSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
 
             swishSound = AssetManager.GetSoundInstance("battle_sound_effects/swish_2");
-            swishSound.Volume = GameStateManagementGame.GetSoundVolume();
+            swishSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             LoadSprite(1,1,0.16f);
             equipedOffsetRight = new Vector2(26,23);
             equipedOffsetLeft = new Vector2(-2, 23);
@@ -80,7 +80,7 @@ namespace wizard_game
             }
             if (this.state == State.ON_FLOOR)
             {
-                particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 1, Color.AliceBlue);
+                particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 1, Color.AliceBlue, 0.6f);
                 particleSystem.Update(gameTime);
             }
         }

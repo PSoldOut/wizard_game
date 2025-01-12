@@ -29,10 +29,17 @@ namespace wizard_game
         public Item(Vector2 position, int width, int height, string spriteName, bool hasCollision) : base(position, width, height, spriteName, hasCollision)
         {
             effectSound = AssetManager.GetSoundInstance("inventory_sound_effects/leather_inventory");
-            effectSound.Volume = GameStateManagementGame.GetSoundVolume();
+            effectSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             this.area = new Rectangle((int)position.X, (int)position.Y, 50, 50);
             state = State.ON_FLOOR;
             blinkEffect = true;
+        }
+
+
+        public override void RefreshVolume(float volumeForSound, float volumeForMusic)
+        {
+            base.RefreshVolume(volumeForSound, volumeForMusic);
+            effectSound.Volume = volumeForSound;
         }
 
 

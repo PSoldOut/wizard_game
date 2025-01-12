@@ -31,16 +31,17 @@ namespace wizard_game
         public int exp;
         public int lp;  //lernpunkte
 
-
+        
 
         SoundEffectInstance inventorySound;
         SoundEffectInstance stepsSound;
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer", true)
         {
+            GameStateManagementGame.testTimer.addListener(this);
             stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
-            stepsSound.Volume = GameStateManagementGame.GetSoundVolume();
+            stepsSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             inventorySound = AssetManager.GetSoundInstance("inventory_sound_effects/cloth-inventory");
-            inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
+            inventorySound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
 
             LoadSprite(4, 4, 1, true);
             sprite.offset = new Vector2(width/2, height/2);
@@ -52,13 +53,16 @@ namespace wizard_game
             health = PLAYER_MAX_HEALTH;
             map = _map;
             currentSpeed = 0;
-            stepsTimer = new Timer(stepsSpeed, this);
+            stepsTimer = new Timer(stepsSpeed);
+            stepsTimer.addListener(this);
 
             rank = 1;
             exp = 0;
             lp = 0;
             if (GameStateManagementGame.mode == GameMode.TUTORIAL) lp = 2;
+            
             speed = 0.24f;
+            if (GameStateManagementGame.mode == GameMode.DEBUG) speed = 0.4f;
 
         }
 
@@ -476,7 +480,7 @@ namespace wizard_game
         {
             foreach (Item item in GameplayScreen.map.GetActiveRoom().items)
             {
-                if (item.state == Item.State.ON_FLOOR && item.area.Intersects(hitBox))
+                if (item.state == Item.State.ON_FLOOR && item.hitBox.Intersects(hitBox))
                 {
                     item.Effect();
                     if(item is Gold gold){
@@ -507,20 +511,21 @@ namespace wizard_game
         {
             weapons = new List<Weapon>();
             position = new Vector2(400,400);
-            health = 2;
+            health = PLAYER_MAX_HEALTH;
             coins = 0;
             rotation = 0;
             extraMaxHealth = 0;
             meeleExtraDamage = 0;
             rangedExtraDamage = 0;
             rangedExtraVelocity = 0;
-            inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
+            inventorySound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             rank = 1;
             exp = 0;
             lp = 0;
             speed = 0.24f;
-            inventorySound.Volume = GameStateManagementGame.GetSoundVolume();
-            stepsSound.Volume = GameStateManagementGame.GetSoundVolume();
+            if (GameStateManagementGame.mode == GameMode.DEBUG) speed = 0.4f;
+            inventorySound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
+            stepsSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
             Tutorial.reset();
         }
 
@@ -530,6 +535,16 @@ namespace wizard_game
             base.Die();
             sprite.setAnimation("idle_right");
             equippedWeapon = null;
+        }
+
+
+        public override void RefreshVolume(float volumeForSound, float volumeForMusic)
+        {
+            base.RefreshVolume(volumeForSound, volumeForMusic);
+            dieSound.Volume = volumeForSound;
+            inventorySound.Volume = volumeForSound;
+            damageSound.Volume = volumeForSound;
+            stepsSound.Volume = volumeForSound;
         }
 
 
@@ -548,6 +563,7 @@ namespace wizard_game
                 screenManager.AddScreen(new MainMenuScreen(), null);
                 reset();
             }
+            if (timer == GameStateManagementGame.testTimer) Die();
         }
 
     }

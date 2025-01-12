@@ -293,6 +293,13 @@ namespace wizard_game
 
         }
 
+        public override void RefreshVolume(float volumeForSound, float volumeForMusic)
+        {
+            base.RefreshVolume(volumeForSound, volumeForMusic);
+            dieSound.Volume = volumeForSound;
+            damageSound.Volume = volumeForSound;
+        }
+
 
         //target is in pixel
         public List<Vector2> calculatePathToTarget(Vector2 target)

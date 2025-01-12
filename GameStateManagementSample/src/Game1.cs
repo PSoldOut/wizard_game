@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using wizard_game;
 using Microsoft.Xna.Framework.Media;
+using System.Collections.Generic;
 
 #endregion Using Statements
 
@@ -31,11 +32,73 @@ namespace GameStateManagement
     public class GameStateManagementGame : Game
     {
 
+        public class SoundSettings
+        {
+            private int musicVolume;
+            private int soundVolume;
+            private int masterVolume;
+            private List<GameEntity> listeners;
 
-        public static int musicVolume = 0;
-        public static int soundVolume = 1;
-        public static int masterVolume = 1;
+            public SoundSettings()
+            {
+                listeners = new List<GameEntity>();
+                musicVolume = 0;
+                soundVolume = 1;
+                masterVolume = 1;
+            }
+            public void AddListener(GameEntity listener)
+            {
+                listeners.Add(listener);
+            }
+            public void SetMusicVolume(int v)
+            {
+                musicVolume = v;
+                foreach (GameEntity l in listeners)
+                {
+                    l.RefreshVolume(GetVolumeForSound(), GetVolumeForMusic());
+                }
+            }
+            public int GetMusicVolume()
+            {
+                return musicVolume;
+            }
+            public void SetSoundVolume(int v)
+            {
+                soundVolume = v;
+            }
+            public int GetSoundVolume()
+            {
+                return soundVolume;
+            }
+            public void SetMasterVolume(int v)
+            {
+                masterVolume = v;
+            }
+            public int GetMasterVolume()
+            {
+                return masterVolume;
+            }
+
+            public float GetVolumeForSound()
+            {
+                if (soundVolume == 0 || masterVolume == 0) return 0.0f;
+                else return soundVolume/8.0f + masterVolume/8.0f;
+            }
+
+            public float GetVolumeForMusic()
+            {
+                if (musicVolume == 0 || masterVolume == 0) return 0.0f;
+                else return musicVolume/8.0f + masterVolume/8.0f;
+            }
+
+
+        }
+
+        public static SoundSettings soundSettings = new SoundSettings();
+        
         public static GameMode mode = GameMode.DEBUG;
+
+        public static Timer testTimer = new Timer(3);
 
         Song mainMenuSong;
         public struct InputState
@@ -93,8 +156,8 @@ namespace GameStateManagement
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
             base.Initialize();
-            if (musicVolume == 0 || masterVolume == 0) MediaPlayer.Volume = 0;
-            else MediaPlayer.Volume = musicVolume/8.0f + masterVolume/8.0f;
+            if (soundSettings.GetMusicVolume() == 0 || soundSettings.GetMasterVolume() == 0) MediaPlayer.Volume = 0;
+            else MediaPlayer.Volume = soundSettings.GetMusicVolume()/8.0f + soundSettings.GetMasterVolume()/8.0f;
             MediaPlayer.Play(mainMenuSong);
         }
 
@@ -128,22 +191,6 @@ namespace GameStateManagement
 
         }
 
-
-
-        
-
-
-        public static float GetSoundVolume()
-        {
-            if (soundVolume == 0 || masterVolume == 0) return 0.0f;
-            else return soundVolume/8.0f + masterVolume/8.0f;
-        }
-
-        public static float GetMusicVolume()
-        {
-            if (musicVolume == 0 || masterVolume == 0) return 0.0f;
-            else return musicVolume/8.0f + masterVolume/8.0f;
-        }
 
 
 
