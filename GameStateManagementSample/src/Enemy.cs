@@ -248,6 +248,9 @@ namespace wizard_game
                 case EnemyType.KNIGHT:
                     speed = 3f;
                     break;
+                case EnemyType.MAGIE:
+                    speed = 1.5f;
+                    break;
                 default:
                     speed = 0.7f;
                     break;

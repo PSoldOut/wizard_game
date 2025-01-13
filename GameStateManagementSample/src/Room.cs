@@ -106,7 +106,7 @@ namespace wizard_game
         public void init()
         {
             generateItems();
-            generateEnemiesForRoom(Map.level);
+            if (GameStateManagementGame.mode != GameMode.TUTORIAL) generateEnemiesForRoom(Map.level);
             isInitialized = true;
         }
 
@@ -144,13 +144,13 @@ namespace wizard_game
                 case EnemyType.KNIGHT:
                     return new Enemy_Knight(0, 0, map, EnemyType.KNIGHT, this);
                 case EnemyType.DOUBLER:
-                    return new Enemy_Doubler(0, 0, map, EnemyType.DOUBLER, this, 4);
+                    return new Enemy_Doubler(0, 0, map, EnemyType.DOUBLER, this, 2);
                 case EnemyType.PRISONER:
                     return new Enemy_prisoner(0, 0, map, EnemyType.PRISONER, this);
                 case EnemyType.MAGIE:
                     return new Enemy_Magie(0, 0, map, EnemyType.MAGIE, this);
                 case EnemyType.WIZARD:
-                    return new Enemy_Wizard(0, 0, map, EnemyType.WIZARD, this);
+                    return new Enemy_Wizard(0, 0, map, EnemyType.WIZARD, this, 2);
                 default:
                     throw new ArgumentException("Unbekannter EnemyType");
             }
@@ -170,7 +170,7 @@ namespace wizard_game
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
 
-                current = new Enemy_Doubler(200, 200, map, EnemyType.DOUBLER, this, 4);
+                current = new Enemy_Doubler(200, 200, map, EnemyType.DOUBLER, this, 2);
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
 
@@ -182,7 +182,7 @@ namespace wizard_game
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
 
-                current = new Enemy_Wizard(150, 200, map, EnemyType.MAGIE, this);
+                current = new Enemy_Wizard(150, 200, map, EnemyType.MAGIE, this, 2);
                 current.position = current.GenerateRandomPosition();
                 acteurs.Add(current);
             }

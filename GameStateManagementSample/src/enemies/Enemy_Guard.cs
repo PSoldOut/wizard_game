@@ -17,6 +17,7 @@ namespace wizard_game
             currentAnimation = "idle_right";
             sprite.setAnimation(currentAnimation);
             attackTimer = new Timer(1, this);
+            expDrop = 250;
         }
 
         public override void Update(GameTime gameTime)

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using wizard_game;
 using GameStateManagement;
+using System;
 
 public class CheatConsole
 {
@@ -92,12 +93,18 @@ public class CheatConsole
             Player.Get().coins = 999;
             return;
         }
-        int v = int.Parse(input);
-        GameplayScreen.map.activeRoom.acteurs.Remove(Player.Get());
-        GameplayScreen.map.activeRoom = GameplayScreen.map.rooms[v];
-        GameplayScreen.map.activeRoom.acteurs.Add(Player.Get());
-        Map.level = GameplayScreen.map.activeRoom.level;
-        GameplayScreen.map.SameLevel();
+        try
+        {
+            int v = int.Parse(input);
+            GameplayScreen.map.activeRoom.acteurs.Remove(Player.Get());
+            GameplayScreen.map.activeRoom = GameplayScreen.map.rooms[v];
+            GameplayScreen.map.activeRoom.SpawnActeur(Player.Get());
+            Map.level = GameplayScreen.map.activeRoom.level;
+            GameplayScreen.map.SameLevel();
+        } catch(Exception e)
+        {
+
+        }
     }
 
     private void EnableGodMode()

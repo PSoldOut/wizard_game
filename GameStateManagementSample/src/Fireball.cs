@@ -59,7 +59,7 @@ namespace wizard_game
 
             for (int i = 0; i < GameplayScreen.map.GetActiveRoom().acteurs.Count; i++)
             {
-                if (hitBox.Intersects(GameplayScreen.map.GetActiveRoom().acteurs[i].hitBox) && GameplayScreen.map.GetActiveRoom().acteurs[i] != attacker)
+                if (hitBox.Intersects(GameplayScreen.map.GetActiveRoom().acteurs[i].hitBox) && GameplayScreen.map.GetActiveRoom().acteurs[i] != attacker && !(GameplayScreen.map.GetActiveRoom().acteurs[i] is Enemy_Wizard))
                 {
                     hitSound.Stop();
                     hitSound.Play();

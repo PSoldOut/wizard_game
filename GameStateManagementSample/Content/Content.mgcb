@@ -309,6 +309,12 @@
 /processorParam:TextureFormat=Color
 /build:heart.png
 
+#begin heroic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:heroic.mp3
+
 #begin hits/mp3/hit01.mp3.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor

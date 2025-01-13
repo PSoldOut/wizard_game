@@ -69,6 +69,7 @@ public class ParticleSystem
 
     public void AddBloodEffect(Vector2 position, int amount)
     {
+        random = GameplayScreen.rand;
         for (int i = 0; i < amount; i++)
         {
             if (particles.Count >= maxParticle) break;
@@ -90,6 +91,7 @@ public class ParticleSystem
 
     public void AddMagicEffect(Vector2 position, int amount, Color clr, float layerDepth)
     {
+        random = GameplayScreen.rand;
         for (int i = 0; i < amount; i++)
         {
             if (particles.Count >= maxParticle) break;
@@ -109,6 +111,8 @@ public class ParticleSystem
 
     public void AddExpEffect(Vector2 position, Color clr, String text)
     {
+        random = GameplayScreen.rand;
+        if (particles == null) return;
         if (particles.Count >= maxParticle) return;
             Vector2 velocity = new Vector2(
                 (float)(random.NextDouble() * 2 - 1), -5 + ((float)(random.NextDouble() * 2 - 1))) * 20f; // Geschwindigkeit skalieren

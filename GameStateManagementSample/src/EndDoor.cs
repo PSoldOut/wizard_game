@@ -10,7 +10,7 @@ namespace wizard_game
         public EndDoor(Point size, Color? color = null) : base(size, color) 
         {
             clr = new Color(14,24,150);
-            goldNeeded = 10;
+            goldNeeded = 20;
             text = goldNeeded + " gold";
         }
 

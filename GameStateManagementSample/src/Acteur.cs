@@ -13,7 +13,7 @@ namespace wizard_game
         public int health;
         protected SoundEffectInstance dieSound;
         protected SoundEffectInstance damageSound;
-        protected Timer dieTimer;
+        public Timer dieTimer;
         protected bool isDying;
         protected bool isTakingDamage;
         protected ParticleSystem particleSystem;

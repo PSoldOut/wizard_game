@@ -24,7 +24,7 @@ namespace wizard_game
         {
             particleSystem = new ParticleSystem(40);
             this.doubling = doubling;
-            health = doubling;
+            health = doubling * 3;
             particleSystem.AddMagicEffect(new Vector2(position.X+width/2, position.Y+height/2), 20, Color.Coral, 0.4f);
             this.map = map;
             direction = new Vector2(1, 0);

@@ -22,6 +22,7 @@ namespace wizard_game
             setSpeed();
             this.map = map;
             direction = new Vector2(0, 0);
+            expDrop = 50;
         }
 
 

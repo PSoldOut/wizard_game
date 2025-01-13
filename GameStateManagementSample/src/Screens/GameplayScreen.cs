@@ -58,16 +58,17 @@ namespace GameStateManagement
 
         public GameplayScreen()
         {
+            Player.Get().reset();
             cheat = new CheatConsole(AssetManager.GetFont("Arial"));
             rand = new Random();
             map = new Map();
+            Map.level = 1;
             Room room = map.GetActiveRoom();
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             ui = UI.Get();
 
-        
-
+            room.SpawnActeur(Player.Get());
             //map.Initialize();
             
 
@@ -83,7 +84,7 @@ namespace GameStateManagement
             {
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
             }
-            level1Song = AssetManager.GetSong("level1Music");
+            level1Song = AssetManager.GetSong("mainMenuMusic");
             gameFont = AssetManager.GetFont("gamefont");
             goldTexture = AssetManager.GetTexture("gold");
             spriteFont = AssetManager.GetFont("Arial");
@@ -92,7 +93,8 @@ namespace GameStateManagement
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
-            MediaPlayer.Play(level1Song);
+            //MediaPlayer.Play(level1Song);
+            MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = GameStateManagementGame.soundSettings.GetVolumeForMusic();
             ScreenManager.Game.ResetElapsedTime();
         }

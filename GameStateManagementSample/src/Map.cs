@@ -127,7 +127,6 @@ namespace wizard_game
             {
                 rooms[i].BuildWalls();
             }
-            rooms[0].SpawnActeur(Player.Get());
         }
 
         public void nextLevel()
@@ -221,6 +220,15 @@ namespace wizard_game
 
         public void Update(GameTime gameTime)
         {
+            if (level == 4)
+            {
+                if (activeRoom.acteurs.Count == 1 && activeRoom.acteurs[0] is Player)
+                {
+                    Player.Get().dieTimer.start();
+                    UI.Get().won = true;
+                    
+                }
+            }
             activeRoom.Update(gameTime);
         }
 

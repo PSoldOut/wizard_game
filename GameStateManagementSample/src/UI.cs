@@ -20,9 +20,11 @@ namespace wizard_game
         float bottomOffsetY = 40;
         public bool isInTabmenu;
         float tabmenuSpriteScale = 3.5f;
+        public bool won;
 
         private UI()
         {
+            won = false;
             heartSprite = new Sprite(AssetManager.GetTexture("heart"), 1, 1, 1, false);
             heartSprite.layerDepth = 0.2f;
 
@@ -98,6 +100,11 @@ namespace wizard_game
                 GameStateManagementGame._spriteBatch.DrawString(spriteFont, "MaxHP:"+Player.Get().extraMaxHealth.ToString(), new Vector2(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (1.0f/3.0f) - 90, posPanel.Y + +tabmenuSprite.texture.Height * tabmenuSpriteScale/1.4f), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
                 GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Ranged:"+Player.Get().rangedExtraDamage.ToString(), new Vector2(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (2.0f/3.0f) - 90, posPanel.Y + +tabmenuSprite.texture.Height * tabmenuSpriteScale/1.4f), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
                 GameStateManagementGame._spriteBatch.DrawString(spriteFont, "Meele:"+Player.Get().meeleExtraDamage.ToString(), new Vector2(posPanel.X + tabmenuSprite.texture.Width * tabmenuSpriteScale * (3.0f/3.0f) - 100, posPanel.Y + +tabmenuSprite.texture.Height * tabmenuSpriteScale/1.4f), Color.Wheat, 0, new Vector2(0,0), 1.0f, SpriteEffects.None, 0.0f);
+            }
+
+            if (won)
+            {
+                GameStateManagementGame._spriteBatch.DrawString(AssetManager.GetFont("Arial"), "Du hast gewonnen!", new Vector2(GameStateManagementGame.Get().graphics.PreferredBackBufferWidth/2-20,GameStateManagementGame.Get().graphics.PreferredBackBufferHeight/2), Color.Wheat);
             }
 
         }

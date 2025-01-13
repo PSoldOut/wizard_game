@@ -25,7 +25,7 @@ namespace wizard_game
         public List<Weapon> weapons;
         public Weapon equippedWeapon;
         public int coins;
-        float stepsSpeed = 0.1f;
+        float stepsSpeed;
         Timer stepsTimer;
         public int rank;
         public int exp;
@@ -37,6 +37,7 @@ namespace wizard_game
         SoundEffectInstance stepsSound;
         private Player(int x, int y, Map _map) : base(new Vector2(x, y), 27, 45, "spriteSheetPlayer")
         {
+            stepsSpeed = 0.1f;
             GameStateManagementGame.testTimer.addListener(this);
             stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
             stepsSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
@@ -62,7 +63,16 @@ namespace wizard_game
             if (GameStateManagementGame.mode == GameMode.TUTORIAL) lp = 2;
             
             speed = 0.24f;
-            if (GameStateManagementGame.mode == GameMode.DEBUG) speed = 0.4f;
+            if (GameStateManagementGame.mode == GameMode.DEBUG)
+            {
+                speed = 0.4f;
+                coins = 999;
+            }
+
+            meeleExtraDamage = 0;
+            rangedExtraDamage = 0;
+            extraMaxHealth = 0;
+            rangedExtraVelocity = 0;
 
         }
 
@@ -507,7 +517,46 @@ namespace wizard_game
 
         public void reset()
         {
-            instance = new Player(400,400, map);
+            stepsSpeed = 0.1f;
+            GameStateManagementGame.testTimer.addListener(this);
+            stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
+            stepsSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
+            inventorySound = AssetManager.GetSoundInstance("inventory_sound_effects/cloth-inventory");
+            inventorySound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
+
+            LoadSprite(4, 4, 1, true);
+            sprite.offset = new Vector2(width/2, height/2);
+            sprite.origin = new Vector2(width/2, height/2);
+            sprite.layerDepth = NEXT_LAYER_DEPTH;
+            InitAnimations();
+            direction = new Vector2(0, -1);
+            this.weapons = new List<Weapon>();
+            health = PLAYER_MAX_HEALTH;
+            map = GameplayScreen.map;
+            currentSpeed = 0;
+            stepsTimer = new Timer(stepsSpeed);
+            stepsTimer.addListener(this);
+            isDying = false;
+            rank = 1;
+            exp = 0;
+            lp = 0;
+            coins = 0;
+            rotation = 0;
+            if (GameStateManagementGame.mode == GameMode.TUTORIAL) lp = 2;
+            
+            speed = 0.24f;
+            if (GameStateManagementGame.mode == GameMode.DEBUG)
+            {
+                speed = 0.4f;
+                coins = 999;
+            }
+
+            meeleExtraDamage = 0;
+            rangedExtraDamage = 0;
+            extraMaxHealth = 0;
+            rangedExtraVelocity = 0;
+
+            current_rank_exp_needed = RANK_2_EXP_NEEDED;
             Tutorial.reset();
         }
 

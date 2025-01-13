@@ -11,7 +11,7 @@ public class SoundSettings
             public SoundSettings()
             {
                 listeners = new List<GameEntity>();
-                musicVolume = 0;
+                musicVolume = 1;
                 soundVolume = 1;
                 masterVolume = 1;
             }
