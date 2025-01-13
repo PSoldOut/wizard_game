@@ -15,7 +15,9 @@ namespace wizard_game
         public WeaponName name;
         public Vector2 equipedOffset;
         public float equipedRotation;
-
+        protected bool isAttacking;
+        protected Timer attackTimer;
+        protected ParticleSystem particleSystem;
         public Vector2 equipedOffsetDown;
         public Vector2 equipedOffsetLeft;
         public Vector2 equipedOffsetRight;

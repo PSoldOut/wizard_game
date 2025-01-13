@@ -189,7 +189,7 @@ namespace wizard_game
         }
 
 
-        public virtual void RefreshVolume(float volumeForSound, float volumeForMusic){}
+        public virtual void RefreshVolume(float vfs, float vfm){}
         public virtual void TimerCallback(Timer timer){}
         
     }

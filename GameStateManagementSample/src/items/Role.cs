@@ -9,24 +9,17 @@ namespace wizard_game
 
     public class Role : Weapon
     {
-
-        bool isAttacking;
         SoundEffect shootSound;
-        Timer attackTimer;
         float attackSpeed = 1.0f;
-        ParticleSystem particleSystem;
         public Role(int x, int y) : base(new Vector2(x, y), 55, 35, "role", WeaponName.ROLE)
         {
             shootSound = AssetManager.GetSound("fire");
             LoadSprite(1, 1, 0.04f, false);
-
-
             equipedOffsetDown = new Vector2(-10,15);
             equipedOffsetLeft = new Vector2(-10,15);
             equipedOffsetRight = new Vector2(0,15);
             equipedOffsetUp = new Vector2(-10,15);
             equipedOffset = new Vector2(0,0);
-
             isAttacking = false;
             attackTimer = new Timer(attackSpeed);
             particleSystem = new ParticleSystem(40);

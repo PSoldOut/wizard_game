@@ -9,12 +9,8 @@ namespace wizard_game
 
     public class Bow : Weapon
     {
-
-        bool isAttacking;
         SoundEffectInstance shootSound;
-        Timer attackTimer;
         float attackSpeed = 1.0f;
-        ParticleSystem particleSystem;
         public Bow(int x, int y) : base(new Vector2(x, y), 20, 45, "bow", WeaponName.BOW)
         {
             shootSound = AssetManager.GetSound("battle_sound_effects/Bow").CreateInstance();

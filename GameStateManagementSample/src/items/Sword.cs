@@ -20,12 +20,10 @@ namespace wizard_game
         private float endRotation;
         float distance;
         float damageRadius;
-        bool isAttacking;
 
         SoundEffectInstance swishSound;
         SoundEffectInstance hitSound;
         float animationRotation;
-        ParticleSystem particleSystem;
 
         public Sword(int x, int y) : base(new Vector2(x, y), 20, 20, "sword", WeaponName.SWORD)
         {

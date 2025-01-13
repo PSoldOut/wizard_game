@@ -17,10 +17,8 @@ class Tile
 
     }
     public Dictionary<string, Point> sizes = new Dictionary<string, Point>();
-    Room room; //Der raum in dem die tile ist
     public Tile( Room _room, tileType _type, Point startPoint)
     {
-        room = _room;
         switch (_type)
         {
             case tileType.LeftCornerTop:
@@ -50,7 +48,6 @@ class Tile
                 break;
             case tileType.Rock:
                 walls.Add(new Wall( _room, startPoint, new Point(50, 50),"Obstacles/Rock_MOSSY_BIG"));
-                //Debug.WriteLine("Add rock");
                 break;
 
 
