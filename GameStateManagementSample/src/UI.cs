@@ -52,6 +52,12 @@ namespace wizard_game
         }
 
 
+        public static void reset()
+        {
+            instance = new UI();
+        }
+
+
         public void toggleTabmenu()
         {
             isInTabmenu = !isInTabmenu;

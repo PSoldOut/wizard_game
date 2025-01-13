@@ -33,7 +33,7 @@ namespace wizard_game
         public List<Projectile> projectiles;
 
         public bool isInitialized = false;
-        static int goldCount = 7;
+        
         private int level;
         private Dictionary<int, List<RoomEnemyConfig>> levelRoomConfigs = new Dictionary<int, List<RoomEnemyConfig>>();
 
@@ -58,20 +58,20 @@ namespace wizard_game
         public Room(int index, Map map, int level)
         {
             levelRoomConfigs.Add(1, new List<RoomEnemyConfig> {     // Level 1: Nur Prisoner und Knight
-                                        new RoomEnemyConfig(EnemyType.PRISONER, 2, 4),
+                                        new RoomEnemyConfig(EnemyType.PRISONER, 2, 5),
                                         new RoomEnemyConfig(EnemyType.KNIGHT, 1, 3),
                                         new RoomEnemyConfig(EnemyType.GUARD, 0,1)});
             levelRoomConfigs.Add(2, new List<RoomEnemyConfig> {     // Level 2: Prisoner, Knight und Guard
-                                        new RoomEnemyConfig(EnemyType.PRISONER, 1, 2),
+                                        new RoomEnemyConfig(EnemyType.PRISONER, 0, 0),
                                         new RoomEnemyConfig(EnemyType.KNIGHT, 2, 3),
                                         new RoomEnemyConfig(EnemyType.GUARD, 1, 2),
-                                        new RoomEnemyConfig(EnemyType.DOUBLER, 0, 2)});
+                                        new RoomEnemyConfig(EnemyType.DOUBLER, 1, 2)});
             levelRoomConfigs.Add(3, new List<RoomEnemyConfig> {     // Level 3: Doubler, Guard, Wizard und Magie
-                                        new RoomEnemyConfig(EnemyType.DOUBLER, 1, 2),
+                                        new RoomEnemyConfig(EnemyType.DOUBLER, 2, 3),
                                         new RoomEnemyConfig(EnemyType.GUARD, 2, 3),
                                         new RoomEnemyConfig(EnemyType.MAGIE, 1, 3)});
             levelRoomConfigs.Add(4, new List<RoomEnemyConfig> {
-                                        new RoomEnemyConfig(EnemyType.WIZARD, 1, 2)});
+                                        new RoomEnemyConfig(EnemyType.WIZARD, 1, 1)});
 
             initGamestate();
             this.index = index;
@@ -129,6 +129,7 @@ namespace wizard_game
                 {
                     Enemy current = createEnemyByType(config.Type);
                     current.position = current.GenerateRandomPosition();
+                    if (current is Enemy_Doubler) current.patroulliePoint1 = current.position;
                     acteurs.Add(current);
                 }
             }
@@ -201,6 +202,7 @@ namespace wizard_game
         {
             if (GameStateManagementGame.mode != GameMode.TUTORIAL)
             {
+                int goldCount = GameplayScreen.random.Next(4,11);
                 for (int i = 0; i < goldCount; i++)
                 {
                     Gold g = new Gold(0, 0);
@@ -208,12 +210,34 @@ namespace wizard_game
                     SpawnItem(g);
                     setGamestateElement(g.position, Gamestate.GOLD);
                 }
-                SpawnItem(new HealthPotion(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
-                SpawnItem(new Sword(300, 100));
-                SpawnItem(new Bow(100,100));
-                SpawnItem(new Shoes(150,150));
-                SpawnItem(new Role(200,200));
-                SpawnItem(new Trap(400,200));
+
+                if (index == 0)
+                {
+                    SpawnItem(new Sword(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                }
+                if (index == 10)
+                {
+                    SpawnItem(new Bow(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                }
+                if (index == 15)
+                {
+                    SpawnItem(new Role(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                }
+                if (index == 17)
+                {
+                    SpawnItem(new Shoes(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                }
+                
+                int trapCount = GameplayScreen.random.Next(1,3);
+                for (int i = 0; i < trapCount; i++)
+                {
+                    SpawnItem(new Trap(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                }
+                int healtPotionCount = GameplayScreen.random.Next(1,3);
+                for (int i = 0; i < healtPotionCount; i++)
+                {
+                    SpawnItem(new HealthPotion(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                }
             }
         }
 

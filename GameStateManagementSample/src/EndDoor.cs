@@ -6,7 +6,13 @@ namespace wizard_game
     public class EndDoor : Door
     {
         public bool front = false;
-        public EndDoor(Point size, Color? color = null) : base(size, color) {clr = new Color(10,0,190);}
+        public int goldNeeded;
+        public EndDoor(Point size, Color? color = null) : base(size, color) 
+        {
+            clr = new Color(14,24,150);
+            goldNeeded = 10;
+            text = goldNeeded + " gold";
+        }
 
         public void SetFront(bool b)
         {

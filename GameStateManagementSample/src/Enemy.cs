@@ -28,8 +28,8 @@ namespace wizard_game
         protected List<Vector2> path = new List<Vector2>();
         protected float playerViewDistance;
         protected Map map;
-        Vector2 patroulliePoint1;
-        Vector2 patroulliePoint2;
+        public Vector2 patroulliePoint1;
+        public Vector2 patroulliePoint2;
         public string currentAnimation;
         public Enemy(int x, int y, Map _map, EnemyType type, string spriteName, Room room) : base(new Vector2(x, y), 27, 45, spriteName)
         {

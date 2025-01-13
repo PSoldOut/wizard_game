@@ -1,5 +1,6 @@
 
 using GameStateManagement;
+using Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,7 +10,7 @@ namespace wizard_game
     {
 
 
-
+        public string text = "";
         public Room room;// Raum wo die tür hinführt
         public Door linkedDoor;
         public SpriteBatch _spriteBatch;
@@ -163,6 +164,8 @@ namespace wizard_game
             origin,
             effect,
             1);
+
+            GameStateManagementGame._spriteBatch.DrawString(AssetManager.GetFont("Arial"), text, new Vector2(hitBox.X+10, hitBox.Y+10), Color.Wheat);
 
             if (GameStateManagementGame.mode == GameMode.DEBUG) drawDebugHitBox();
             //_spriteBatch.DrawString(_spriteFont, "TO " + linkedDoor.room.index, hitBox.Center.ToVector2(), Color.Black);

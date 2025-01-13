@@ -38,6 +38,45 @@ namespace wizard_game
 
 
 
+        public Vector2 GenerateRandomPosition(Map map)
+        {
+            Random random = new Random();
+            Vector2 randomPosition;
+
+            do
+            {
+ 
+                int randomX = random.Next(0, GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width - width);
+                int randomY = random.Next(0, GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height - height);
+
+                randomPosition = new Vector2(randomX, randomY);
+
+                Rectangle rec = new Rectangle(randomX, randomY, width * 2, height * 2);
+
+                if (!detectCollisionWithRec(rec, map))
+                {
+                    // Wenn keine Kollision, dann verlasse die Schleife
+                    break;
+                }
+
+            } while (true);
+
+            return randomPosition;
+        }
+
+
+        public bool detectCollisionWithRec(Rectangle rec, Map map)
+        {
+            if (map == null)
+            {
+                throw new InvalidOperationException("Map is not initialized.");
+            }
+
+            return map.DetacteCollison(rec, null, false);
+        }
+
+
+
 
         public override void Update(GameTime gameTime)
         {

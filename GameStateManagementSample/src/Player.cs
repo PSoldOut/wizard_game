@@ -508,23 +508,7 @@ namespace wizard_game
 
         public void reset()
         {
-            weapons = new List<Weapon>();
-            position = new Vector2(400,400);
-            health = PLAYER_MAX_HEALTH;
-            coins = 0;
-            rotation = 0;
-            extraMaxHealth = 0;
-            meeleExtraDamage = 0;
-            rangedExtraDamage = 0;
-            rangedExtraVelocity = 0;
-            inventorySound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
-            rank = 1;
-            exp = 0;
-            lp = 0;
-            speed = 0.24f;
-            if (GameStateManagementGame.mode == GameMode.DEBUG) speed = 0.4f;
-            inventorySound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
-            stepsSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
+            instance = new Player(400,400, map);
             Tutorial.reset();
         }
 

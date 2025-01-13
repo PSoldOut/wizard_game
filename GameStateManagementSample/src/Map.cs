@@ -17,7 +17,7 @@ namespace wizard_game
         public int roomIndex = 0;
         public static int level = 1;
         public int levelCount = 3;
-        public int roomsCount = 3;
+        public int roomsCount = 7;
         GameStateManagementGame gameInstance = GameStateManagementGame.Get();
         public Texture2D background;
 
@@ -45,7 +45,6 @@ namespace wizard_game
 
                     Room startRoom = new Room( i, this, level);
                     Room nextRoom = new Room(i + 1, this, level);
-                    startRoom.SpawnActeur(Player.Get());
 
                     rooms.Add(startRoom);
                     rooms.Add(nextRoom);
@@ -128,6 +127,7 @@ namespace wizard_game
             {
                 rooms[i].BuildWalls();
             }
+            rooms[0].SpawnActeur(Player.Get());
         }
 
         public void nextLevel()
@@ -166,7 +166,8 @@ namespace wizard_game
             Door linkedDoor = activeRoom.DetacteCollisonDoor(hitbox, deleteBots);
             if (linkedDoor != null)
             {
-
+                if (linkedDoor is EndDoor && Player.Get().coins < ((EndDoor)linkedDoor).goldNeeded) return null;
+                if (linkedDoor is EndDoor) Player.Get().coins -= ((EndDoor)linkedDoor).goldNeeded;
                 roomIndex = rooms.IndexOf(linkedDoor.room);
                 activeRoom = linkedDoor.room;
                 return linkedDoor;

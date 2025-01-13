@@ -32,20 +32,20 @@ namespace wizard_game
             aStarTimer.start();
             attackRange = 40;
 
-            using (StreamWriter writer = new StreamWriter("C:\\Users\\Philipp\\Desktop\\gitProjects\\wizard_game\\GameStateManagementSample\\src\\test.txt"))
-            {
-                currentView = room.gamestate;
-                for (int row = 0; row < currentView.GetLength(1); row++) // Erste Dimension: Zeilen
-                {
-                    for (int col = 0; col < currentView.GetLength(0); col++) // Zweite Dimension: Spalten
-                    {
-                        Gamestate state = currentView[col, row];
-                        writer.Write("\t" + state + "\t");
-                    }
-                    writer.WriteLine();
-                }
-
-            }
+            //using (StreamWriter writer = new StreamWriter("C:\\Users\\Philipp\\Desktop\\gitProjects\\wizard_game\\GameStateManagementSample\\src\\test.txt"))
+            //{
+            //    currentView = room.gamestate;
+            //    for (int row = 0; row < currentView.GetLength(1); row++) // Erste Dimension: Zeilen
+            //    {
+            //        for (int col = 0; col < currentView.GetLength(0); col++) // Zweite Dimension: Spalten
+            //        {
+            //            Gamestate state = currentView[col, row];
+            //            writer.Write("\t" + state + "\t");
+            //        }
+            //        writer.WriteLine();
+            //    }
+            //
+            //}
         }
 
 
