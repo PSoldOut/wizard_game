@@ -11,8 +11,8 @@ namespace wizard_game
     {
         public Texture2D image;
 
-        private Room activeRoom;
-        private List<Room> rooms = new List<Room>();
+        public Room activeRoom;
+        public List<Room> rooms = new List<Room>();
         private bool[,] activeRoomFields = new bool[128, 72];
         public int roomIndex = 0;
         public static int level = 1;
@@ -43,8 +43,8 @@ namespace wizard_game
                 if (i == 0) //First room only to next room
                 {
 
-                    Room startRoom = new Room( i, this, level);
-                    Room nextRoom = new Room(i + 1, this, level);
+                    Room startRoom = new Room( i, this, i/roomsCount+1);
+                    Room nextRoom = new Room(i + 1, this, (i+1)/roomsCount+1);
 
                     rooms.Add(startRoom);
                     rooms.Add(nextRoom);
@@ -75,7 +75,7 @@ namespace wizard_game
                 }
                 else if ((i + 1) % roomsCount == 0)
                 {
-                    Room nextRoom = new Room(i + 1, this, level);
+                    Room nextRoom = new Room(i + 1, this, (i+1)/roomsCount+1);
                     rooms.Add(nextRoom);
 
                     EndDoor doorToNext = new EndDoor(doorSize);
@@ -98,7 +98,7 @@ namespace wizard_game
                 }
                 else if (i + 1 < roomsCount * levelCount)
                 {
-                    Room nextRoom = new Room(i + 1, this, level);
+                    Room nextRoom = new Room(i + 1, this, (i+1)/roomsCount+1);
                     rooms.Add(nextRoom);
 
                     Door doorToNext = new Door(doorSize);
@@ -142,6 +142,14 @@ namespace wizard_game
         public void previousLevel()
         {
             level--;
+            if (level == 1) background = AssetManager.GetTexture("bgd1");
+            if (level == 2) background = AssetManager.GetTexture("castleBG");
+            if (level == 3) background = AssetManager.GetTexture("towerBGKopie");
+            if (level == 4) background = AssetManager.GetTexture("towerBGKopie");
+        }
+
+        public void SameLevel()
+        {
             if (level == 1) background = AssetManager.GetTexture("bgd1");
             if (level == 2) background = AssetManager.GetTexture("castleBG");
             if (level == 3) background = AssetManager.GetTexture("towerBGKopie");

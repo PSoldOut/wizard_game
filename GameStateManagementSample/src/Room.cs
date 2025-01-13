@@ -34,7 +34,7 @@ namespace wizard_game
 
         public bool isInitialized = false;
         
-        private int level;
+        public int level;
         private Dictionary<int, List<RoomEnemyConfig>> levelRoomConfigs = new Dictionary<int, List<RoomEnemyConfig>>();
 
         enum DirEnum : int

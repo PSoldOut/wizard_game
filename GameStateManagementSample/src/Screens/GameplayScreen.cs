@@ -54,10 +54,11 @@ namespace GameStateManagement
 
         Tutorial tutorial;
         UI ui;
-
+        public static CheatConsole cheat;
 
         public GameplayScreen()
         {
+            cheat = new CheatConsole(AssetManager.GetFont("Arial"));
             rand = new Random();
             map = new Map();
             Room room = map.GetActiveRoom();
@@ -116,7 +117,8 @@ namespace GameStateManagement
         {
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-            if (!otherScreenHasFocus)
+            cheat.Update(gameTime);
+            if (!otherScreenHasFocus && !cheat.GetIsActive())
             {
                 if (gameTime.ElapsedGameTime.Milliseconds > 0)
                 {
@@ -178,6 +180,7 @@ namespace GameStateManagement
             {
                 return;
             }
+            cheat.Draw(GameStateManagementGame._spriteBatch);
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.CornflowerBlue, 0, 0);
             map.Draw(gameTime);
             ui.Draw(gameTime);

@@ -207,7 +207,6 @@ namespace wizard_game
 
             //switching weapons
 
-
             if (inputState.IsNewKeyPress(Keys.D1))
             {
                 if (UI.Get().isInTabmenu && lp > 0)
