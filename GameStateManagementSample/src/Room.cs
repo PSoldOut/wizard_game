@@ -35,29 +35,8 @@ namespace wizard_game
         public bool isInitialized = false;
         static int goldCount = 7;
         private int level;
-        private Dictionary<int, List<RoomEnemyConfig>> levelRoomConfigs = new Dictionary<int, List<RoomEnemyConfig>>
-{
-    // Level 1: Nur Prisoner und Knight
-    { 1, new List<RoomEnemyConfig> {
-        new RoomEnemyConfig(EnemyType.PRISONER, 1, 2),
-        new RoomEnemyConfig(EnemyType.KNIGHT, 2, 3),
-          new RoomEnemyConfig(EnemyType.GUARD, 0,1)
-    }},
-    // Level 2: Prisoner, Knight und Guard
-    { 2, new List<RoomEnemyConfig> {
-        new RoomEnemyConfig(EnemyType.PRISONER, 1, 2),
-        new RoomEnemyConfig(EnemyType.KNIGHT, 2, 3),
-        new RoomEnemyConfig(EnemyType.GUARD, 1, 2),
-        new RoomEnemyConfig(EnemyType.DOUBLER, 0, 1),
-    }},
-    // Level 3: Doubler, Guard, Wizard und Magie
-    { 3, new List<RoomEnemyConfig> {
-        new RoomEnemyConfig(EnemyType.DOUBLER, 1, 2),
-        new RoomEnemyConfig(EnemyType.GUARD, 2, 4),
-        new RoomEnemyConfig(EnemyType.WIZARD, 1, 2),
-        new RoomEnemyConfig(EnemyType.MAGIE, 1, 3)
-    }}
-};
+        private Dictionary<int, List<RoomEnemyConfig>> levelRoomConfigs = new Dictionary<int, List<RoomEnemyConfig>>();
+
         enum DirEnum : int
         {
 
@@ -78,6 +57,22 @@ namespace wizard_game
         }
         public Room(int index, Map map, int level)
         {
+            levelRoomConfigs.Add(1, new List<RoomEnemyConfig> {     // Level 1: Nur Prisoner und Knight
+                                        new RoomEnemyConfig(EnemyType.PRISONER, 2, 4),
+                                        new RoomEnemyConfig(EnemyType.KNIGHT, 1, 3),
+                                        new RoomEnemyConfig(EnemyType.GUARD, 0,1)});
+            levelRoomConfigs.Add(2, new List<RoomEnemyConfig> {     // Level 2: Prisoner, Knight und Guard
+                                        new RoomEnemyConfig(EnemyType.PRISONER, 1, 2),
+                                        new RoomEnemyConfig(EnemyType.KNIGHT, 2, 3),
+                                        new RoomEnemyConfig(EnemyType.GUARD, 1, 2),
+                                        new RoomEnemyConfig(EnemyType.DOUBLER, 0, 2)});
+            levelRoomConfigs.Add(3, new List<RoomEnemyConfig> {     // Level 3: Doubler, Guard, Wizard und Magie
+                                        new RoomEnemyConfig(EnemyType.DOUBLER, 1, 2),
+                                        new RoomEnemyConfig(EnemyType.GUARD, 2, 3),
+                                        new RoomEnemyConfig(EnemyType.MAGIE, 1, 3)});
+            levelRoomConfigs.Add(4, new List<RoomEnemyConfig> {
+                                        new RoomEnemyConfig(EnemyType.WIZARD, 1, 2)});
+
             initGamestate();
             this.index = index;
             W_Width = gameInstance.GraphicsDevice.Viewport.Width;
@@ -111,7 +106,7 @@ namespace wizard_game
         public void init()
         {
             generateItems();
-            generateEnemiesForRoom(level);
+            generateEnemiesForRoom(Map.level);
             isInitialized = true;
         }
 
@@ -137,6 +132,7 @@ namespace wizard_game
                     acteurs.Add(current);
                 }
             }
+            Console.WriteLine("level:"+level);
         }
         private Enemy createEnemyByType(EnemyType type)
         {

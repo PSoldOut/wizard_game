@@ -128,10 +128,9 @@ namespace GameStateManagement
                     mousePressed = false;
 
                 }
+                if (!map.GetActiveRoom().isInitialized) map.GetActiveRoom().init();
                 ui.Update(gameTime);
                 map.Update(gameTime);
-                if (!map.GetActiveRoom().isInitialized) map.GetActiveRoom().init();
-
                 if (GameStateManagementGame.mode == GameMode.TUTORIAL) Tutorial.Get().Update(gameTime);
             }
 

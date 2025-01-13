@@ -169,7 +169,6 @@ namespace wizard_game
 
                 roomIndex = rooms.IndexOf(linkedDoor.room);
                 activeRoom = linkedDoor.room;
-                if (!activeRoom.isInitialized) activeRoom.init();
                 return linkedDoor;
             }
             return null;
