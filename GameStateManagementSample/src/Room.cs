@@ -15,7 +15,7 @@ namespace wizard_game
         public Texture2D image;
 
         public int index;
-        private Color[] wallColors = new Color[] { Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Blue, Color.Indigo, Color.Purple };
+
         static private Random rnd = new Random(Guid.NewGuid().GetHashCode());
         int W_Height;
         int W_Width;
@@ -33,7 +33,7 @@ namespace wizard_game
         public List<Projectile> projectiles;
 
         public bool isInitialized = false;
-        
+
         public int level;
         private Dictionary<int, List<RoomEnemyConfig>> levelRoomConfigs = new Dictionary<int, List<RoomEnemyConfig>>();
 
@@ -133,7 +133,7 @@ namespace wizard_game
                     acteurs.Add(current);
                 }
             }
-            Console.WriteLine("level:"+level);
+            Console.WriteLine("level:" + level);
         }
         private Enemy createEnemyByType(EnemyType type)
         {
@@ -202,7 +202,7 @@ namespace wizard_game
         {
             if (GameStateManagementGame.mode != GameMode.TUTORIAL)
             {
-                int goldCount = GameplayScreen.random.Next(4,11);
+                int goldCount = GameplayScreen.random.Next(4, 11);
                 for (int i = 0; i < goldCount; i++)
                 {
                     Gold g = new Gold(0, 0);
@@ -210,30 +210,33 @@ namespace wizard_game
                     SpawnItem(g);
                     setGamestateElement(g.position, Gamestate.GOLD);
                 }
-
+                int _width = GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width;
+                int _height = GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height;
+                int x = GameplayScreen.rand.Next(_width);
+                int y = GameplayScreen.rand.Next(_height);
                 if (index == 0)
                 {
-                    SpawnItem(new Sword(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                    SpawnItem(new Sword(x, y));
                 }
                 if (index == 10)
                 {
-                    SpawnItem(new Bow(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                    SpawnItem(new Bow(x, y));
                 }
                 if (index == 15)
                 {
-                    SpawnItem(new Role(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                    SpawnItem(new Role(x,y));
                 }
                 if (index == 17)
                 {
-                    SpawnItem(new Shoes(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
+                    SpawnItem(new Shoes(x,y));
                 }
-                
-                int trapCount = GameplayScreen.random.Next(1,3);
+
+                int trapCount = GameplayScreen.random.Next(1, 3);
                 for (int i = 0; i < trapCount; i++)
                 {
                     SpawnItem(new Trap(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
                 }
-                int healtPotionCount = GameplayScreen.random.Next(1,3);
+                int healtPotionCount = GameplayScreen.random.Next(1, 3);
                 for (int i = 0; i < healtPotionCount; i++)
                 {
                     SpawnItem(new HealthPotion(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
