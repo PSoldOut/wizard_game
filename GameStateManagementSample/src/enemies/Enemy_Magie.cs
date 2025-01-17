@@ -21,6 +21,7 @@ namespace wizard_game
         {
             dieSound = AssetManager.GetSoundInstance("monster_sfx_pack/monster-6");     //sterbesound
             dieSound.Volume = GameStateManagementGame.soundSettings.GetVolumeForSound();
+            sprite.color = Color.Yellow;
             setSpeed();
             this.map = map;
             direction = new Vector2(1, 0);
