@@ -57,6 +57,10 @@ namespace wizard_game
         }
         public Room(int index, Map map, int level)
         {
+            items = new List<Item>();
+            acteurs = new List<Acteur>();
+            projectiles = new List<Projectile>();
+            this.level = level;
             levelRoomConfigs.Add(1, new List<RoomEnemyConfig> {     // Level 1: Nur Prisoner und Knight
                                         new RoomEnemyConfig(EnemyType.PRISONER, 2, 5),
                                         new RoomEnemyConfig(EnemyType.KNIGHT, 1, 3),
@@ -80,10 +84,7 @@ namespace wizard_game
             SideWalls();
 
             this.map = map;
-            this.level = level;
-            items = new List<Item>();
-            acteurs = new List<Acteur>();
-            projectiles = new List<Projectile>();
+            
 
         }
         private void SideWalls()
@@ -95,7 +96,10 @@ namespace wizard_game
         }
         private Wall wallBuilder(Point pos, Point size, String id = null)
         {
-            Wall wall = new Wall(this, pos, size, "Floors/Brickwall5");
+            Wall wall = new Wall(this, pos, size, "bgd1Wall2");
+            if (level == 1) wall = new Wall(this, pos, size, "bgd1Wall2");
+            if (level == 2) wall = new Wall(this, pos, size, "castleBGWall1");
+            if (level == 3) wall = new Wall(this, pos, size, "towerBGWall1");
             walls.Add(wall);
             setGamestateElement(new Vector2(pos.X, pos.Y), Gamestate.WALL);
             return wall;
