@@ -241,6 +241,7 @@ namespace wizard_game
                 {
                     SpawnItem(new HealthPotion(GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Width), GameplayScreen.rand.Next(GameStateManagementGame.Get().graphics.GraphicsDevice.Viewport.Height)));
                 }
+                
             }
         }
 
@@ -379,9 +380,11 @@ namespace wizard_game
                             changeDir = false;
                         }
 
-
+                        int xOffsetPlant = 0;
+                        int yOffsetPlant = 0;
                         while (true)
                         {
+                            
                             dir = (DirEnum)rnd.Next(0, 4);
                             //nicht in die gegenrichtung
                             if (dirOld == DirEnum.Left && dir == DirEnum.Right) continue;
@@ -391,6 +394,46 @@ namespace wizard_game
 
                             if (dir != dirOld)
                             {
+                                if (dirOld == DirEnum.Left && dir == DirEnum.Top)
+                                {
+                                    xOffsetPlant = 0;
+                                    yOffsetPlant = -20;
+                                }
+                                if (dirOld == DirEnum.Left && dir == DirEnum.Bottom)
+                                {
+                                    xOffsetPlant = 0;
+                                    yOffsetPlant = 0;
+                                }
+                                if (dirOld == DirEnum.Right && dir == DirEnum.Top)
+                                {
+                                    xOffsetPlant = -35;
+                                    yOffsetPlant = -50; 
+                                }
+                                if (dirOld == DirEnum.Right && dir == DirEnum.Bottom)
+                                {
+                                    xOffsetPlant = -33;
+                                    yOffsetPlant = 23;
+                                }
+                                if (dirOld == DirEnum.Bottom && dir == DirEnum.Left)
+                                {
+                                    xOffsetPlant = -33;
+                                    yOffsetPlant = -50;
+                                }
+                                if (dirOld == DirEnum.Bottom && dir == DirEnum.Right)
+                                {
+                                    xOffsetPlant = 27;
+                                    yOffsetPlant = -50;
+                                }
+                                if (dirOld == DirEnum.Top && dir == DirEnum.Left)
+                                {
+                                    xOffsetPlant = -35;
+                                    yOffsetPlant = 23; 
+                                }
+                                if (dirOld == DirEnum.Top && dir == DirEnum.Right)
+                                {
+                                    xOffsetPlant = 23;
+                                    yOffsetPlant = 23;
+                                }
                                 dirOld = dir;
                                 if (!changeDir && dirChangesMax > dirChanges)
                                 {
@@ -402,6 +445,8 @@ namespace wizard_game
 
 
                         }
+                        int r = GameplayScreen.rand.Next(1,3);
+                        if (r == 1)SpawnItem(new Plant(x*10+xOffsetPlant, y*10+yOffsetPlant));
 
                     }
                     if (dirChanges >= dirChangesMax)
@@ -461,6 +506,7 @@ namespace wizard_game
                             i = iteraions;
 
                         }
+                        
                         continue;
                     }
                     wallBuilder(new Point(x * 10, y * 10), new Point(20, 20));
