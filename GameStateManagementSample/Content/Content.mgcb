@@ -699,6 +699,18 @@
 /processorParam:Quality=Best
 /build:liveSound.wav
 
+#begin mainMenuBG.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:mainMenuBG.jpg
+
 #begin mainMenuMusic.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

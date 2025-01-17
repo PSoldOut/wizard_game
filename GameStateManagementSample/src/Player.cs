@@ -517,6 +517,7 @@ namespace wizard_game
 
         public void reset()
         {
+            equippedWeapon = null;
             stepsSpeed = 0.1f;
             GameStateManagementGame.testTimer.addListener(this);
             stepsSound = AssetManager.GetSoundInstance("footsteps/step_lth1");
