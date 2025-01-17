@@ -93,6 +93,21 @@ public class CheatConsole
             Player.Get().coins = 999;
             return;
         }
+        else if (input.Equals("lp"))
+        {
+            Player.Get().lp = 100;
+            return;
+        }
+        else if (input.Equals("hp"))
+        {
+            Player.Get().health = Player.PLAYER_MAX_HEALTH;
+            return;
+        }
+        else if (input.Equals("shoes"))
+        {
+            Player.Get().speed+=Shoes.speed;
+            return;
+        }
         try
         {
             int v = int.Parse(input);

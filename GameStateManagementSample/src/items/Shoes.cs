@@ -14,7 +14,7 @@ namespace wizard_game
 {
     class Shoes : Item
     {
-        float speed = 0.07f;
+        public static float speed = 0.07f;
         ParticleSystem particleSystem;
 
         public Shoes(int x, int y) : base(new Vector2(x, y), 35, 30, "shoes")
