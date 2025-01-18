@@ -266,30 +266,6 @@
 /processorParam:Quality=Best
 /build:footsteps/step_lth4.mp3
 
-#begin footsteps/step_metal (2).mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:footsteps/step_metal (2).mp3
-
-#begin footsteps/step_metal (3).mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:footsteps/step_metal (3).mp3
-
-#begin footsteps/step_metal (4).mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:footsteps/step_metal (4).mp3
-
-#begin footsteps/step_metal.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:footsteps/step_metal.mp3
-
 #begin gamefont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -399,125 +375,11 @@
 /processorParam:Quality=Best
 /build:hits/mp3/hit08.mp3.mp3;hits/hit08.mp3.mp3
 
-#begin Horror_Sound_Library/Mp3/Ambience_Hell_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Ambience_Hell_00.mp3;Horror_Sound_Library/Ambience_Hell_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Ambience_Hell_01.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Ambience_Hell_01.mp3;Horror_Sound_Library/Ambience_Hell_01.mp3
-
-#begin Horror_Sound_Library/Mp3/Ambience_Hell_02.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Ambience_Hell_02.mp3;Horror_Sound_Library/Ambience_Hell_02.mp3
-
-#begin Horror_Sound_Library/Mp3/Ambience_MonstersBelly_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Ambience_MonstersBelly_00.mp3;Horror_Sound_Library/Ambience_MonstersBelly_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Ambience_MurderofCrows_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Ambience_MurderofCrows_00.mp3;Horror_Sound_Library/Ambience_MurderofCrows_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Blood_Dripping_Loop_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Blood_Dripping_Loop_00.mp3;Horror_Sound_Library/Blood_Dripping_Loop_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Blood_Dripping_Loop_01.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Blood_Dripping_Loop_01.mp3;Horror_Sound_Library/Blood_Dripping_Loop_01.mp3
-
-#begin Horror_Sound_Library/Mp3/Blood_Dripping_Loop_02.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Blood_Dripping_Loop_02.mp3;Horror_Sound_Library/Blood_Dripping_Loop_02.mp3
-
-#begin Horror_Sound_Library/Mp3/Bonecrack_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Bonecrack_00.mp3;Horror_Sound_Library/Bonecrack_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Bonecrack_01.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Bonecrack_01.mp3;Horror_Sound_Library/Bonecrack_01.mp3
-
-#begin Horror_Sound_Library/Mp3/Bonecrack_02.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Bonecrack_02.mp3;Horror_Sound_Library/Bonecrack_02.mp3
-
-#begin Horror_Sound_Library/Mp3/Bonecrack_03.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Bonecrack_03.mp3;Horror_Sound_Library/Bonecrack_03.mp3
-
-#begin Horror_Sound_Library/Mp3/Evil_Machine_Loop_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Evil_Machine_Loop_00.mp3;Horror_Sound_Library/Evil_Machine_Loop_00.mp3
-
 #begin Horror_Sound_Library/Mp3/Gate_Open_00.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Horror_Sound_Library/Mp3/Gate_Open_00.mp3;Horror_Sound_Library/Gate_Open_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Jingle_Achievement_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Jingle_Achievement_00.mp3;Horror_Sound_Library/Jingle_Achievement_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Jingle_Lose_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Jingle_Lose_00.mp3;Horror_Sound_Library/Jingle_Lose_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Jingle_Win_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Jingle_Win_00.mp3;Horror_Sound_Library/Jingle_Win_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Laugh_Evil_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Laugh_Evil_00.mp3;Horror_Sound_Library/Laugh_Evil_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Laugh_Evil_01.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Laugh_Evil_01.mp3;Horror_Sound_Library/Laugh_Evil_01.mp3
-
-#begin Horror_Sound_Library/Mp3/Laugh_Evil_02.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Laugh_Evil_02.mp3;Horror_Sound_Library/Laugh_Evil_02.mp3
 
 #begin Horror_Sound_Library/Mp3/Monster_00.mp3
 /importer:Mp3Importer
@@ -560,36 +422,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Horror_Sound_Library/Mp3/Monster_06.mp3;Horror_Sound_Library/Monster_06.mp3
-
-#begin Horror_Sound_Library/Mp3/Scream_Male_00.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Scream_Male_00.mp3;Horror_Sound_Library/Scream_Male_00.mp3
-
-#begin Horror_Sound_Library/Mp3/Scream_Male_01.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Scream_Male_01.mp3;Horror_Sound_Library/Scream_Male_01.mp3
-
-#begin Horror_Sound_Library/Mp3/Scream_Male_02.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Scream_Male_02.mp3;Horror_Sound_Library/Scream_Male_02.mp3
-
-#begin Horror_Sound_Library/Mp3/Scream_Male_03.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Scream_Male_03.mp3;Horror_Sound_Library/Scream_Male_03.mp3
-
-#begin Horror_Sound_Library/Mp3/Scream_Male_04.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Horror_Sound_Library/Mp3/Scream_Male_04.mp3;Horror_Sound_Library/Scream_Male_04.mp3
 
 #begin Horror_Sound_Library/Mp3/Stab_Knife_00.mp3
 /importer:Mp3Importer
